@@ -119,7 +119,7 @@ def draw_logo(data,
               axisfontscale=1,
               hide_axis=False,
               fontfamily='DejaVu Sans Mono',
-              fontaspect=0.57,
+              fontaspect=0.6,
               ax=None):
     """Draw sequence logo from specified letter heights.
 
@@ -193,12 +193,14 @@ def draw_logo(data,
     height_matrix = []
     xticks = []
     lastx = None
+    breaks = []
     for x, xdata in (data
                      .sort_values([x_col, letter_height_col])
                      .groupby(x_col)
                      ):
 
         if addbreaks and (lastx is not None) and (x != lastx + 1):
+            breaks.append(len(height_matrix))
             height_matrix.append([])
             xticks.append('')
         lastx = x
@@ -239,7 +241,7 @@ def draw_logo(data,
     else:
         fig, ax = plt.subplots()
         fig.set_size_inches(
-                (widthscale * (nstacks + int(not hide_axis)),
+                (widthscale * 0.8 * (nstacks + int(not hide_axis)),
                  heightscale * (2 +  0.5 * int(not hide_axis))))
 
     ax.set_xlim(0, nstacks)
@@ -257,6 +259,11 @@ def draw_logo(data,
 
     # draw the letters
     _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect)
+
+    # draw the breaks
+    for x in breaks:
+        # loosely dotted line: https://matplotlib.org/gallery/lines_bars_and_markers/linestyles.html
+        ax.axvline(x=x + 0.5, ls=(0, (2, 5)), color='black', lw=1)
 
     if hide_axis:
         ax.axis('off')
