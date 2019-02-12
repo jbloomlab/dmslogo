@@ -12,9 +12,7 @@ import matplotlib.pyplot as plt
 from matplotlib.patheffects import RendererBase
 from matplotlib import transforms
 from matplotlib.font_manager import FontProperties
-from matplotlib.ticker import MultipleLocator
-from matplotlib.ticker import FormatStrFormatter
-from matplotlib.lines import Line2D
+from matplotlib.ticker import MaxNLocator
 
 from dmslogo.seaborn_utils import despine
 from dmslogo.colorschemes import *
@@ -67,8 +65,8 @@ def _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect):
     width *= fig.dpi
     height *= fig.dpi
 
-    max_stack_height = max([sum([tup[1] for tup in row]) for
-                           row in height_matrix])
+    max_stack_height = max(sum([tup[1] for tup in row]) for
+                           row in height_matrix)
 
     fontsize = (height / max_stack_height) * 72.0 / fig.dpi
     font = _setup_font(fontsize=fontsize, fontfamily=fontfamily)
@@ -105,10 +103,10 @@ def _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect):
 
 
 def draw_logo(data,
-              letter_height_col,
               *,
-              letter_col='mutation',
-              x_col='site',
+              x_col,
+              letter_col,
+              letter_height_col,
               xtick_col=None,
               color_col=None,
               xlabel=None,
@@ -118,9 +116,10 @@ def draw_logo(data,
               addbreaks=True,
               widthscale=1,
               heightscale=1,
-              show_axis=True,
+              axisfontscale=1,
+              hide_axis=False,
               fontfamily='DejaVu Sans Mono',
-              fontaspect=0.55,
+              fontaspect=0.57,
               ax=None):
     """Draw sequence logo from specified letter heights.
 
@@ -154,8 +153,10 @@ def draw_logo(data,
             Scale width by this much.
         `heightscale` (float)
             Scale height by this much.
-        `show_axis` (bool)
-            Do we show the axes with ticks and labels?
+        `axisfontscale` (float)
+            Scale size of font for axis ticks and labels by this much.
+        `hide_axis` (bool)
+            Do we hide the axis and tick labels?
         `fontfamily` (str)
             Font to use.
         `fontaspect` (float)
@@ -229,18 +230,26 @@ def draw_logo(data,
 
     nstacks = len(height_matrix)
     assert len(xticks) == nstacks
+    max_stack_height = max(sum([tup[1] for tup in row]) for
+                           row in height_matrix)
 
     # setup axis for plotting
     if ax:
         raise ValueError('not yet implemented for passing `ax`')
     else:
         fig, ax = plt.subplots()
-        fig.set_size_inches((widthscale * 0.5 * (nstacks + int(show_axis)),
-                             heightscale))
+        fig.set_size_inches(
+                (widthscale * (nstacks + int(not hide_axis)),
+                 heightscale * (2 +  0.5 * int(not hide_axis))))
 
     ax.set_xlim(0, nstacks)
+    ax.set_ylim(-0.03 * max_stack_height, 1.03 * max_stack_height)
     ax.set_xticks(numpy.arange(nstacks) + 0.5)
-    ax.set_xticklabels(xticks, rotation=90)
+    ax.set_xticklabels(xticks, rotation=90, ha='center', va='top')
+    ax.yaxis.set_major_locator(MaxNLocator(4))
+    ax.tick_params('both', labelsize=13 * axisfontscale)
+    ax.set_xlabel(xlabel, fontsize=17 * axisfontscale)
+    ax.set_ylabel(ylabel, fontsize=17 * axisfontscale)
     despine(ax=ax,
             trim=False,
             top=True,
@@ -249,7 +258,7 @@ def draw_logo(data,
     # draw the letters
     _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect)
 
-    if not show_axis:
+    if hide_axis:
         ax.axis('off')
 
     return fig, ax
