@@ -186,8 +186,8 @@ def draw_logo(data,
         raise ValueError('`letter_height_col` has negative heights')
     if data[x_col].dtype != int:
         raise ValueError('`x_col` does not have integer values')
-    if not df_cols_one_to_one(data, x_col, xtick_col):
-        raise ValueError('not 1:1 mapping of `x_col` to `xtick_col`')
+    if any(len(set(g[xtick_col])) != 1 for _, g in data.groupby(x_col)):
+        raise ValueError('not unique mapping of `x_col` to `xtick_col`')
 
     # construct height_matrix: list of lists of (letter, hegith, color)
     height_matrix = []
@@ -236,13 +236,13 @@ def draw_logo(data,
                            row in height_matrix)
 
     # setup axis for plotting
-    if ax:
-        raise ValueError('not yet implemented for passing `ax`')
-    else:
+    if not ax:
         fig, ax = plt.subplots()
         fig.set_size_inches(
                 (widthscale * 0.8 * (nstacks + int(not hide_axis)),
                  heightscale * (2 +  0.5 * int(not hide_axis))))
+    else:
+        fig = ax.get_figure()
 
     ax.set_xlim(0, nstacks)
     ax.set_ylim(-0.03 * max_stack_height, 1.03 * max_stack_height)
@@ -270,54 +270,6 @@ def draw_logo(data,
 
     return fig, ax
 
-
-def df_cols_one_to_one(df, col1, col2):
-    """Is mapping between two data frame columns one-to-one?
-
-    Args:
-        `df` (pandas DataFrame)
-            Data frame.
-        `col1` (str)
-            First column in data frame.
-        `col2` (str)
-            Second column in data frame (can be same as `col1`).
-
-    Returns:
-        If each entry in `col1` uniquely maps to an entry in `col2`,
-        returns `True`. Otherwise returns `False`.
-
-    Returns `True` if one-to-one mapping:
-
-    >>> one_to_one = pd.DataFrame({'col1':[1, 2, 2], 'col2':[4, 5, 5]})
-    >>> df_cols_one_to_one(one_to_one, 'col1', 'col2')
-    True
-
-    Returns `False` if one-to-many or many-to-one mapping:
-
-    >>> one_to_many = pd.DataFrame({'col1':[1, 2, 3], 'col2':[4, 5, 5]})
-    >>> df_cols_one_to_one(one_to_many, 'col1', 'col2')
-    False
-    >>> df_cols_one_to_one(one_to_many, 'col2', 'col1')
-    False
-
-    Returns `True` if `col1` and `col2` are the same:
-
-    >>> df_cols_one_to_one(one_to_many, 'col1', 'col1')
-    True
-    """
-    for c in [col1, col2]:
-        if c not in df.columns:
-            raise ValueError(f"`df` lacks column {c}")
-
-    if col1 == col2:
-        return True
-
-    if any(len(g[col2].unique()) != 1 for _, g in df.groupby(col1)):
-        return False
-    elif any(len(g[col1].unique()) != 1 for _, g in df.groupby(col2)):
-        return False
-    else:
-        return True
 
 
 if __name__ == '__main__':
