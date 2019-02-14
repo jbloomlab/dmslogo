@@ -76,6 +76,8 @@ def _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect):
     fontwidthscale = width * max_stack_height / (height * fontaspect *
                                                  len(height_matrix))
 
+    fig.canvas.draw()
+
     for xindex, xcol in enumerate(height_matrix):
 
         for letter, letterheight, lettercolor in xcol:
@@ -91,7 +93,6 @@ def _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect):
                 family='monospace',
                 fontproperties=font)
             txt.set_path_effects([Scale(fontwidthscale, letterheight)])
-            fig.canvas.draw()
             window_ext = txt.get_window_extent(
                 txt._renderer)  
             yshift = window_ext.height * letterheight  
@@ -100,7 +101,8 @@ def _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect):
 
         trans_offset = transforms.offset_copy(
             ax.transData, fig=fig, units='dots')
-            
+
+    fig.canvas.draw()
 
 
 def draw_logo(data,
