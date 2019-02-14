@@ -20,7 +20,7 @@ from dmslogo.colorschemes import *
 
 class Scale(RendererBase):
     """Scale letters using affine transformation.
-    
+ 
     From here: https://www.python-forum.de/viewtopic.php?t=30856
     """
 
@@ -34,13 +34,43 @@ class Scale(RendererBase):
 
 
 def _setup_font(fontfamily, fontsize):
-    """Setup font properties"""
+    """Get `FontProperties` for `fontfamily` and `fontsize`."""
 
     font = FontProperties()
     font.set_size(fontsize)
     font.set_weight('bold')
     font.set_family(fontfamily)
     return font
+
+
+def _frac_above_baseline(font):
+    """Returns fraction of font height that is above baseline.
+
+    Args:
+        `font` (FontProperties)
+            Font for which we are computing fraction.
+    """
+    fig, ax = plt.subplots()
+    ax.set_xlim(0, 1)
+    ax.set_ylim(0, 1)
+
+    txt_baseline = ax.text(0, 0, 'A', fontproperties=font,
+                           va='baseline', bbox=dict(pad=0))
+    txt_bottom = ax.text(0, 0, 'A', fontproperties=font,
+                         va='bottom', bbox=dict(pad=0))
+
+    fig.canvas.draw()
+    bbox_baseline = txt_baseline.get_window_extent()
+    bbox_bottom = txt_bottom.get_window_extent()
+
+    height_baseline = bbox_baseline.y1 - bbox_baseline.y0
+    height_bottom = bbox_bottom.y1 - bbox_bottom.y0
+    assert numpy.allclose(height_baseline, height_bottom)
+    frac = (bbox_baseline.y1 - bbox_bottom.y0) / height_bottom
+
+    plt.close(fig)
+
+    return frac
 
 
 def _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect):
@@ -70,37 +100,31 @@ def _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect):
 
     fontsize = (height / max_stack_height) * 72.0 / fig.dpi
     font = _setup_font(fontsize=fontsize, fontfamily=fontfamily)
-    trans_offset = transforms.offset_copy(
-            ax.transData, fig=fig, units='dots')
+    frac_above_baseline = _frac_above_baseline(font)
 
     fontwidthscale = width * max_stack_height / (height * fontaspect *
                                                  len(height_matrix))
 
-    fig.canvas.draw()
-
     for xindex, xcol in enumerate(height_matrix):
 
+        ypos = 0
         for letter, letterheight, lettercolor in xcol:
             txt = ax.text(
                 xindex,
-                0,
+                ypos,
                 letter,
-                transform=trans_offset,
                 fontsize=fontsize,
                 color=lettercolor,
                 ha='left',
                 va='baseline',
-                family='monospace',
-                fontproperties=font)
-            txt.set_path_effects([Scale(fontwidthscale, letterheight)])
-            window_ext = txt.get_window_extent(
-                txt._renderer)  
-            yshift = window_ext.height * letterheight  
-            trans_offset = transforms.offset_copy(
-                txt.get_transform(), fig=fig, y=yshift, units='dots')
+                fontproperties=font,
+                bbox=dict(pad=0, edgecolor='none', facecolor='none')
+                )
 
-        trans_offset = transforms.offset_copy(
-            ax.transData, fig=fig, units='dots')
+            txt.set_path_effects([Scale(fontwidthscale,
+                                  letterheight / frac_above_baseline)])
+
+            ypos += letterheight
 
     fig.canvas.draw()
 
@@ -114,6 +138,7 @@ def draw_logo(data,
               color_col=None,
               xlabel=None,
               ylabel=None,
+              title=None,
               colorscheme=AA_FUNCTIONAL_GROUP,
               missing_color='gray',
               addbreaks=True,
@@ -144,6 +169,8 @@ def draw_logo(data,
             Label for x-axis if not using `xtick_col` or `x_col`.
         `ylabel` (`None` or str)
             Label for y-axis if not using `letter_height_col`.
+        `title` (`None` or str)
+            Title to place above plot.
         `colorscheme` (dict)
             Color for each letter. Ignored if `color_col` is not `None`.
         `missing_color` (`None` or str)
@@ -178,6 +205,11 @@ def draw_logo(data,
         xlabel = xtick_col
     if ylabel is None:
         ylabel = letter_height_col
+
+    # check letters are all upper case
+    letters = str(data[letter_col].unique())
+    if letters.upper() != letters:
+        raise ValueErrors('letters in `letter_col` must be uppercase')
 
     # checks on input data
     for col in [letter_height_col, letter_col, x_col, xtick_col]:
@@ -247,18 +279,26 @@ def draw_logo(data,
     else:
         fig = ax.get_figure()
 
+    if title:
+        ax.set_title(title, fontsize=20 * axisfontscale)
+
     ax.set_xlim(0, nstacks)
-    ax.set_ylim(-0.03 * max_stack_height, 1.03 * max_stack_height)
-    ax.set_xticks(numpy.arange(nstacks) + 0.5)
-    ax.set_xticklabels(xticks, rotation=90, ha='center', va='top')
-    ax.yaxis.set_major_locator(MaxNLocator(4))
-    ax.tick_params('both', labelsize=13 * axisfontscale)
-    ax.set_xlabel(xlabel, fontsize=17 * axisfontscale)
-    ax.set_ylabel(ylabel, fontsize=17 * axisfontscale)
-    despine(ax=ax,
-            trim=False,
-            top=True,
-            right=True)
+    ax.set_ylim(-0.03 * max_stack_height,
+                1.03 * max_stack_height)
+
+    if not hide_axis:
+        ax.set_xticks(numpy.arange(nstacks) + 0.5)
+        ax.set_xticklabels(xticks, rotation=90, ha='center', va='top')
+        ax.yaxis.set_major_locator(MaxNLocator(4))
+        ax.tick_params('both', labelsize=13 * axisfontscale)
+        ax.set_xlabel(xlabel, fontsize=17 * axisfontscale)
+        ax.set_ylabel(ylabel, fontsize=17 * axisfontscale)
+        despine(ax=ax,
+                trim=False,
+                top=True,
+                right=True)
+    else:
+        ax.axis('off')
 
     # draw the letters
     _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect)
@@ -267,9 +307,6 @@ def draw_logo(data,
     for x in breaks:
         # loosely dotted line: https://matplotlib.org/gallery/lines_bars_and_markers/linestyles.html
         ax.axvline(x=x + 0.5, ls=(0, (2, 5)), color='black', lw=1)
-
-    if hide_axis:
-        ax.axis('off')
 
     return fig, ax
 
