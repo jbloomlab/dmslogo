@@ -53,3 +53,8 @@ AA_CHARGE = {'A':'#000000',
              'Y':'#000000',
              'V':'#000000'
              }
+
+
+if __name__ == '__main__':
+    import doctest
+    doctest.testmod()

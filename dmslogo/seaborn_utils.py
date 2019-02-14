@@ -116,3 +116,8 @@ def despine(fig=None,
                 newticks = yticks.compress(yticks <= lasttick)
                 newticks = newticks.compress(newticks >= firsttick)
                 ax_i.set_yticks(newticks)
+
+
+if __name__ == '__main__':
+    import doctest
+    doctest.testmod()

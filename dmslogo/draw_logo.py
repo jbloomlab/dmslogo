@@ -1,6 +1,6 @@
 """The core logo-drawing functions of `dmslogo`.
 
-Some of this code is borrowed from
+Much of this code is borrowed and modified from
 `pyseqlogo <https://github.com/saketkc/pyseqlogo>`_.
 """
 
@@ -100,6 +100,7 @@ def _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect):
 
         trans_offset = transforms.offset_copy(
             ax.transData, fig=fig, units='dots')
+            
 
 
 def draw_logo(data,
