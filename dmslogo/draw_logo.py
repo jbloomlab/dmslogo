@@ -73,7 +73,8 @@ def _frac_above_baseline(font):
     return frac
 
 
-def _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect):
+def _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect,
+                          letterpad, letterheightscale):
     """Draws logo letters.
 
     Args:
@@ -87,6 +88,10 @@ def _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect):
             Name of font to use.
         `fontaspect` (float)
             Value to use for font aspect ratio (height to width).
+        `letterpad` (float)
+            Add this much vertical padding between letters.
+        `letterheightscale` (float)
+            Scale height of letters by this much.
     """
     fig = ax.get_figure()
     bbox = ax.get_window_extent().transformed(
@@ -97,6 +102,8 @@ def _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect):
 
     max_stack_height = max(sum([tup[1] for tup in row]) for
                            row in height_matrix)
+
+    letterpadheight = max_stack_height * letterpad
 
     fontsize = (height / max_stack_height) * 72.0 / fig.dpi
     font = _setup_font(fontsize=fontsize, fontfamily=fontfamily)
@@ -122,7 +129,8 @@ def _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect):
                 )
 
             txt.set_path_effects([Scale(fontwidthscale,
-                                  letterheight / frac_above_baseline)])
+                    max(0, letterheightscale * letterheight /
+                           frac_above_baseline - letterpadheight))])
 
             ypos += letterheight
 
@@ -148,6 +156,8 @@ def draw_logo(data,
               hide_axis=False,
               fontfamily='DejaVu Sans Mono',
               fontaspect=0.6,
+              letterpad=0.01,
+              letterheightscale=0.98,
               ax=None):
     """Draw sequence logo from specified letter heights.
 
@@ -192,6 +202,11 @@ def draw_logo(data,
         `fontaspect` (float)
             Aspect ratio of font (height to width). If letters are
             too crowded, increase this.
+        `letterpad` (float)
+            Add this much fixed vertical padding between letters
+            as fraction of total stack height.
+        `letterheightscale` (float)
+            Scale height of all letters by this much.
         `ax` (`None` or matplotlib axes.Axes object)
             Use to plot on an existing axis.
 
@@ -301,11 +316,14 @@ def draw_logo(data,
         ax.axis('off')
 
     # draw the letters
-    _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect)
+    fig.canvas.draw()
+    _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect,
+                          letterpad, letterheightscale)
 
     # draw the breaks
     for x in breaks:
-        # loosely dotted line: https://matplotlib.org/gallery/lines_bars_and_markers/linestyles.html
+        # loosely dotted line:
+        # https://matplotlib.org/gallery/lines_bars_and_markers/linestyles.html
         ax.axvline(x=x + 0.5, ls=(0, (2, 5)), color='black', lw=1)
 
     return fig, ax
