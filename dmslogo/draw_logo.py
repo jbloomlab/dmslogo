@@ -1,6 +1,6 @@
 """The core logo-drawing functions of `dmslogo`.
 
-Much of this code is borrowed and modified from
+Some of this code is borrowed and modified from
 `pyseqlogo <https://github.com/saketkc/pyseqlogo>`_.
 """
 
@@ -9,16 +9,15 @@ import numpy
 import pandas as pd
 
 import matplotlib.pyplot as plt
-from matplotlib.patheffects import RendererBase
-from matplotlib import transforms
-from matplotlib.font_manager import FontProperties
-from matplotlib.ticker import MaxNLocator
+import matplotlib.patheffects
+import matplotlib.font_manager
+import matplotlib.ticker
 
-from dmslogo.seaborn_utils import despine
-from dmslogo.colorschemes import *
+import dmslogo.seaborn_utils
+import dmslogo.colorschemes
 
 
-class Scale(RendererBase):
+class Scale(matplotlib.patheffects.RendererBase):
     """Scale letters using affine transformation.
  
     From here: https://www.python-forum.de/viewtopic.php?t=30856
@@ -36,7 +35,7 @@ class Scale(RendererBase):
 def _setup_font(fontfamily, fontsize):
     """Get `FontProperties` for `fontfamily` and `fontsize`."""
 
-    font = FontProperties()
+    font = matplotlib.font_manager.FontProperties()
     font.set_size(fontsize)
     font.set_weight('bold')
     font.set_family(fontfamily)
@@ -147,7 +146,7 @@ def draw_logo(data,
               xlabel=None,
               ylabel=None,
               title=None,
-              colorscheme=AA_FUNCTIONAL_GROUP,
+              colorscheme=dmslogo.colorschemes.AA_FUNCTIONAL_GROUP,
               missing_color='gray',
               addbreaks=True,
               widthscale=1,
@@ -304,11 +303,12 @@ def draw_logo(data,
     if not hide_axis:
         ax.set_xticks(numpy.arange(nstacks) + 0.5)
         ax.set_xticklabels(xticks, rotation=90, ha='center', va='top')
-        ax.yaxis.set_major_locator(MaxNLocator(4))
+        ax.yaxis.set_major_locator(matplotlib.ticker.MaxNLocator(4))
         ax.tick_params('both', labelsize=13 * axisfontscale)
         ax.set_xlabel(xlabel, fontsize=17 * axisfontscale)
         ax.set_ylabel(ylabel, fontsize=17 * axisfontscale)
-        despine(ax=ax,
+        dmslogo.seaborn_utils.despine(
+                ax=ax,
                 trim=False,
                 top=True,
                 right=True)
