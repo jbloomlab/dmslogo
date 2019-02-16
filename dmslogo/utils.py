@@ -1,13 +1,52 @@
-"""Functions taken from the `seaborn` utilities.
-
-Taken from here:
-https://github.com/mwaskom/seaborn/blob/0beede57152ce80ce1d4ef5d0c0f1cb61d118375/seaborn/utils.py
-"""
+"""Utility functions for plotting."""
 
 
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib.ticker
+
+
+def breaksAndLabels(xi, x, n):
+    """Get breaks and labels for an axis.
+
+    Useful when you would like to re-label a numeric x-axis
+    with string labels.
+
+    Uses `matplotlib.ticker.MaxNLocator` to choose pretty breaks.
+
+    Args:
+        `xi` (list or array)
+            Integer values actually assigned to axis points.
+        `x` (list)
+            Strings corresponding to each numeric value in `xi`.
+        `n` (int)
+            Approximate number of ticks to use.
+
+    Returns:
+        The tuple `(breaks, labels)` where `breaks` gives the
+        locations of breaks taken from `xi`, and `labels` is
+        the label for each break.
+
+    >>> xi = list(range(213))
+    >>> x = [str(i + 1) for i in xi]
+    >>> (breaks, labels) = breaksAndLabels(xi, x, 5)
+    >>> breaks
+    [0, 50, 100, 150, 200]
+    >>> labels
+    ['1', '51', '101', '151', '201']
+    """
+    if len(xi) != len(x):
+        raise ValueError('`xi` and `x` differ in length.')
+    if not all([isinstance(i, (int, np.integer)) for i in xi]):
+        raise ValueError('xi not integer values')
+    xi = list(xi)
+    if sorted(set(xi)) != xi:
+        raise ValueError('`xi` not unique and ordered')
+    breaks = matplotlib.ticker.MaxNLocator(n).tick_values(xi[0], xi[-1])
+    breaks = [int(i) for i in breaks if xi[0] <= i <= xi[-1]]
+    labels = [x[xi.index(i)] for i in breaks]
+    return (breaks, labels)
 
 
 def _set_spine_position(spine, position):
