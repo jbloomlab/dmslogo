@@ -5,3 +5,4 @@ __email__ = 'jbloom@fredhutch.org'
 __version__ = '0.1.0'
 
 from dmslogo.logo import draw_logo
+from dmslogo.line import draw_line
