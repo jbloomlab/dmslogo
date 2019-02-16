@@ -13,7 +13,7 @@ import matplotlib.patheffects
 import matplotlib.font_manager
 import matplotlib.ticker
 
-import dmslogo.seaborn_utils
+import dmslogo.utils
 import dmslogo.colorschemes
 
 
@@ -73,7 +73,7 @@ def _frac_above_baseline(font):
 
 
 def _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect,
-                          letterpad, letterheightscale):
+                          letterpad, letterheightscale, xpad):
     """Draws logo letters.
 
     Args:
@@ -91,13 +91,15 @@ def _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect,
             Add this much vertical padding between letters.
         `letterheightscale` (float)
             Scale height of letters by this much.
+        `xpad` (float)
+            x-axis is padded by this many data units on each side.
     """
     fig = ax.get_figure()
     bbox = ax.get_window_extent().transformed(
             fig.dpi_scale_trans.inverted())
-    width, height = bbox.width, bbox.height
-    width *= fig.dpi
-    height *= fig.dpi
+    width = bbox.width * fig.dpi * len(height_matrix) / (
+            2 * xpad + len(height_matrix))
+    height = bbox.height * fig.dpi
 
     max_stack_height = max(sum([tup[1] for tup in row]) for
                            row in height_matrix)
@@ -296,9 +298,10 @@ def draw_logo(data,
     if title:
         ax.set_title(title, fontsize=20 * axisfontscale)
 
-    ax.set_xlim(0, nstacks)
-    ax.set_ylim(-0.03 * max_stack_height,
-                1.03 * max_stack_height)
+    xpad = 0.2
+    ax.set_xlim(-xpad, nstacks + xpad)
+    ylimpad = 0.05 * max_stack_height
+    ax.set_ylim(-ylimpad, max_stack_height + ylimpad)
 
     if not hide_axis:
         ax.set_xticks(numpy.arange(nstacks) + 0.5)
@@ -307,7 +310,7 @@ def draw_logo(data,
         ax.tick_params('both', labelsize=13 * axisfontscale)
         ax.set_xlabel(xlabel, fontsize=17 * axisfontscale)
         ax.set_ylabel(ylabel, fontsize=17 * axisfontscale)
-        dmslogo.seaborn_utils.despine(
+        dmslogo.utils.despine(
                 ax=ax,
                 trim=False,
                 top=True,
@@ -318,7 +321,7 @@ def draw_logo(data,
     # draw the letters
     fig.canvas.draw()
     _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect,
-                          letterpad, letterheightscale)
+                          letterpad, letterheightscale, xpad)
 
     # draw the breaks
     for x in breaks:
