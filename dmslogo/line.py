@@ -178,7 +178,7 @@ def draw_line(data,
         ax.set_xticks(xbreaks)
         ax.set_xticklabels(xlabels, rotation=90, ha='center', va='top')
         ax.yaxis.set_major_locator(matplotlib.ticker.MaxNLocator(4))
-        ax.tick_params('both', labelsize=13 * axisfontscale)
+        ax.tick_params('both', labelsize=12 * axisfontscale)
         ax.set_xlabel(xlabel, fontsize=17 * axisfontscale)
         ax.set_ylabel(ylabel, fontsize=17 * axisfontscale)
         dmslogo.utils.despine(

@@ -156,7 +156,7 @@ def draw_logo(data,
               axisfontscale=1,
               hide_axis=False,
               fontfamily='DejaVu Sans Mono',
-              fontaspect=0.6,
+              fontaspect=0.58,
               letterpad=0.01,
               letterheightscale=0.98,
               ax=None,
@@ -296,7 +296,7 @@ def draw_logo(data,
     if not ax:
         fig, ax = plt.subplots()
         fig.set_size_inches(
-                (widthscale * 0.5 * (nstacks + int(not hide_axis)),
+                (widthscale * 0.45 * (nstacks + int(not hide_axis)),
                  heightscale * (2 +  0.5 * int(not hide_axis))))
     else:
         fig = ax.get_figure()
@@ -315,7 +315,7 @@ def draw_logo(data,
         ax.set_xticks(numpy.arange(nstacks) + 0.5)
         ax.set_xticklabels(xticks, rotation=90, ha='center', va='top')
         ax.yaxis.set_major_locator(matplotlib.ticker.MaxNLocator(4))
-        ax.tick_params('both', labelsize=13 * axisfontscale)
+        ax.tick_params('both', labelsize=12 * axisfontscale)
         ax.set_xlabel(xlabel, fontsize=17 * axisfontscale)
         ax.set_ylabel(ylabel, fontsize=17 * axisfontscale)
         dmslogo.utils.despine(
