@@ -159,7 +159,9 @@ def draw_logo(data,
               fontaspect=0.6,
               letterpad=0.01,
               letterheightscale=0.98,
-              ax=None):
+              ax=None,
+              fixed_ymin=None,
+              fixed_ymax=None):
     """Draw sequence logo from specified letter heights.
 
     Args:
@@ -210,6 +212,10 @@ def draw_logo(data,
             Scale height of all letters by this much.
         `ax` (`None` or matplotlib axes.Axes object)
             Use to plot on an existing axis.
+        `fixed_ymin` (`None` or float)
+            If not `None`, then fixed y-axis minimum.
+        `fixed_ymax` (`None` or float)
+            If not `None`, then fixed y-axis maximum.
 
     Returns:
         The 2-tuple `(fig, ax)` giving the figure and axis.
@@ -290,7 +296,7 @@ def draw_logo(data,
     if not ax:
         fig, ax = plt.subplots()
         fig.set_size_inches(
-                (widthscale * 0.8 * (nstacks + int(not hide_axis)),
+                (widthscale * 0.5 * (nstacks + int(not hide_axis)),
                  heightscale * (2 +  0.5 * int(not hide_axis))))
     else:
         fig = ax.get_figure()
@@ -301,7 +307,9 @@ def draw_logo(data,
     xpad = 0.2
     ax.set_xlim(-xpad, nstacks + xpad)
     ylimpad = 0.05 * max_stack_height
-    ax.set_ylim(-ylimpad, max_stack_height + ylimpad)
+    ax.set_ylim(-ylimpad if fixed_ymin is None else fixed_ymin,
+                max_stack_height + ylimpad if fixed_ymax is None
+                                           else fixed_ymax)
 
     if not hide_axis:
         ax.set_xticks(numpy.arange(nstacks) + 0.5)

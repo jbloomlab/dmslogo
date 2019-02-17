@@ -50,7 +50,7 @@ def draw_line(data,
               x_col,
               height_col,
               xtick_col=None,
-              underline_col=None,
+              show_col=None,
               xlabel=None,
               ylabel=None,
               title=None,
@@ -60,7 +60,9 @@ def draw_line(data,
               heightscale=1,
               axisfontscale=1,
               hide_axis=False,
-              ax=None):
+              ax=None,
+              fixed_ymin=None,
+              fixed_ymax=None):
     """Draw line plot.
 
     Args:
@@ -74,9 +76,9 @@ def draw_line(data,
             set of sequential numbers, gaps in numbering not allowed.
         `xtick_col` (`None` or str)
             Column in `data` used to label sites if not using `x_col`.
-        `underline_col` (`None` or str)
+        `show_col` (`None` or str)
             Underline sites where this column is True. Useful for
-            marking selected sites.
+            marking selected sites that are zoomed in logo plots.
         `xlabel` (`None` or str)
             Label for x-axis if not using `xtick_col` or `x_col`.
         `ylabel` (`None` or str)
@@ -97,6 +99,10 @@ def draw_line(data,
             Do we hide the axis and tick labels?
         `ax` (`None` or matplotlib axes.Axes object)
             Use to plot on an existing axis.
+        `fixed_ymin` (`None` or float)
+            If not `None`, then fixed y-axis minimum.
+        `fixed_ymax` (`None` or float)
+            If not `None`, then fixed y-axis maximum.
 
     Returns:
         The 2-tuple `(fig, ax)` giving the figure and axis.
@@ -110,10 +116,10 @@ def draw_line(data,
         ylabel = height_col
 
     cols = list(set([x_col, xtick_col, height_col]))
-    if underline_col:
-        cols.append(underline_col)
-        if not data[underline_col].dtype == bool:
-            raise ValueError('`underline_col` is not bool')
+    if show_col:
+        cols.append(show_col)
+        if not data[show_col].dtype == bool:
+            raise ValueError('`show_col` is not bool')
     for col in cols:
         if col not in data.columns:
             raise ValueError(f"`data` lacks column {col}")
@@ -161,8 +167,8 @@ def draw_line(data,
     ylimpad = 0.05 * ylen # pad y-limits by this much
     ax.set_xlim(xmin - 0.5 - 0.02 * xlen,
                 xmax + 0.5 + 0.02 * xlen)
-    ax.set_ylim(ymin - ylimpad,
-                ymax + ylimpad)
+    ax.set_ylim(ymin - ylimpad if fixed_ymin is None else fixed_ymin,
+                ymax + ylimpad if fixed_ymax is None else fixed_ymax)
 
     if not hide_axis:
         xbreaks, xlabels = dmslogo.utils.breaksAndLabels(
@@ -192,10 +198,10 @@ def draw_line(data,
             where='mid',
             linewidth=linewidth)
 
-    if underline_col:
+    if show_col:
         lw_to_xdata= data_units_from_linewidth(linewidth, ax, 'x')
         lw_to_ydata= data_units_from_linewidth(linewidth, ax, 'y')
-        for x in data.query(f"{underline_col}")[x_col].tolist():
+        for x in data.query(f"{show_col}")[x_col].tolist():
             ax.add_patch(plt.Rectangle(
                             xy=(x - 0.5 - lw_to_xdata, - ylimpad),
                             width=2 + 1 * lw_to_xdata,
