@@ -297,12 +297,14 @@ def draw_logo(data,
         fig, ax = plt.subplots()
         fig.set_size_inches(
                 (widthscale * 0.45 * (nstacks + int(not hide_axis)),
-                 heightscale * (2 +  0.5 * int(not hide_axis))))
+                 heightscale * (2 +  0.5 * int(not hide_axis) +
+                                0.5 * int(bool(title)))
+                 ))
     else:
         fig = ax.get_figure()
 
     if title:
-        ax.set_title(title, fontsize=20 * axisfontscale)
+        ax.set_title(title, fontsize=19 * axisfontscale)
 
     xpad = 0.2
     ax.set_xlim(-xpad, nstacks + xpad)

@@ -132,7 +132,7 @@ def draw_line(data,
     xmin = data[x_col].min()
     xmax = data[x_col].max()
     xlen = xmax - xmin + 1
-    if not all(list(range(xmin, xmax + 1)) == data[x_col]):
+    if list(range(xmin, xmax + 1)) != data[x_col].tolist():
         raise ValueError('`x_col` not sequential unbroken integers')
 
     for col in cols:
@@ -157,12 +157,14 @@ def draw_line(data,
                                         ) / (700 - 100)
         fig.set_size_inches(
                 (widthscale * xwidth * xlen + 0.5 * int(not hide_axis),
-                 heightscale * (2 +  0.5 * int(not hide_axis))))
+                 heightscale * (2 +  0.5 * int(not hide_axis) +
+                                0.5 * int(bool(title)))
+                 ))
     else:
         fig = ax.get_figure()
 
     if title:
-        ax.set_title(title, fontsize=20 * axisfontscale)
+        ax.set_title(title, fontsize=19 * axisfontscale)
 
     ylimpad = 0.05 * ylen # pad y-limits by this much
     ax.set_xlim(xmin - 0.5 - 0.02 * xlen,
