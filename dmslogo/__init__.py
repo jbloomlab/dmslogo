@@ -6,3 +6,4 @@ __version__ = '0.1.0'
 
 from dmslogo.logo import draw_logo
 from dmslogo.line import draw_line
+from dmslogo.facet import facet_plot

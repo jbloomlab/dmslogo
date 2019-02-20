@@ -304,7 +304,7 @@ def draw_logo(data,
         fig = ax.get_figure()
 
     if title:
-        ax.set_title(title, fontsize=19 * axisfontscale)
+        ax.set_title(title, fontsize=18 * axisfontscale)
 
     xpad = 0.2
     ax.set_xlim(-xpad, nstacks + xpad)
