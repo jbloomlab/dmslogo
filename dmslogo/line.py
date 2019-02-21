@@ -2,7 +2,6 @@
 
 
 import numpy
-import pandas as pd
 
 import matplotlib.pyplot as plt
 import matplotlib.ticker
@@ -145,7 +144,7 @@ def draw_line(data,
     ymin = data[height_col].min()
     if ymin < 0:
         raise ValueError('cannot handle negatives in `height_col`')
-    ymin = 0 # put ymin at 0
+    ymin = 0  # put ymin at 0
     ylen = ymax - ymin
 
     # setup axis for plotting
@@ -154,19 +153,19 @@ def draw_line(data,
         # width per site ranges from 0.03 for xlen <= 100 to
         # 0.01 for xlen > 700
         xwidth = 0.03 - 0.02 * (min(700, max(100, xlen)) - 100
-                                        ) / (700 - 100)
+                                ) / (700 - 100)
         fig.set_size_inches(
                 (widthscale * xwidth * xlen + 0.5 * int(not hide_axis),
-                 heightscale * (2 +  0.5 * int(not hide_axis) +
-                                0.5 * int(bool(title)))
-                 ))
+                 heightscale * (2 + 0.5 * int(not hide_axis) +
+                                0.5 * int(bool(title))))
+                            )
     else:
         fig = ax.get_figure()
 
     if title:
         ax.set_title(title, fontsize=18 * axisfontscale)
 
-    ylimpad = 0.05 * ylen # pad y-limits by this much
+    ylimpad = 0.05 * ylen  # pad y-limits by this much
     ax.set_xlim(xmin - 0.5 - 0.02 * xlen,
                 xmax + 0.5 + 0.02 * xlen)
     ax.set_ylim(ymin - ylimpad if fixed_ymin is None else fixed_ymin,
@@ -201,8 +200,8 @@ def draw_line(data,
             linewidth=linewidth)
 
     if show_col:
-        lw_to_xdata= data_units_from_linewidth(linewidth, ax, 'x')
-        lw_to_ydata= data_units_from_linewidth(linewidth, ax, 'y')
+        lw_to_xdata = data_units_from_linewidth(linewidth, ax, 'x')
+        lw_to_ydata = data_units_from_linewidth(linewidth, ax, 'y')
         for x in data.query(f"{show_col}")[x_col].tolist():
             ax.add_patch(plt.Rectangle(
                             xy=(x - 0.5 - lw_to_xdata, - ylimpad),
@@ -213,7 +212,6 @@ def draw_line(data,
                             ))
 
     return fig, ax
-
 
 
 if __name__ == '__main__':

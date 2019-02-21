@@ -1,6 +1,7 @@
 .*
 !.gitignore
 !.travis.yml
+!.flake8
 *.pyc
 _*
 build

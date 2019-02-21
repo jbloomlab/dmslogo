@@ -2,7 +2,6 @@
 
 
 import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.ticker
 
@@ -57,7 +56,8 @@ def _set_spine_position(spine, position):
     etc.  We temporarily replace that call with axis.reset_ticks(), which is
     sufficient for our purposes.
 
-    This is borrowed from here: https://github.com/mwaskom/seaborn/blob/0beede57152ce80ce1d4ef5d0c0f1cb61d118375/seaborn/utils.py#L265
+    This is borrowed from here:
+    https://github.com/mwaskom/seaborn/blob/0beede57152ce80ce1d4ef5d0c0f1cb61d118375/seaborn/utils.py#L265
     """
     axis = spine.axis
     if axis is not None:

@@ -6,7 +6,6 @@ Some of this code is borrowed and modified from
 
 
 import numpy
-import pandas as pd
 
 import matplotlib.pyplot as plt
 import matplotlib.patheffects
@@ -19,7 +18,7 @@ import dmslogo.colorschemes
 
 class Scale(matplotlib.patheffects.RendererBase):
     """Scale letters using affine transformation.
- 
+
     From here: https://www.python-forum.de/viewtopic.php?t=30856
     """
 
@@ -129,9 +128,11 @@ def _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect,
                 bbox=dict(pad=0, edgecolor='none', facecolor='none')
                 )
 
-            txt.set_path_effects([Scale(fontwidthscale,
-                    max(0, letterheightscale * letterheight /
-                           frac_above_baseline - letterpadheight))])
+            txt.set_path_effects(
+                    [Scale(fontwidthscale,
+                     max(0, letterheightscale * letterheight /
+                         frac_above_baseline - letterpadheight))
+                     ])
 
             ypos += letterheight
 
@@ -231,7 +232,7 @@ def draw_logo(data,
     # check letters are all upper case
     letters = str(data[letter_col].unique())
     if letters.upper() != letters:
-        raise ValueErrors('letters in `letter_col` must be uppercase')
+        raise ValueError('letters in `letter_col` must be uppercase')
 
     # checks on input data
     for col in [letter_height_col, letter_col, x_col, xtick_col]:
@@ -297,7 +298,7 @@ def draw_logo(data,
         fig, ax = plt.subplots()
         fig.set_size_inches(
                 (widthscale * 0.45 * (nstacks + int(not hide_axis)),
-                 heightscale * (2 +  0.5 * int(not hide_axis) +
+                 heightscale * (2 + 0.5 * int(not hide_axis) +
                                 0.5 * int(bool(title)))
                  ))
     else:
@@ -311,7 +312,7 @@ def draw_logo(data,
     ylimpad = 0.05 * max_stack_height
     ax.set_ylim(-ylimpad if fixed_ymin is None else fixed_ymin,
                 max_stack_height + ylimpad if fixed_ymax is None
-                                           else fixed_ymax)
+                else fixed_ymax)
 
     if not hide_axis:
         ax.set_xticks(numpy.arange(nstacks) + 0.5)
@@ -340,7 +341,6 @@ def draw_logo(data,
         ax.axvline(x=x + 0.5, ls=(0, (2, 5)), color='black', lw=1)
 
     return fig, ax
-
 
 
 if __name__ == '__main__':
