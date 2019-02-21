@@ -1,12 +1,14 @@
 ======================================
 dmslogo
 ======================================
+.. image:: https://travis-ci.org/jbloomlab/dmslogo.svg?branch=master
+    :target: https://travis-ci.org/jbloomlab/dmslogo.svg?branch=master
 
 `dmslogo` is a Python package written by the `Bloom lab <https://research.fhcrc.org/bloom/en.html>`_ for making sequence logo plots of deep mutational scanning data.
 
 It allows you to make figures like this with just a single plotting command:
 
-.. figure:: _static/facet_plot_example.png
+.. figure:: docs/_static/facet_plot_example.png
    :align: left
    :alt: facet plot
 
@@ -14,7 +16,7 @@ It allows you to make figures like this with just a single plotting command:
 
 It also allows you to heavily customize your logo plots, such as by coloring specific letters at specific sites or `using Comic Sans font <http://comicsanscriminal.com/>`_:
 
-.. figure:: _static/dmslogo_comic_sans.png
+.. figure:: docs/_static/dmslogo_comic_sans.png
    :align: left
    :alt: comic sans plot
    :width: 35%

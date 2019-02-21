@@ -33,7 +33,7 @@ for dataname in ['version', 'author', 'email', 'url']:
     else:
         metadata[dataname] = matches[0]
 
-with open('README.md') as f:
+with open('README.rst') as f:
     readme = f.read()
 
 # main setup command

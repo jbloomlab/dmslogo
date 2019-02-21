@@ -28,13 +28,11 @@ Note that the configuration automatically created by ``sphinx-quickstart`` has b
     
         - read the version and package information from ``../dmslogo/__init__.py``
 
-        - specify `numfig = True` to enable figure numbering
-
     * ``Makefile`` has been modified to automatically run `sphinx-apidoc`_.
 
 Notes on nb2plots
 -------------------
-`nb2plots`_ was used to generate `example.rst <example.rst>`_ from a Jupyter notebook.
+`nb2plots`_ was used to generate `examples.rst <examples.rst>`_ from a Jupyter notebook.
 
 .. _`reStructuredText`: http://docutils.sourceforge.net/docs/user/rst/quickref.html
 .. _`sphinx`: http://sphinx-doc.org/
