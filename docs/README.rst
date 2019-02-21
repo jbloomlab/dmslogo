@@ -34,7 +34,7 @@ Note that the configuration automatically created by ``sphinx-quickstart`` has b
 
 Notes on nb2plots
 -------------------
-`nb2plots`_ was used to generate `example.rst <example.rst>`_ from a Jupyter notebook.
+`nb2plots`_ was used to generate `examples.rst <examples.rst>`_ from a Jupyter notebook.
 
 .. _`reStructuredText`: http://docutils.sourceforge.net/docs/user/rst/quickref.html
 .. _`sphinx`: http://sphinx-doc.org/
