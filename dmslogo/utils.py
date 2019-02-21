@@ -1,4 +1,10 @@
-"""Utility functions for plotting."""
+"""
+========
+utils
+========
+
+Utility functions for plotting.
+"""
 
 
 import numpy as np
@@ -78,27 +84,21 @@ def despine(fig=None,
             trim=False):
     """Remove the top and right spines from plot(s).
 
-    Parameters
-    ----------
-
-    fig : matplotlib figure, optional
-        Figure to despine all axes of, default uses current figure.
-    ax : matplotlib axes, optional
-        Specific axes object to despine.
-    top, right, left, bottom : boolean, optional
-        If True, remove that spine.
-    offset : int or dict, optional
-        Absolute distance, in points, spines should be moved away
-        from the axes (negative values move spines inward). A single value
-        applies to all spines; a dict can be used to set offset values per
-        side.
-    trim : bool, optional
-        If True, limit spines to the smallest and largest major tick
-        on each non-despined axis.
-
-    Returns
-    -------
-    None
+    Args:
+        `fig` (matplotlib figure)
+            Figure to despine all axes of, default uses current figure.
+        `ax` (matplotlib axes)
+            Specific axes object to despine.
+        `top`, `right`, `left`, `bottom` (bool)
+            If True, remove that spine.
+        `offset` (int or dict)
+            Absolute distance, in points, spines should be moved away
+            from the axes (negative values move spines inward).
+            A single value applies to all spines; a dict can be used
+            to set offset values per side.
+        `trim` (bool)
+            If True, limit spines to the smallest and largest major tick
+            on each non-despined axis.
     """
     # Get references to the axes we want
     if fig is None and ax is None:

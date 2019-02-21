@@ -1,4 +1,9 @@
-"""Facet multiple plots on the same figure."""
+"""
+======
+facet
+======
+
+Facet multiple plots on the same figure."""
 
 
 import collections
@@ -23,15 +28,16 @@ def facet_plot(
     """Facet together plots of different types on same figure.
 
     Useful for combining multiple instances of the plots you
-    could create with :func:`draw_logo.draw_logo` and
-    :func:`draw_line.draw_line`.
+    could create with :py:mod:`dmslogo.logo.draw_logo` and
+    :py:mod:`dmslogo.line.draw_line`.
 
     Args:
         `data` (pandas DataFrame)
             The data to plot.
         `x_col` (str)
             Column in `data` with x-axis values, as for
-            :func:`draw_logo.draw_logo` and :func:`draw_line.draw_line`.
+            :py:mod:`dmslogo.logo.draw_logo` and
+            :py:mod:`dmslogo.line.draw_line`.
         `show_col` (str or `None`)
             Column in `data` with x-axis values to highlight in line
             plots and to show in logo plots.
@@ -40,12 +46,14 @@ def facet_plot(
         `gridcol_col` (str or `None`)
             Column in data to facet over for columns of plot.
         `draw_line_kwargs` (dict)
-            All arguments to be passed to :func:`draw_line.draw_line`
+            All arguments to be passed to
+            :py:mod:`dmslogo.line.draw_line`
             **except** `x_col`, `show_col`, and `title`. These
             are passed separately, or (in case of title) come
             from faceting variables.
         `draw_logo_kwargs`
-            Like `draw_line_kwargs` but for :func:`draw_logo.draw_logo`.
+            Like `draw_line_kwargs` but for
+            :py:mod:`dmslogo.logo.draw_logo`.
         `line_titlesuffix` (str or `None`)
             String suffixed to titles for line plots.
         `logo_titlesuffix`

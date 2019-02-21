@@ -1,4 +1,17 @@
-"""`dmslogo` package for deep mutational scanning logo plots."""
+"""
+============
+dmslogo
+============
+
+Draw sequence logos for deep mutational scanning data.
+
+Importing this package imports the following main functions
+into the package namespace:
+
+ - :py:mod:`dmslogo.logo.draw_logo`
+ - :py:mod:`dmslogo.line.draw_line`
+ - :py:mod:`dmslogo.facet.facet_plot`
+"""
 
 __author__ = 'Jesse Bloom'
 __email__ = 'jbloom@fredhutch.org'

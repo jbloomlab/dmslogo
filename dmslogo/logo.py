@@ -1,4 +1,9 @@
-"""The core logo-drawing functions of `dmslogo`.
+"""
+=======
+logo
+=======
+
+Core logo-drawing functions of `dmslogo`.
 
 Some of this code is borrowed and modified from
 `pyseqlogo <https://github.com/saketkc/pyseqlogo>`_.
@@ -187,6 +192,7 @@ def draw_logo(data,
             Title to place above plot.
         `colorscheme` (dict)
             Color for each letter. Ignored if `color_col` is not `None`.
+            See :py:mod:`dmslogo.colorschemes` for some color schemes.
         `missing_color` (`None` or str)
             Color for letters not assigned in `colorscheme`,
             or `None` to raise an error for unassigned letters.

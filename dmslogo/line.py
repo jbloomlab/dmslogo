@@ -1,4 +1,10 @@
-"""Draw line plots of site-level properties."""
+"""
+======
+line
+======
+
+Draw line plots of site-level properties.
+"""
 
 
 import numpy
