@@ -1,4 +1,8 @@
 .*
 !.gitignore
+!.travis.yml
 *.pyc
 _*
+build
+dist
+dmslogo.egg-info

@@ -1,0 +1,19 @@
+language: python
+
+python:
+  - "3.6"
+
+cache: pip
+
+install:
+  - pip install -e .
+
+script: 
+  - pytest
+
+branches:
+  only:
+    - master
+
+notifications:
+  slack: jbloomlab:JRB6s9Rw88c7YPaL2VGmVJaq
