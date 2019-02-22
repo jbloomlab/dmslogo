@@ -46,8 +46,10 @@ Simple plotting can be done using the :py:mod:`dmslogo.logo.draw_logo`
 function.
 
 This function takes in as input a pandas DataFrame that has columns
-with: - site in sequential integer numbering - letter (i.e., amino acid
-or nucleotide) - height of letter (can be any positive number)
+with:
+ - site in sequential integer numbering
+ - letter (i.e., amino acid or nucleotide)
+ - height of letter (can be any positive number)
 
 Here make a simple data frame that fits these specs:
 
