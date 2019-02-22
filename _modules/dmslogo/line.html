@@ -1,0 +1,364 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>dmslogo.line &#8212; dmslogo 0.1.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for dmslogo.line</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">======</span>
+<span class="sd">line</span>
+<span class="sd">======</span>
+
+<span class="sd">Draw line plots of site-level properties.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.ticker</span>
+
+<span class="kn">import</span> <span class="nn">dmslogo.utils</span>
+<span class="kn">import</span> <span class="nn">dmslogo.colorschemes</span>
+
+
+<div class="viewcode-block" id="data_units_from_linewidth"><a class="viewcode-back" href="../../dmslogo.line.html#dmslogo.line.data_units_from_linewidth">[docs]</a><span class="k">def</span> <span class="nf">data_units_from_linewidth</span><span class="p">(</span><span class="n">linewidth</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">reference</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert linewidth in points to data units.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        `linewidth` (float)</span>
+<span class="sd">            Linewidth in points.</span>
+<span class="sd">        `ax` (matplotlib axis)</span>
+<span class="sd">            The axis used to extract the relevant transformation</span>
+<span class="sd">            (data limits and size must not change afterwards).</span>
+<span class="sd">        `reference` (str)</span>
+<span class="sd">            The axis that is taken as a reference for the data width.</span>
+<span class="sd">            Possible values: &#39;x&#39; and &#39;y&#39;.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">        Linewidth in data units.</span>
+
+<span class="sd">    Function is the inverse of the one defined here:</span>
+<span class="sd">    https://stackoverflow.com/a/35501485</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_figure</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">reference</span> <span class="o">==</span> <span class="s1">&#39;x&#39;</span><span class="p">:</span>
+        <span class="n">length</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">bbox_inches</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_position</span><span class="p">()</span><span class="o">.</span><span class="n">width</span>
+        <span class="n">value_range</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">())</span>
+    <span class="k">elif</span> <span class="n">reference</span> <span class="o">==</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span>
+        <span class="n">length</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">bbox_inches</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_position</span><span class="p">()</span><span class="o">.</span><span class="n">height</span>
+        <span class="n">value_range</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">())</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;invalid `ax` of </span><span class="si">{ax}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="c1"># Convert length to points</span>
+    <span class="n">length</span> <span class="o">*=</span> <span class="mi">72</span>
+    <span class="c1"># Scale linewidth to value range</span>
+    <span class="k">return</span> <span class="n">linewidth</span> <span class="o">/</span> <span class="p">(</span><span class="n">length</span> <span class="o">/</span> <span class="n">value_range</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="draw_line"><a class="viewcode-back" href="../../dmslogo.line.html#dmslogo.line.draw_line">[docs]</a><span class="k">def</span> <span class="nf">draw_line</span><span class="p">(</span><span class="n">data</span><span class="p">,</span>
+              <span class="o">*</span><span class="p">,</span>
+              <span class="n">x_col</span><span class="p">,</span>
+              <span class="n">height_col</span><span class="p">,</span>
+              <span class="n">xtick_col</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">show_col</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">xlabel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">ylabel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span>
+              <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+              <span class="n">widthscale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+              <span class="n">heightscale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+              <span class="n">axisfontscale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+              <span class="n">hide_axis</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+              <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">fixed_ymin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">fixed_ymax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Draw line plot.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        `data` (pandas DataFrame)</span>
+<span class="sd">            Holds data to plot. If there are duplicate rows for</span>
+<span class="sd">            the columns of interest, removes duplicates.</span>
+<span class="sd">        `height_col` (str)</span>
+<span class="sd">            Column in `data` with line height.</span>
+<span class="sd">        `x_col` (str)</span>
+<span class="sd">            Column in `data` with integer site numbers. Must be full</span>
+<span class="sd">            set of sequential numbers, gaps in numbering not allowed.</span>
+<span class="sd">        `xtick_col` (`None` or str)</span>
+<span class="sd">            Column in `data` used to label sites if not using `x_col`.</span>
+<span class="sd">        `show_col` (`None` or str)</span>
+<span class="sd">            Underline sites where this column is True. Useful for</span>
+<span class="sd">            marking selected sites that are zoomed in logo plots.</span>
+<span class="sd">        `xlabel` (`None` or str)</span>
+<span class="sd">            Label for x-axis if not using `xtick_col` or `x_col`.</span>
+<span class="sd">        `ylabel` (`None` or str)</span>
+<span class="sd">            Label for y-axis if not using `height_col`.</span>
+<span class="sd">        `title` (`None` or str)</span>
+<span class="sd">            Title to place above plot.</span>
+<span class="sd">        `color` (str)</span>
+<span class="sd">            Color of line.</span>
+<span class="sd">        `linewidth` (float)</span>
+<span class="sd">            Width of line.</span>
+<span class="sd">        `widthscale` (float)</span>
+<span class="sd">            Scale width by this much.</span>
+<span class="sd">        `heightscale` (float)</span>
+<span class="sd">            Scale height by this much.</span>
+<span class="sd">        `axisfontscale` (float)</span>
+<span class="sd">            Scale size of font for axis ticks and labels by this much.</span>
+<span class="sd">        `hide_axis` (bool)</span>
+<span class="sd">            Do we hide the axis and tick labels?</span>
+<span class="sd">        `ax` (`None` or matplotlib axes.Axes object)</span>
+<span class="sd">            Use to plot on an existing axis.</span>
+<span class="sd">        `fixed_ymin` (`None` or float)</span>
+<span class="sd">            If not `None`, then fixed y-axis minimum.</span>
+<span class="sd">        `fixed_ymax` (`None` or float)</span>
+<span class="sd">            If not `None`, then fixed y-axis maximum.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The 2-tuple `(fig, ax)` giving the figure and axis.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># set default values of arguments that can be None</span>
+    <span class="k">if</span> <span class="n">xtick_col</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">xtick_col</span> <span class="o">=</span> <span class="n">x_col</span>
+    <span class="k">if</span> <span class="n">xlabel</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">xlabel</span> <span class="o">=</span> <span class="n">xtick_col</span>
+    <span class="k">if</span> <span class="n">ylabel</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ylabel</span> <span class="o">=</span> <span class="n">height_col</span>
+
+    <span class="n">cols</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="n">x_col</span><span class="p">,</span> <span class="n">xtick_col</span><span class="p">,</span> <span class="n">height_col</span><span class="p">]))</span>
+    <span class="k">if</span> <span class="n">show_col</span><span class="p">:</span>
+        <span class="n">cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">show_col</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">[</span><span class="n">show_col</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="nb">bool</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;`show_col` is not bool&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;`data` lacks column </span><span class="si">{col}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">x_col</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="n">x_col</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;`x_col` does not have integer values&#39;</span><span class="p">)</span>
+
+    <span class="n">xmin</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">x_col</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+    <span class="n">xmax</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">x_col</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+    <span class="n">xlen</span> <span class="o">=</span> <span class="n">xmax</span> <span class="o">-</span> <span class="n">xmin</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">!=</span> <span class="n">data</span><span class="p">[</span><span class="n">x_col</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;`x_col` not sequential unbroken integers&#39;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">g</span><span class="p">[</span><span class="n">col</span><span class="p">]))</span> <span class="o">!=</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">x_col</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;not unique mapping of `x_col` to </span><span class="si">{col}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="n">xlen</span>
+
+    <span class="n">ymax</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">height_col</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+    <span class="n">ymin</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">height_col</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">ymin</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;cannot handle negatives in `height_col`&#39;</span><span class="p">)</span>
+    <span class="n">ymin</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># put ymin at 0</span>
+    <span class="n">ylen</span> <span class="o">=</span> <span class="n">ymax</span> <span class="o">-</span> <span class="n">ymin</span>
+
+    <span class="c1"># setup axis for plotting</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">ax</span><span class="p">:</span>
+        <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+        <span class="c1"># width per site ranges from 0.03 for xlen &lt;= 100 to</span>
+        <span class="c1"># 0.01 for xlen &gt; 700</span>
+        <span class="n">xwidth</span> <span class="o">=</span> <span class="mf">0.03</span> <span class="o">-</span> <span class="mf">0.02</span> <span class="o">*</span> <span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="mi">700</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">xlen</span><span class="p">))</span> <span class="o">-</span> <span class="mi">100</span>
+                                <span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">700</span> <span class="o">-</span> <span class="mi">100</span><span class="p">)</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">widthscale</span> <span class="o">*</span> <span class="n">xwidth</span> <span class="o">*</span> <span class="n">xlen</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="ow">not</span> <span class="n">hide_axis</span><span class="p">),</span>
+                 <span class="n">heightscale</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="ow">not</span> <span class="n">hide_axis</span><span class="p">)</span> <span class="o">+</span>
+                                <span class="mf">0.5</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="nb">bool</span><span class="p">(</span><span class="n">title</span><span class="p">))))</span>
+                            <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_figure</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">title</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span> <span class="o">*</span> <span class="n">axisfontscale</span><span class="p">)</span>
+
+    <span class="n">ylimpad</span> <span class="o">=</span> <span class="mf">0.05</span> <span class="o">*</span> <span class="n">ylen</span>  <span class="c1"># pad y-limits by this much</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">xmin</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">-</span> <span class="mf">0.02</span> <span class="o">*</span> <span class="n">xlen</span><span class="p">,</span>
+                <span class="n">xmax</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">+</span> <span class="mf">0.02</span> <span class="o">*</span> <span class="n">xlen</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">ymin</span> <span class="o">-</span> <span class="n">ylimpad</span> <span class="k">if</span> <span class="n">fixed_ymin</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">fixed_ymin</span><span class="p">,</span>
+                <span class="n">ymax</span> <span class="o">+</span> <span class="n">ylimpad</span> <span class="k">if</span> <span class="n">fixed_ymax</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">fixed_ymax</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">hide_axis</span><span class="p">:</span>
+        <span class="n">xbreaks</span><span class="p">,</span> <span class="n">xlabels</span> <span class="o">=</span> <span class="n">dmslogo</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">breaksAndLabels</span><span class="p">(</span>
+                            <span class="n">data</span><span class="p">[</span><span class="n">x_col</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+                            <span class="n">data</span><span class="p">[</span><span class="n">xtick_col</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+                            <span class="nb">max</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">xlen</span> <span class="o">//</span> <span class="mi">50</span><span class="p">))</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">xbreaks</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">xlabels</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;top&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">ticker</span><span class="o">.</span><span class="n">MaxNLocator</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">12</span> <span class="o">*</span> <span class="n">axisfontscale</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">xlabel</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span> <span class="o">*</span> <span class="n">axisfontscale</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">ylabel</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span> <span class="o">*</span> <span class="n">axisfontscale</span><span class="p">)</span>
+        <span class="n">dmslogo</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span>
+                <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+                <span class="n">trim</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">top</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">right</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+
+    <span class="n">xdata</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">x_col</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="n">ydata</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">height_col</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="c1"># plot with 0.5 before / after last points so steps full length</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">step</span><span class="p">([</span><span class="n">xmin</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">]</span> <span class="o">+</span> <span class="n">xdata</span> <span class="o">+</span> <span class="p">[</span><span class="n">xmax</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">],</span>
+            <span class="p">[</span><span class="n">ydata</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">+</span> <span class="n">ydata</span> <span class="o">+</span> <span class="p">[</span><span class="n">ydata</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span>
+            <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+            <span class="n">where</span><span class="o">=</span><span class="s1">&#39;mid&#39;</span><span class="p">,</span>
+            <span class="n">linewidth</span><span class="o">=</span><span class="n">linewidth</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">show_col</span><span class="p">:</span>
+        <span class="n">lw_to_xdata</span> <span class="o">=</span> <span class="n">data_units_from_linewidth</span><span class="p">(</span><span class="n">linewidth</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">)</span>
+        <span class="n">lw_to_ydata</span> <span class="o">=</span> <span class="n">data_units_from_linewidth</span><span class="p">(</span><span class="n">linewidth</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;</span><span class="si">{show_col}</span><span class="s2">&quot;</span><span class="p">)[</span><span class="n">x_col</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">():</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">(</span>
+                            <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">-</span> <span class="n">lw_to_xdata</span><span class="p">,</span> <span class="o">-</span> <span class="n">ylimpad</span><span class="p">),</span>
+                            <span class="n">width</span><span class="o">=</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">*</span> <span class="n">lw_to_xdata</span><span class="p">,</span>
+                            <span class="n">height</span><span class="o">=</span><span class="n">ylimpad</span> <span class="o">-</span> <span class="n">lw_to_ydata</span><span class="p">,</span>
+                            <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span>
+                            <span class="n">facecolor</span><span class="o">=</span><span class="n">dmslogo</span><span class="o">.</span><span class="n">colorschemes</span><span class="o">.</span><span class="n">CBPALETTE</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                            <span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">doctest</span>
+    <span class="n">doctest</span><span class="o">.</span><span class="n">testmod</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/BloomLogo.jpg" alt="Logo"/>
+    
+    <h1 class="logo logo-name">dmslogo</h1>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Sequence logos for deep mutational scanning</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=jbloomlab&repo=dmslogo&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a class="badge" href="https://travis-ci.org/jbloomlab/dmslogo">
+    <img
+        alt="https://secure.travis-ci.org/jbloomlab/dmslogo.svg?branch=master"
+        src="https://secure.travis-ci.org/jbloomlab/dmslogo.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dmslogo.html">dmslogo package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../package_index.html">package index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../acknowledgments.html">Acknowledgements</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019--2019, the Bloom lab.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+    <a href="https://github.com/jbloomlab/dmslogo" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

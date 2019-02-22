@@ -1,0 +1,493 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>dmslogo.logo &#8212; dmslogo 0.1.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for dmslogo.logo</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">=======</span>
+<span class="sd">logo</span>
+<span class="sd">=======</span>
+
+<span class="sd">Core logo-drawing functions of `dmslogo`.</span>
+
+<span class="sd">Some of this code is borrowed and modified from</span>
+<span class="sd">`pyseqlogo &lt;https://github.com/saketkc/pyseqlogo&gt;`_.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.patheffects</span>
+<span class="kn">import</span> <span class="nn">matplotlib.font_manager</span>
+<span class="kn">import</span> <span class="nn">matplotlib.ticker</span>
+
+<span class="kn">import</span> <span class="nn">dmslogo.utils</span>
+<span class="kn">import</span> <span class="nn">dmslogo.colorschemes</span>
+
+
+<div class="viewcode-block" id="Scale"><a class="viewcode-back" href="../../dmslogo.logo.html#dmslogo.logo.Scale">[docs]</a><span class="k">class</span> <span class="nc">Scale</span><span class="p">(</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">patheffects</span><span class="o">.</span><span class="n">RendererBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Scale letters using affine transformation.</span>
+
+<span class="sd">    From here: https://www.python-forum.de/viewtopic.php?t=30856</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sx</span><span class="p">,</span> <span class="n">sy</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sx</span> <span class="o">=</span> <span class="n">sx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sy</span> <span class="o">=</span> <span class="n">sy</span>
+
+<div class="viewcode-block" id="Scale.draw_path"><a class="viewcode-back" href="../../dmslogo.logo.html#dmslogo.logo.Scale.draw_path">[docs]</a>    <span class="k">def</span> <span class="nf">draw_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">renderer</span><span class="p">,</span> <span class="n">gc</span><span class="p">,</span> <span class="n">tpath</span><span class="p">,</span> <span class="n">affine</span><span class="p">,</span> <span class="n">rgbFace</span><span class="p">):</span>
+        <span class="n">affine</span> <span class="o">=</span> <span class="n">affine</span><span class="o">.</span><span class="n">identity</span><span class="p">()</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sy</span><span class="p">)</span> <span class="o">+</span> <span class="n">affine</span>
+        <span class="n">renderer</span><span class="o">.</span><span class="n">draw_path</span><span class="p">(</span><span class="n">gc</span><span class="p">,</span> <span class="n">tpath</span><span class="p">,</span> <span class="n">affine</span><span class="p">,</span> <span class="n">rgbFace</span><span class="p">)</span></div></div>
+
+
+<span class="k">def</span> <span class="nf">_setup_font</span><span class="p">(</span><span class="n">fontfamily</span><span class="p">,</span> <span class="n">fontsize</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get `FontProperties` for `fontfamily` and `fontsize`.&quot;&quot;&quot;</span>
+
+    <span class="n">font</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">font_manager</span><span class="o">.</span><span class="n">FontProperties</span><span class="p">()</span>
+    <span class="n">font</span><span class="o">.</span><span class="n">set_size</span><span class="p">(</span><span class="n">fontsize</span><span class="p">)</span>
+    <span class="n">font</span><span class="o">.</span><span class="n">set_weight</span><span class="p">(</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+    <span class="n">font</span><span class="o">.</span><span class="n">set_family</span><span class="p">(</span><span class="n">fontfamily</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">font</span>
+
+
+<span class="k">def</span> <span class="nf">_frac_above_baseline</span><span class="p">(</span><span class="n">font</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns fraction of font height that is above baseline.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        `font` (FontProperties)</span>
+<span class="sd">            Font for which we are computing fraction.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">txt_baseline</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="n">fontproperties</span><span class="o">=</span><span class="n">font</span><span class="p">,</span>
+                           <span class="n">va</span><span class="o">=</span><span class="s1">&#39;baseline&#39;</span><span class="p">,</span> <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pad</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+    <span class="n">txt_bottom</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="n">fontproperties</span><span class="o">=</span><span class="n">font</span><span class="p">,</span>
+                         <span class="n">va</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pad</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+
+    <span class="n">fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+    <span class="n">bbox_baseline</span> <span class="o">=</span> <span class="n">txt_baseline</span><span class="o">.</span><span class="n">get_window_extent</span><span class="p">()</span>
+    <span class="n">bbox_bottom</span> <span class="o">=</span> <span class="n">txt_bottom</span><span class="o">.</span><span class="n">get_window_extent</span><span class="p">()</span>
+
+    <span class="n">height_baseline</span> <span class="o">=</span> <span class="n">bbox_baseline</span><span class="o">.</span><span class="n">y1</span> <span class="o">-</span> <span class="n">bbox_baseline</span><span class="o">.</span><span class="n">y0</span>
+    <span class="n">height_bottom</span> <span class="o">=</span> <span class="n">bbox_bottom</span><span class="o">.</span><span class="n">y1</span> <span class="o">-</span> <span class="n">bbox_bottom</span><span class="o">.</span><span class="n">y0</span>
+    <span class="k">assert</span> <span class="n">numpy</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">height_baseline</span><span class="p">,</span> <span class="n">height_bottom</span><span class="p">)</span>
+    <span class="n">frac</span> <span class="o">=</span> <span class="p">(</span><span class="n">bbox_baseline</span><span class="o">.</span><span class="n">y1</span> <span class="o">-</span> <span class="n">bbox_bottom</span><span class="o">.</span><span class="n">y0</span><span class="p">)</span> <span class="o">/</span> <span class="n">height_bottom</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">frac</span>
+
+
+<span class="k">def</span> <span class="nf">_draw_text_data_coord</span><span class="p">(</span><span class="n">height_matrix</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">fontfamily</span><span class="p">,</span> <span class="n">fontaspect</span><span class="p">,</span>
+                          <span class="n">letterpad</span><span class="p">,</span> <span class="n">letterheightscale</span><span class="p">,</span> <span class="n">xpad</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Draws logo letters.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        `height_matrix` (list of lists)</span>
+<span class="sd">            Gives letter heights. In the main list, there is a list</span>
+<span class="sd">            for each site, with the entries being 3-tuples giving</span>
+<span class="sd">            the letter, its height, and its color.</span>
+<span class="sd">        `ax` (matplotlib Axes)</span>
+<span class="sd">            Axis on which we draw logo letters.</span>
+<span class="sd">        `fontfamily` (str)</span>
+<span class="sd">            Name of font to use.</span>
+<span class="sd">        `fontaspect` (float)</span>
+<span class="sd">            Value to use for font aspect ratio (height to width).</span>
+<span class="sd">        `letterpad` (float)</span>
+<span class="sd">            Add this much vertical padding between letters.</span>
+<span class="sd">        `letterheightscale` (float)</span>
+<span class="sd">            Scale height of letters by this much.</span>
+<span class="sd">        `xpad` (float)</span>
+<span class="sd">            x-axis is padded by this many data units on each side.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_figure</span><span class="p">()</span>
+    <span class="n">bbox</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_window_extent</span><span class="p">()</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span>
+            <span class="n">fig</span><span class="o">.</span><span class="n">dpi_scale_trans</span><span class="o">.</span><span class="n">inverted</span><span class="p">())</span>
+    <span class="n">width</span> <span class="o">=</span> <span class="n">bbox</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="n">fig</span><span class="o">.</span><span class="n">dpi</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">height_matrix</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
+            <span class="mi">2</span> <span class="o">*</span> <span class="n">xpad</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">height_matrix</span><span class="p">))</span>
+    <span class="n">height</span> <span class="o">=</span> <span class="n">bbox</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="n">fig</span><span class="o">.</span><span class="n">dpi</span>
+
+    <span class="n">max_stack_height</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">sum</span><span class="p">([</span><span class="n">tup</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">tup</span> <span class="ow">in</span> <span class="n">row</span><span class="p">])</span> <span class="k">for</span>
+                           <span class="n">row</span> <span class="ow">in</span> <span class="n">height_matrix</span><span class="p">)</span>
+
+    <span class="n">letterpadheight</span> <span class="o">=</span> <span class="n">max_stack_height</span> <span class="o">*</span> <span class="n">letterpad</span>
+
+    <span class="n">fontsize</span> <span class="o">=</span> <span class="p">(</span><span class="n">height</span> <span class="o">/</span> <span class="n">max_stack_height</span><span class="p">)</span> <span class="o">*</span> <span class="mf">72.0</span> <span class="o">/</span> <span class="n">fig</span><span class="o">.</span><span class="n">dpi</span>
+    <span class="n">font</span> <span class="o">=</span> <span class="n">_setup_font</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">,</span> <span class="n">fontfamily</span><span class="o">=</span><span class="n">fontfamily</span><span class="p">)</span>
+    <span class="n">frac_above_baseline</span> <span class="o">=</span> <span class="n">_frac_above_baseline</span><span class="p">(</span><span class="n">font</span><span class="p">)</span>
+
+    <span class="n">fontwidthscale</span> <span class="o">=</span> <span class="n">width</span> <span class="o">*</span> <span class="n">max_stack_height</span> <span class="o">/</span> <span class="p">(</span><span class="n">height</span> <span class="o">*</span> <span class="n">fontaspect</span> <span class="o">*</span>
+                                                 <span class="nb">len</span><span class="p">(</span><span class="n">height_matrix</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">xindex</span><span class="p">,</span> <span class="n">xcol</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">height_matrix</span><span class="p">):</span>
+
+        <span class="n">ypos</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">letter</span><span class="p">,</span> <span class="n">letterheight</span><span class="p">,</span> <span class="n">lettercolor</span> <span class="ow">in</span> <span class="n">xcol</span><span class="p">:</span>
+            <span class="n">txt</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+                <span class="n">xindex</span><span class="p">,</span>
+                <span class="n">ypos</span><span class="p">,</span>
+                <span class="n">letter</span><span class="p">,</span>
+                <span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">,</span>
+                <span class="n">color</span><span class="o">=</span><span class="n">lettercolor</span><span class="p">,</span>
+                <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span>
+                <span class="n">va</span><span class="o">=</span><span class="s1">&#39;baseline&#39;</span><span class="p">,</span>
+                <span class="n">fontproperties</span><span class="o">=</span><span class="n">font</span><span class="p">,</span>
+                <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pad</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
+                <span class="p">)</span>
+
+            <span class="n">txt</span><span class="o">.</span><span class="n">set_path_effects</span><span class="p">(</span>
+                    <span class="p">[</span><span class="n">Scale</span><span class="p">(</span><span class="n">fontwidthscale</span><span class="p">,</span>
+                     <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">letterheightscale</span> <span class="o">*</span> <span class="n">letterheight</span> <span class="o">/</span>
+                         <span class="n">frac_above_baseline</span> <span class="o">-</span> <span class="n">letterpadheight</span><span class="p">))</span>
+                     <span class="p">])</span>
+
+            <span class="n">ypos</span> <span class="o">+=</span> <span class="n">letterheight</span>
+
+    <span class="n">fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="draw_logo"><a class="viewcode-back" href="../../dmslogo.logo.html#dmslogo.logo.draw_logo">[docs]</a><span class="k">def</span> <span class="nf">draw_logo</span><span class="p">(</span><span class="n">data</span><span class="p">,</span>
+              <span class="o">*</span><span class="p">,</span>
+              <span class="n">x_col</span><span class="p">,</span>
+              <span class="n">letter_col</span><span class="p">,</span>
+              <span class="n">letter_height_col</span><span class="p">,</span>
+              <span class="n">xtick_col</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">color_col</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">xlabel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">ylabel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">colorscheme</span><span class="o">=</span><span class="n">dmslogo</span><span class="o">.</span><span class="n">colorschemes</span><span class="o">.</span><span class="n">AA_FUNCTIONAL_GROUP</span><span class="p">,</span>
+              <span class="n">missing_color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span>
+              <span class="n">addbreaks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+              <span class="n">widthscale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+              <span class="n">heightscale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+              <span class="n">axisfontscale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+              <span class="n">hide_axis</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+              <span class="n">fontfamily</span><span class="o">=</span><span class="s1">&#39;DejaVu Sans Mono&#39;</span><span class="p">,</span>
+              <span class="n">fontaspect</span><span class="o">=</span><span class="mf">0.58</span><span class="p">,</span>
+              <span class="n">letterpad</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+              <span class="n">letterheightscale</span><span class="o">=</span><span class="mf">0.98</span><span class="p">,</span>
+              <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">fixed_ymin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">fixed_ymax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Draw sequence logo from specified letter heights.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        `data` (pandas DataFrame)</span>
+<span class="sd">            Holds data to plot.</span>
+<span class="sd">        `letter_height_col` (str)</span>
+<span class="sd">            Column in `data` with letter heights.</span>
+<span class="sd">        `letter_col` (str)</span>
+<span class="sd">            Column in `data` with letter identities.</span>
+<span class="sd">        `x_col` (str)</span>
+<span class="sd">            Column in `data` with integer site numbers.</span>
+<span class="sd">        `xtick_col` (`None` or str)</span>
+<span class="sd">            Column in `data` used to label sites if not using `x_col`.</span>
+<span class="sd">        `color_col` (`None` or str)</span>
+<span class="sd">            Column in data with colors for each letter; set to `None`</span>
+<span class="sd">            to define colors via `colorscheme` and `missing_color`.</span>
+<span class="sd">        `xlabel` (`None` or str)</span>
+<span class="sd">            Label for x-axis if not using `xtick_col` or `x_col`.</span>
+<span class="sd">        `ylabel` (`None` or str)</span>
+<span class="sd">            Label for y-axis if not using `letter_height_col`.</span>
+<span class="sd">        `title` (`None` or str)</span>
+<span class="sd">            Title to place above plot.</span>
+<span class="sd">        `colorscheme` (dict)</span>
+<span class="sd">            Color for each letter. Ignored if `color_col` is not `None`.</span>
+<span class="sd">            See :py:mod:`dmslogo.colorschemes` for some color schemes.</span>
+<span class="sd">        `missing_color` (`None` or str)</span>
+<span class="sd">            Color for letters not assigned in `colorscheme`,</span>
+<span class="sd">            or `None` to raise an error for unassigned letters.</span>
+<span class="sd">        `addbreaks` (bool)</span>
+<span class="sd">            Anywhere there is a gap in sequential numbering of</span>
+<span class="sd">            `x_col`, add break consisting of space and dashed line.</span>
+<span class="sd">        `widthscale` (float)</span>
+<span class="sd">            Scale width by this much.</span>
+<span class="sd">        `heightscale` (float)</span>
+<span class="sd">            Scale height by this much.</span>
+<span class="sd">        `axisfontscale` (float)</span>
+<span class="sd">            Scale size of font for axis ticks and labels by this much.</span>
+<span class="sd">        `hide_axis` (bool)</span>
+<span class="sd">            Do we hide the axis and tick labels?</span>
+<span class="sd">        `fontfamily` (str)</span>
+<span class="sd">            Font to use.</span>
+<span class="sd">        `fontaspect` (float)</span>
+<span class="sd">            Aspect ratio of font (height to width). If letters are</span>
+<span class="sd">            too crowded, increase this.</span>
+<span class="sd">        `letterpad` (float)</span>
+<span class="sd">            Add this much fixed vertical padding between letters</span>
+<span class="sd">            as fraction of total stack height.</span>
+<span class="sd">        `letterheightscale` (float)</span>
+<span class="sd">            Scale height of all letters by this much.</span>
+<span class="sd">        `ax` (`None` or matplotlib axes.Axes object)</span>
+<span class="sd">            Use to plot on an existing axis.</span>
+<span class="sd">        `fixed_ymin` (`None` or float)</span>
+<span class="sd">            If not `None`, then fixed y-axis minimum.</span>
+<span class="sd">        `fixed_ymax` (`None` or float)</span>
+<span class="sd">            If not `None`, then fixed y-axis maximum.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The 2-tuple `(fig, ax)` giving the figure and axis.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># set default values of arguments that can be None</span>
+    <span class="k">if</span> <span class="n">xtick_col</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">xtick_col</span> <span class="o">=</span> <span class="n">x_col</span>
+    <span class="k">if</span> <span class="n">xlabel</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">xlabel</span> <span class="o">=</span> <span class="n">xtick_col</span>
+    <span class="k">if</span> <span class="n">ylabel</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ylabel</span> <span class="o">=</span> <span class="n">letter_height_col</span>
+
+    <span class="c1"># check letters are all upper case</span>
+    <span class="n">letters</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">letter_col</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">letters</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">!=</span> <span class="n">letters</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;letters in `letter_col` must be uppercase&#39;</span><span class="p">)</span>
+
+    <span class="c1"># checks on input data</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="p">[</span><span class="n">letter_height_col</span><span class="p">,</span> <span class="n">letter_col</span><span class="p">,</span> <span class="n">x_col</span><span class="p">,</span> <span class="n">xtick_col</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;`data` lacks column </span><span class="si">{col}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">color_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">color_col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;`data` lacks column </span><span class="si">{color_col}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">letter_height_col</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;`letter_height_col` has negative heights&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="n">x_col</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;`x_col` does not have integer values&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">g</span><span class="p">[</span><span class="n">xtick_col</span><span class="p">]))</span> <span class="o">!=</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">x_col</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;not unique mapping of `x_col` to `xtick_col`&#39;</span><span class="p">)</span>
+
+    <span class="c1"># construct height_matrix: list of lists of (letter, hegith, color)</span>
+    <span class="n">height_matrix</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">xticks</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">lastx</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">breaks</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">xdata</span> <span class="ow">in</span> <span class="p">(</span><span class="n">data</span>
+                     <span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="n">x_col</span><span class="p">,</span> <span class="n">letter_height_col</span><span class="p">])</span>
+                     <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">x_col</span><span class="p">)</span>
+                     <span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">addbreaks</span> <span class="ow">and</span> <span class="p">(</span><span class="n">lastx</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">x</span> <span class="o">!=</span> <span class="n">lastx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">breaks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">height_matrix</span><span class="p">))</span>
+            <span class="n">height_matrix</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
+            <span class="n">xticks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">lastx</span> <span class="o">=</span> <span class="n">x</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">xdata</span><span class="p">[</span><span class="n">letter_col</span><span class="p">])</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">xdata</span><span class="p">[</span><span class="n">letter_col</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;duplicate letters for `x_col` </span><span class="si">{x}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">row</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">tup</span> <span class="ow">in</span> <span class="n">xdata</span><span class="o">.</span><span class="n">itertuples</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+            <span class="n">letter</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">tup</span><span class="p">,</span> <span class="n">letter_col</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">letter</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">letter</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;invalid letter of </span><span class="si">{letter}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">letter_height</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">tup</span><span class="p">,</span> <span class="n">letter_height_col</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">color_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">color</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">tup</span><span class="p">,</span> <span class="n">color_col</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">color</span> <span class="o">=</span> <span class="n">colorscheme</span><span class="p">[</span><span class="n">letter</span><span class="p">]</span>
+                <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">missing_color</span><span class="p">:</span>
+                        <span class="n">color</span> <span class="o">=</span> <span class="n">missing_color</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;no color for </span><span class="si">{letter}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">letter</span><span class="p">,</span> <span class="n">letter_height</span><span class="p">,</span> <span class="n">color</span><span class="p">))</span>
+        <span class="n">height_matrix</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">xdata</span><span class="p">[</span><span class="n">xtick_col</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="n">xticks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">xdata</span><span class="p">[</span><span class="n">xtick_col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+    <span class="n">nstacks</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">height_matrix</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">xticks</span><span class="p">)</span> <span class="o">==</span> <span class="n">nstacks</span>
+    <span class="n">max_stack_height</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">sum</span><span class="p">([</span><span class="n">tup</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">tup</span> <span class="ow">in</span> <span class="n">row</span><span class="p">])</span> <span class="k">for</span>
+                           <span class="n">row</span> <span class="ow">in</span> <span class="n">height_matrix</span><span class="p">)</span>
+
+    <span class="c1"># setup axis for plotting</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">ax</span><span class="p">:</span>
+        <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">widthscale</span> <span class="o">*</span> <span class="mf">0.45</span> <span class="o">*</span> <span class="p">(</span><span class="n">nstacks</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="ow">not</span> <span class="n">hide_axis</span><span class="p">)),</span>
+                 <span class="n">heightscale</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="ow">not</span> <span class="n">hide_axis</span><span class="p">)</span> <span class="o">+</span>
+                                <span class="mf">0.5</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="nb">bool</span><span class="p">(</span><span class="n">title</span><span class="p">)))</span>
+                 <span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_figure</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">title</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span> <span class="o">*</span> <span class="n">axisfontscale</span><span class="p">)</span>
+
+    <span class="n">xpad</span> <span class="o">=</span> <span class="mf">0.2</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="n">xpad</span><span class="p">,</span> <span class="n">nstacks</span> <span class="o">+</span> <span class="n">xpad</span><span class="p">)</span>
+    <span class="n">ylimpad</span> <span class="o">=</span> <span class="mf">0.05</span> <span class="o">*</span> <span class="n">max_stack_height</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="n">ylimpad</span> <span class="k">if</span> <span class="n">fixed_ymin</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">fixed_ymin</span><span class="p">,</span>
+                <span class="n">max_stack_height</span> <span class="o">+</span> <span class="n">ylimpad</span> <span class="k">if</span> <span class="n">fixed_ymax</span> <span class="ow">is</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="n">fixed_ymax</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">hide_axis</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nstacks</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">xticks</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;top&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">ticker</span><span class="o">.</span><span class="n">MaxNLocator</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">12</span> <span class="o">*</span> <span class="n">axisfontscale</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">xlabel</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span> <span class="o">*</span> <span class="n">axisfontscale</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">ylabel</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span> <span class="o">*</span> <span class="n">axisfontscale</span><span class="p">)</span>
+        <span class="n">dmslogo</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span>
+                <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+                <span class="n">trim</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">top</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">right</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+
+    <span class="c1"># draw the letters</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+    <span class="n">_draw_text_data_coord</span><span class="p">(</span><span class="n">height_matrix</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">fontfamily</span><span class="p">,</span> <span class="n">fontaspect</span><span class="p">,</span>
+                          <span class="n">letterpad</span><span class="p">,</span> <span class="n">letterheightscale</span><span class="p">,</span> <span class="n">xpad</span><span class="p">)</span>
+
+    <span class="c1"># draw the breaks</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">breaks</span><span class="p">:</span>
+        <span class="c1"># loosely dotted line:</span>
+        <span class="c1"># https://matplotlib.org/gallery/lines_bars_and_markers/linestyles.html</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">)),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">doctest</span>
+    <span class="n">doctest</span><span class="o">.</span><span class="n">testmod</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/BloomLogo.jpg" alt="Logo"/>
+    
+    <h1 class="logo logo-name">dmslogo</h1>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Sequence logos for deep mutational scanning</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=jbloomlab&repo=dmslogo&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a class="badge" href="https://travis-ci.org/jbloomlab/dmslogo">
+    <img
+        alt="https://secure.travis-ci.org/jbloomlab/dmslogo.svg?branch=master"
+        src="https://secure.travis-ci.org/jbloomlab/dmslogo.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dmslogo.html">dmslogo package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../package_index.html">package index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../acknowledgments.html">Acknowledgements</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019--2019, the Bloom lab.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+    <a href="https://github.com/jbloomlab/dmslogo" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

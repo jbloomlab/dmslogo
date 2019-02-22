@@ -1,0 +1,4 @@
+.. automodule:: dmslogo.colorschemes
+    :members:
+    :undoc-members:
+    :show-inheritance:

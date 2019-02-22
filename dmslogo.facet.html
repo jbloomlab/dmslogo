@@ -1,0 +1,195 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>facet &#8212; dmslogo 0.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="line" href="dmslogo.line.html" />
+    <link rel="prev" title="colorschemes" href="dmslogo.colorschemes.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <span class="target" id="module-dmslogo.facet"></span><div class="section" id="facet">
+<h1>facet<a class="headerlink" href="#facet" title="Permalink to this headline">¶</a></h1>
+<p>Facet multiple plots on the same figure.</p>
+<dl class="function">
+<dt id="dmslogo.facet.facet_plot">
+<code class="descclassname">dmslogo.facet.</code><code class="descname">facet_plot</code><span class="sig-paren">(</span><em>data</em>, <em>*</em>, <em>x_col</em>, <em>show_col</em>, <em>gridrow_col=None</em>, <em>gridcol_col=None</em>, <em>draw_line_kwargs=None</em>, <em>draw_logo_kwargs=None</em>, <em>line_titlesuffix=''</em>, <em>logo_titlesuffix=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/facet.html#facet_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.facet.facet_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Facet together plots of different types on same figure.</p>
+<p>Useful for combining multiple instances of the plots you
+could create with <a class="reference internal" href="dmslogo.logo.html#dmslogo.logo.draw_logo" title="dmslogo.logo.draw_logo"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dmslogo.logo.draw_logo</span></code></a> and
+<a class="reference internal" href="dmslogo.line.html#dmslogo.line.draw_line" title="dmslogo.line.draw_line"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dmslogo.line.draw_line</span></code></a>.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt><cite>data</cite> (pandas DataFrame)</dt>
+<dd>The data to plot.</dd>
+<dt><cite>x_col</cite> (str)</dt>
+<dd>Column in <cite>data</cite> with x-axis values, as for
+<a class="reference internal" href="dmslogo.logo.html#dmslogo.logo.draw_logo" title="dmslogo.logo.draw_logo"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dmslogo.logo.draw_logo</span></code></a> and
+<a class="reference internal" href="dmslogo.line.html#dmslogo.line.draw_line" title="dmslogo.line.draw_line"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dmslogo.line.draw_line</span></code></a>.</dd>
+<dt><cite>show_col</cite> (str or <cite>None</cite>)</dt>
+<dd>Column in <cite>data</cite> with x-axis values to highlight in line
+plots and to show in logo plots.</dd>
+<dt><cite>gridrow_col</cite> (str or <cite>None</cite>)</dt>
+<dd>Column in <cite>data</cite> to facet over for rows of plot.</dd>
+<dt><cite>gridcol_col</cite> (str or <cite>None</cite>)</dt>
+<dd>Column in data to facet over for columns of plot.</dd>
+<dt><cite>draw_line_kwargs</cite> (dict)</dt>
+<dd>All arguments to be passed to
+<a class="reference internal" href="dmslogo.line.html#dmslogo.line.draw_line" title="dmslogo.line.draw_line"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dmslogo.line.draw_line</span></code></a>
+<strong>except</strong> <cite>x_col</cite>, <cite>show_col</cite>, and <cite>title</cite>. These
+are passed separately, or (in case of title) come
+from faceting variables.</dd>
+<dt><cite>draw_logo_kwargs</cite></dt>
+<dd>Like <cite>draw_line_kwargs</cite> but for
+<a class="reference internal" href="dmslogo.logo.html#dmslogo.logo.draw_logo" title="dmslogo.logo.draw_logo"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dmslogo.logo.draw_logo</span></code></a>.</dd>
+<dt><cite>line_titlesuffix</cite> (str or <cite>None</cite>)</dt>
+<dd>String suffixed to titles for line plots.</dd>
+<dt><cite>logo_titlesuffix</cite></dt>
+<dd>String suffixed to titles for logo plots.</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd>The 2-tuple <cite>fig, axes</cite> where <cite>fig</cite> is the matplotlib
+Figure and <cite>axes</cite> is a numpy ndarray of the figure axes.</dd>
+</dl>
+<p><cite>x_col</cite> and <cite>show_col</cite> must have the same unique entries in <cite>data</cite>
+for all groups in being faceted over.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/BloomLogo.jpg" alt="Logo"/>
+    
+    <h1 class="logo logo-name">dmslogo</h1>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Sequence logos for deep mutational scanning</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=jbloomlab&repo=dmslogo&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a class="badge" href="https://travis-ci.org/jbloomlab/dmslogo">
+    <img
+        alt="https://secure.travis-ci.org/jbloomlab/dmslogo.svg?branch=master"
+        src="https://secure.travis-ci.org/jbloomlab/dmslogo.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="dmslogo.html">dmslogo package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="package_index.html">package index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="acknowledgments.html">Acknowledgements</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="dmslogo.html">dmslogo package</a><ul>
+      <li>Previous: <a href="dmslogo.colorschemes.html" title="previous chapter">colorschemes</a></li>
+      <li>Next: <a href="dmslogo.line.html" title="next chapter">line</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019--2019, the Bloom lab.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/dmslogo.facet.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/jbloomlab/dmslogo" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

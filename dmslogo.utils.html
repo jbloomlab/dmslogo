@@ -1,0 +1,209 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>utils &#8212; dmslogo 0.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="package index" href="package_index.html" />
+    <link rel="prev" title="logo" href="dmslogo.logo.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <span class="target" id="module-dmslogo.utils"></span><div class="section" id="utils">
+<h1>utils<a class="headerlink" href="#utils" title="Permalink to this headline">¶</a></h1>
+<p>Utility functions for plotting.</p>
+<dl class="function">
+<dt id="dmslogo.utils.breaksAndLabels">
+<code class="descclassname">dmslogo.utils.</code><code class="descname">breaksAndLabels</code><span class="sig-paren">(</span><em>xi</em>, <em>x</em>, <em>n</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/utils.html#breaksAndLabels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.utils.breaksAndLabels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get breaks and labels for an axis.</p>
+<p>Useful when you would like to re-label a numeric x-axis
+with string labels.</p>
+<p>Uses <cite>matplotlib.ticker.MaxNLocator</cite> to choose pretty breaks.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt><cite>xi</cite> (list or array)</dt>
+<dd>Integer values actually assigned to axis points.</dd>
+<dt><cite>x</cite> (list)</dt>
+<dd>Strings corresponding to each numeric value in <cite>xi</cite>.</dd>
+<dt><cite>n</cite> (int)</dt>
+<dd>Approximate number of ticks to use.</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd>The tuple <cite>(breaks, labels)</cite> where <cite>breaks</cite> gives the
+locations of breaks taken from <cite>xi</cite>, and <cite>labels</cite> is
+the label for each break.</dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">xi</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">213</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">xi</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">breaks</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span> <span class="o">=</span> <span class="n">breaksAndLabels</span><span class="p">(</span><span class="n">xi</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">breaks</span>
+<span class="go">[0, 50, 100, 150, 200]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">labels</span>
+<span class="go">[&#39;1&#39;, &#39;51&#39;, &#39;101&#39;, &#39;151&#39;, &#39;201&#39;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="dmslogo.utils.despine">
+<code class="descclassname">dmslogo.utils.</code><code class="descname">despine</code><span class="sig-paren">(</span><em>fig=None</em>, <em>ax=None</em>, <em>top=True</em>, <em>right=True</em>, <em>left=False</em>, <em>bottom=False</em>, <em>offset=None</em>, <em>trim=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/utils.html#despine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.utils.despine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the top and right spines from plot(s).</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt><cite>fig</cite> (matplotlib figure)</dt>
+<dd>Figure to despine all axes of, default uses current figure.</dd>
+<dt><cite>ax</cite> (matplotlib axes)</dt>
+<dd>Specific axes object to despine.</dd>
+<dt><cite>top</cite>, <cite>right</cite>, <cite>left</cite>, <cite>bottom</cite> (bool)</dt>
+<dd>If True, remove that spine.</dd>
+<dt><cite>offset</cite> (int or dict)</dt>
+<dd>Absolute distance, in points, spines should be moved away
+from the axes (negative values move spines inward).
+A single value applies to all spines; a dict can be used
+to set offset values per side.</dd>
+<dt><cite>trim</cite> (bool)</dt>
+<dd>If True, limit spines to the smallest and largest major tick
+on each non-despined axis.</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/BloomLogo.jpg" alt="Logo"/>
+    
+    <h1 class="logo logo-name">dmslogo</h1>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Sequence logos for deep mutational scanning</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=jbloomlab&repo=dmslogo&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a class="badge" href="https://travis-ci.org/jbloomlab/dmslogo">
+    <img
+        alt="https://secure.travis-ci.org/jbloomlab/dmslogo.svg?branch=master"
+        src="https://secure.travis-ci.org/jbloomlab/dmslogo.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="dmslogo.html">dmslogo package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="package_index.html">package index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="acknowledgments.html">Acknowledgements</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="dmslogo.html">dmslogo package</a><ul>
+      <li>Previous: <a href="dmslogo.logo.html" title="previous chapter">logo</a></li>
+      <li>Next: <a href="package_index.html" title="next chapter">package index</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019--2019, the Bloom lab.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/dmslogo.utils.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/jbloomlab/dmslogo" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

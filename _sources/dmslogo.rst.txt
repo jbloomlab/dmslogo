@@ -1,0 +1,19 @@
+dmslogo package
+===============
+
+.. automodule:: dmslogo
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+Submodules
+----------
+
+.. toctree::
+
+   dmslogo.colorschemes
+   dmslogo.facet
+   dmslogo.line
+   dmslogo.logo
+   dmslogo.utils
+

@@ -1,0 +1,301 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>dmslogo.utils &#8212; dmslogo 0.1.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for dmslogo.utils</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">========</span>
+<span class="sd">utils</span>
+<span class="sd">========</span>
+
+<span class="sd">Utility functions for plotting.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.ticker</span>
+
+
+<div class="viewcode-block" id="breaksAndLabels"><a class="viewcode-back" href="../../dmslogo.utils.html#dmslogo.utils.breaksAndLabels">[docs]</a><span class="k">def</span> <span class="nf">breaksAndLabels</span><span class="p">(</span><span class="n">xi</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get breaks and labels for an axis.</span>
+
+<span class="sd">    Useful when you would like to re-label a numeric x-axis</span>
+<span class="sd">    with string labels.</span>
+
+<span class="sd">    Uses `matplotlib.ticker.MaxNLocator` to choose pretty breaks.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        `xi` (list or array)</span>
+<span class="sd">            Integer values actually assigned to axis points.</span>
+<span class="sd">        `x` (list)</span>
+<span class="sd">            Strings corresponding to each numeric value in `xi`.</span>
+<span class="sd">        `n` (int)</span>
+<span class="sd">            Approximate number of ticks to use.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The tuple `(breaks, labels)` where `breaks` gives the</span>
+<span class="sd">        locations of breaks taken from `xi`, and `labels` is</span>
+<span class="sd">        the label for each break.</span>
+
+<span class="sd">    &gt;&gt;&gt; xi = list(range(213))</span>
+<span class="sd">    &gt;&gt;&gt; x = [str(i + 1) for i in xi]</span>
+<span class="sd">    &gt;&gt;&gt; (breaks, labels) = breaksAndLabels(xi, x, 5)</span>
+<span class="sd">    &gt;&gt;&gt; breaks</span>
+<span class="sd">    [0, 50, 100, 150, 200]</span>
+<span class="sd">    &gt;&gt;&gt; labels</span>
+<span class="sd">    [&#39;1&#39;, &#39;51&#39;, &#39;101&#39;, &#39;151&#39;, &#39;201&#39;]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">xi</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;`xi` and `x` differ in length.&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">([</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">xi</span><span class="p">]):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;xi not integer values&#39;</span><span class="p">)</span>
+    <span class="n">xi</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">xi</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">xi</span><span class="p">))</span> <span class="o">!=</span> <span class="n">xi</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;`xi` not unique and ordered&#39;</span><span class="p">)</span>
+    <span class="n">breaks</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">ticker</span><span class="o">.</span><span class="n">MaxNLocator</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">.</span><span class="n">tick_values</span><span class="p">(</span><span class="n">xi</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">xi</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">breaks</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">breaks</span> <span class="k">if</span> <span class="n">xi</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">xi</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="n">xi</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">breaks</span><span class="p">]</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">breaks</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_set_spine_position</span><span class="p">(</span><span class="n">spine</span><span class="p">,</span> <span class="n">position</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Set the spine&#39;s position without resetting an associated axis.</span>
+<span class="sd">    As of matplotlib v. 1.0.0, if a spine has an associated axis, then</span>
+<span class="sd">    spine.set_position() calls axis.cla(), which resets locators, formatters,</span>
+<span class="sd">    etc.  We temporarily replace that call with axis.reset_ticks(), which is</span>
+<span class="sd">    sufficient for our purposes.</span>
+
+<span class="sd">    This is borrowed from here:</span>
+<span class="sd">    https://github.com/mwaskom/seaborn/blob/0beede57152ce80ce1d4ef5d0c0f1cb61d118375/seaborn/utils.py#L265</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">axis</span> <span class="o">=</span> <span class="n">spine</span><span class="o">.</span><span class="n">axis</span>
+    <span class="k">if</span> <span class="n">axis</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">cla</span> <span class="o">=</span> <span class="n">axis</span><span class="o">.</span><span class="n">cla</span>
+        <span class="n">axis</span><span class="o">.</span><span class="n">cla</span> <span class="o">=</span> <span class="n">axis</span><span class="o">.</span><span class="n">reset_ticks</span>
+    <span class="n">spine</span><span class="o">.</span><span class="n">set_position</span><span class="p">(</span><span class="n">position</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">axis</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">axis</span><span class="o">.</span><span class="n">cla</span> <span class="o">=</span> <span class="n">cla</span>
+
+
+<div class="viewcode-block" id="despine"><a class="viewcode-back" href="../../dmslogo.utils.html#dmslogo.utils.despine">[docs]</a><span class="k">def</span> <span class="nf">despine</span><span class="p">(</span><span class="n">fig</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">top</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">right</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">left</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">bottom</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">offset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">trim</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Remove the top and right spines from plot(s).</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        `fig` (matplotlib figure)</span>
+<span class="sd">            Figure to despine all axes of, default uses current figure.</span>
+<span class="sd">        `ax` (matplotlib axes)</span>
+<span class="sd">            Specific axes object to despine.</span>
+<span class="sd">        `top`, `right`, `left`, `bottom` (bool)</span>
+<span class="sd">            If True, remove that spine.</span>
+<span class="sd">        `offset` (int or dict)</span>
+<span class="sd">            Absolute distance, in points, spines should be moved away</span>
+<span class="sd">            from the axes (negative values move spines inward).</span>
+<span class="sd">            A single value applies to all spines; a dict can be used</span>
+<span class="sd">            to set offset values per side.</span>
+<span class="sd">        `trim` (bool)</span>
+<span class="sd">            If True, limit spines to the smallest and largest major tick</span>
+<span class="sd">            on each non-despined axis.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Get references to the axes we want</span>
+    <span class="k">if</span> <span class="n">fig</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span><span class="o">.</span><span class="n">axes</span>
+    <span class="k">elif</span> <span class="n">fig</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">axes</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">axes</span>
+    <span class="k">elif</span> <span class="n">ax</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">axes</span> <span class="o">=</span> <span class="p">[</span><span class="n">ax</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">ax_i</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">side</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;top&quot;</span><span class="p">,</span> <span class="s2">&quot;right&quot;</span><span class="p">,</span> <span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="s2">&quot;bottom&quot;</span><span class="p">]:</span>
+            <span class="c1"># Toggle the spine objects</span>
+            <span class="n">is_visible</span> <span class="o">=</span> <span class="ow">not</span> <span class="nb">locals</span><span class="p">()[</span><span class="n">side</span><span class="p">]</span>
+            <span class="n">ax_i</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="n">side</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="n">is_visible</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">offset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">is_visible</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">val</span> <span class="o">=</span> <span class="n">offset</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">side</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                    <span class="n">val</span> <span class="o">=</span> <span class="n">offset</span>
+                <span class="n">_set_spine_position</span><span class="p">(</span><span class="n">ax_i</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="n">side</span><span class="p">],</span> <span class="p">(</span><span class="s1">&#39;outward&#39;</span><span class="p">,</span> <span class="n">val</span><span class="p">))</span>
+
+        <span class="c1"># Set the ticks appropriately</span>
+        <span class="k">if</span> <span class="n">bottom</span><span class="p">:</span>
+            <span class="n">ax_i</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">tick_top</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">top</span><span class="p">:</span>
+            <span class="n">ax_i</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">tick_bottom</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">left</span><span class="p">:</span>
+            <span class="n">ax_i</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">tick_right</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">right</span><span class="p">:</span>
+            <span class="n">ax_i</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">tick_left</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">trim</span><span class="p">:</span>
+            <span class="c1"># clip off the parts of the spines that extend past major ticks</span>
+            <span class="n">xticks</span> <span class="o">=</span> <span class="n">ax_i</span><span class="o">.</span><span class="n">get_xticks</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">xticks</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+                <span class="n">firsttick</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="n">xticks</span> <span class="o">&gt;=</span> <span class="nb">min</span><span class="p">(</span><span class="n">ax_i</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">()),</span>
+                                        <span class="n">xticks</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">lasttick</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="n">xticks</span> <span class="o">&lt;=</span> <span class="nb">max</span><span class="p">(</span><span class="n">ax_i</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">()),</span>
+                                       <span class="n">xticks</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">ax_i</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;bottom&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_bounds</span><span class="p">(</span><span class="n">firsttick</span><span class="p">,</span> <span class="n">lasttick</span><span class="p">)</span>
+                <span class="n">ax_i</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;top&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_bounds</span><span class="p">(</span><span class="n">firsttick</span><span class="p">,</span> <span class="n">lasttick</span><span class="p">)</span>
+                <span class="n">newticks</span> <span class="o">=</span> <span class="n">xticks</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="n">xticks</span> <span class="o">&lt;=</span> <span class="n">lasttick</span><span class="p">)</span>
+                <span class="n">newticks</span> <span class="o">=</span> <span class="n">newticks</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="n">newticks</span> <span class="o">&gt;=</span> <span class="n">firsttick</span><span class="p">)</span>
+                <span class="n">ax_i</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">newticks</span><span class="p">)</span>
+
+            <span class="n">yticks</span> <span class="o">=</span> <span class="n">ax_i</span><span class="o">.</span><span class="n">get_yticks</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">yticks</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+                <span class="n">firsttick</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="n">yticks</span> <span class="o">&gt;=</span> <span class="nb">min</span><span class="p">(</span><span class="n">ax_i</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()),</span>
+                                        <span class="n">yticks</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">lasttick</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="n">yticks</span> <span class="o">&lt;=</span> <span class="nb">max</span><span class="p">(</span><span class="n">ax_i</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()),</span>
+                                       <span class="n">yticks</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">ax_i</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;left&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_bounds</span><span class="p">(</span><span class="n">firsttick</span><span class="p">,</span> <span class="n">lasttick</span><span class="p">)</span>
+                <span class="n">ax_i</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;right&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_bounds</span><span class="p">(</span><span class="n">firsttick</span><span class="p">,</span> <span class="n">lasttick</span><span class="p">)</span>
+                <span class="n">newticks</span> <span class="o">=</span> <span class="n">yticks</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="n">yticks</span> <span class="o">&lt;=</span> <span class="n">lasttick</span><span class="p">)</span>
+                <span class="n">newticks</span> <span class="o">=</span> <span class="n">newticks</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="n">newticks</span> <span class="o">&gt;=</span> <span class="n">firsttick</span><span class="p">)</span>
+                <span class="n">ax_i</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">newticks</span><span class="p">)</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">doctest</span>
+    <span class="n">doctest</span><span class="o">.</span><span class="n">testmod</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/BloomLogo.jpg" alt="Logo"/>
+    
+    <h1 class="logo logo-name">dmslogo</h1>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Sequence logos for deep mutational scanning</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=jbloomlab&repo=dmslogo&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a class="badge" href="https://travis-ci.org/jbloomlab/dmslogo">
+    <img
+        alt="https://secure.travis-ci.org/jbloomlab/dmslogo.svg?branch=master"
+        src="https://secure.travis-ci.org/jbloomlab/dmslogo.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dmslogo.html">dmslogo package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../package_index.html">package index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../acknowledgments.html">Acknowledgements</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019--2019, the Bloom lab.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+    <a href="https://github.com/jbloomlab/dmslogo" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

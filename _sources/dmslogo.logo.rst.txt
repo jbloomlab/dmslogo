@@ -1,0 +1,4 @@
+.. automodule:: dmslogo.logo
+    :members:
+    :undoc-members:
+    :show-inheritance:

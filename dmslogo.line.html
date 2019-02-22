@@ -1,0 +1,224 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>line &#8212; dmslogo 0.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="logo" href="dmslogo.logo.html" />
+    <link rel="prev" title="facet" href="dmslogo.facet.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <span class="target" id="module-dmslogo.line"></span><div class="section" id="line">
+<h1>line<a class="headerlink" href="#line" title="Permalink to this headline">¶</a></h1>
+<p>Draw line plots of site-level properties.</p>
+<dl class="function">
+<dt id="dmslogo.line.data_units_from_linewidth">
+<code class="descclassname">dmslogo.line.</code><code class="descname">data_units_from_linewidth</code><span class="sig-paren">(</span><em>linewidth</em>, <em>ax</em>, <em>reference</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/line.html#data_units_from_linewidth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.line.data_units_from_linewidth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert linewidth in points to data units.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt><cite>linewidth</cite> (float)</dt>
+<dd>Linewidth in points.</dd>
+<dt><cite>ax</cite> (matplotlib axis)</dt>
+<dd>The axis used to extract the relevant transformation
+(data limits and size must not change afterwards).</dd>
+<dt><cite>reference</cite> (str)</dt>
+<dd>The axis that is taken as a reference for the data width.
+Possible values: ‘x’ and ‘y’.</dd>
+</dl>
+</dd>
+<dt>Returns</dt>
+<dd>Linewidth in data units.</dd>
+</dl>
+<p>Function is the inverse of the one defined here:
+<a class="reference external" href="https://stackoverflow.com/a/35501485">https://stackoverflow.com/a/35501485</a></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="dmslogo.line.draw_line">
+<code class="descclassname">dmslogo.line.</code><code class="descname">draw_line</code><span class="sig-paren">(</span><em>data</em>, <em>*</em>, <em>x_col</em>, <em>height_col</em>, <em>xtick_col=None</em>, <em>show_col=None</em>, <em>xlabel=None</em>, <em>ylabel=None</em>, <em>title=None</em>, <em>color='black'</em>, <em>linewidth=1</em>, <em>widthscale=1</em>, <em>heightscale=1</em>, <em>axisfontscale=1</em>, <em>hide_axis=False</em>, <em>ax=None</em>, <em>fixed_ymin=None</em>, <em>fixed_ymax=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/line.html#draw_line"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.line.draw_line" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draw line plot.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt><cite>data</cite> (pandas DataFrame)</dt>
+<dd>Holds data to plot. If there are duplicate rows for
+the columns of interest, removes duplicates.</dd>
+<dt><cite>height_col</cite> (str)</dt>
+<dd>Column in <cite>data</cite> with line height.</dd>
+<dt><cite>x_col</cite> (str)</dt>
+<dd>Column in <cite>data</cite> with integer site numbers. Must be full
+set of sequential numbers, gaps in numbering not allowed.</dd>
+<dt><cite>xtick_col</cite> (<cite>None</cite> or str)</dt>
+<dd>Column in <cite>data</cite> used to label sites if not using <cite>x_col</cite>.</dd>
+<dt><cite>show_col</cite> (<cite>None</cite> or str)</dt>
+<dd>Underline sites where this column is True. Useful for
+marking selected sites that are zoomed in logo plots.</dd>
+<dt><cite>xlabel</cite> (<cite>None</cite> or str)</dt>
+<dd>Label for x-axis if not using <cite>xtick_col</cite> or <cite>x_col</cite>.</dd>
+<dt><cite>ylabel</cite> (<cite>None</cite> or str)</dt>
+<dd>Label for y-axis if not using <cite>height_col</cite>.</dd>
+<dt><cite>title</cite> (<cite>None</cite> or str)</dt>
+<dd>Title to place above plot.</dd>
+<dt><cite>color</cite> (str)</dt>
+<dd>Color of line.</dd>
+<dt><cite>linewidth</cite> (float)</dt>
+<dd>Width of line.</dd>
+<dt><cite>widthscale</cite> (float)</dt>
+<dd>Scale width by this much.</dd>
+<dt><cite>heightscale</cite> (float)</dt>
+<dd>Scale height by this much.</dd>
+<dt><cite>axisfontscale</cite> (float)</dt>
+<dd>Scale size of font for axis ticks and labels by this much.</dd>
+<dt><cite>hide_axis</cite> (bool)</dt>
+<dd>Do we hide the axis and tick labels?</dd>
+<dt><cite>ax</cite> (<cite>None</cite> or matplotlib axes.Axes object)</dt>
+<dd>Use to plot on an existing axis.</dd>
+<dt><cite>fixed_ymin</cite> (<cite>None</cite> or float)</dt>
+<dd>If not <cite>None</cite>, then fixed y-axis minimum.</dd>
+<dt><cite>fixed_ymax</cite> (<cite>None</cite> or float)</dt>
+<dd>If not <cite>None</cite>, then fixed y-axis maximum.</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd>The 2-tuple <cite>(fig, ax)</cite> giving the figure and axis.</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/BloomLogo.jpg" alt="Logo"/>
+    
+    <h1 class="logo logo-name">dmslogo</h1>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Sequence logos for deep mutational scanning</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=jbloomlab&repo=dmslogo&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a class="badge" href="https://travis-ci.org/jbloomlab/dmslogo">
+    <img
+        alt="https://secure.travis-ci.org/jbloomlab/dmslogo.svg?branch=master"
+        src="https://secure.travis-ci.org/jbloomlab/dmslogo.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="dmslogo.html">dmslogo package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="package_index.html">package index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="acknowledgments.html">Acknowledgements</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="dmslogo.html">dmslogo package</a><ul>
+      <li>Previous: <a href="dmslogo.facet.html" title="previous chapter">facet</a></li>
+      <li>Next: <a href="dmslogo.logo.html" title="next chapter">logo</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019--2019, the Bloom lab.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/dmslogo.line.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/jbloomlab/dmslogo" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
