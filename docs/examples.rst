@@ -29,6 +29,13 @@ these examples:
     >>> import dmslogo
     >>> from dmslogo.colorschemes import CBPALETTE
 
+Set options for display pandas DataFrames:
+
+.. nbplot::
+
+   >>> pd.set_option('display.max_columns', 20)
+   >>> pd.set_option('display.width', 500)
+
 Simple example on toy data
 --------------------------
 
@@ -55,78 +62,14 @@ Here make a simple data frame that fits these specs:
     ...                  (    5,      'K',      0.4)],
     ...         columns=['site', 'letter', 'height'])
     ...
-    >>> print('Here are the contents of `data`:')
     >>> data
-
-    Here are the contents of `data`:
-
-
-.. raw:: html
-
-    <div>
-    <style scoped>
-        .dataframe tbody tr th:only-of-type {
-            vertical-align: middle;
-        }
-    
-        .dataframe tbody tr th {
-            vertical-align: top;
-        }
-    
-        .dataframe thead th {
-            text-align: right;
-        }
-    </style>
-    <table border="1" class="dataframe">
-      <thead>
-        <tr style="text-align: right;">
-          <th></th>
-          <th>site</th>
-          <th>letter</th>
-          <th>height</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th>0</th>
-          <td>1</td>
-          <td>A</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <th>1</th>
-          <td>1</td>
-          <td>C</td>
-          <td>0.7</td>
-        </tr>
-        <tr>
-          <th>2</th>
-          <td>2</td>
-          <td>C</td>
-          <td>0.1</td>
-        </tr>
-        <tr>
-          <th>3</th>
-          <td>2</td>
-          <td>D</td>
-          <td>1.2</td>
-        </tr>
-        <tr>
-          <th>4</th>
-          <td>5</td>
-          <td>A</td>
-          <td>0.4</td>
-        </tr>
-        <tr>
-          <th>5</th>
-          <td>5</td>
-          <td>K</td>
-          <td>0.4</td>
-        </tr>
-      </tbody>
-    </table>
-    </div>
-
+       site letter  height
+    0     1      A     1.0
+    1     1      C     0.7
+    2     2      C     0.1
+    3     2      D     1.2
+    4     5      A     0.4
+    5     5      K     0.4
 
 Use :py:mod:`dmslogo.logo.draw_logo` to draw the logo plot, passing
 the names of the columns with each piece of required data:
@@ -138,9 +81,6 @@ the names of the columns with each piece of required data:
     ...                             letter_col='letter',
     ...                             letter_height_col='height')
 
-
-
-
 Add a title:
 
 .. nbplot::
@@ -150,9 +90,6 @@ Add a title:
     ...                             letter_col='letter',
     ...                             letter_height_col='height',
     ...                             title='basic example')
-
-
-
 
 Note that the call to :py:mod:`dmslogo.logo.draw_logo` returns
 matplotlib Figure and Axis instances, which we have called ``fig`` and
@@ -184,9 +121,6 @@ directly from 2 to 5 without indicating a break:
     ...                             letter_height_col='height',
     ...                             addbreaks=False)
 
-
-
-
 Setting letter colors
 ~~~~~~~~~~~~~~~~~~~~~
 
@@ -199,86 +133,14 @@ color letters at site-specific level:
 .. nbplot::
 
     >>> data['color'] = ['red', 'gray', 'gray', 'gray', 'red', 'gray']
-    >>>
-    >>> print('Here is `data` with the added color column:')
     >>> data
-
-    Here is `data` with the added color column:
-
-
-.. raw:: html
-
-    <div>
-    <style scoped>
-        .dataframe tbody tr th:only-of-type {
-            vertical-align: middle;
-        }
-    
-        .dataframe tbody tr th {
-            vertical-align: top;
-        }
-    
-        .dataframe thead th {
-            text-align: right;
-        }
-    </style>
-    <table border="1" class="dataframe">
-      <thead>
-        <tr style="text-align: right;">
-          <th></th>
-          <th>site</th>
-          <th>letter</th>
-          <th>height</th>
-          <th>color</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th>0</th>
-          <td>1</td>
-          <td>A</td>
-          <td>1.0</td>
-          <td>red</td>
-        </tr>
-        <tr>
-          <th>1</th>
-          <td>1</td>
-          <td>C</td>
-          <td>0.7</td>
-          <td>gray</td>
-        </tr>
-        <tr>
-          <th>2</th>
-          <td>2</td>
-          <td>C</td>
-          <td>0.1</td>
-          <td>gray</td>
-        </tr>
-        <tr>
-          <th>3</th>
-          <td>2</td>
-          <td>D</td>
-          <td>1.2</td>
-          <td>gray</td>
-        </tr>
-        <tr>
-          <th>4</th>
-          <td>5</td>
-          <td>A</td>
-          <td>0.4</td>
-          <td>red</td>
-        </tr>
-        <tr>
-          <th>5</th>
-          <td>5</td>
-          <td>K</td>
-          <td>0.4</td>
-          <td>gray</td>
-        </tr>
-      </tbody>
-    </table>
-    </div>
-
+       site letter  height color
+    0     1      A     1.0   red
+    1     1      C     0.7  gray
+    2     2      C     0.1  gray
+    3     2      D     1.2  gray
+    4     5      A     0.4   red
+    5     5      K     0.4  gray
 
 Now plot using ``color_col`` to set the colors:
 
@@ -290,9 +152,6 @@ Now plot using ``color_col`` to set the colors:
     ...                             letter_height_col='height',
     ...                             color_col='color')
 
-
-
-
 Labeling x-axis ticks
 ~~~~~~~~~~~~~~~~~~~~~
 
@@ -303,93 +162,14 @@ xtick labels to ``data``:
 .. nbplot::
 
     >>> data['site_label'] = ['D1', 'D1', 'A2', 'A2', 'F5', 'F5']
-    >>>
-    >>> print('Here is `data` with the added site label column:')
     >>> data
-
-    Here is `data` with the added site label column:
-
-
-.. raw:: html
-
-    <div>
-    <style scoped>
-        .dataframe tbody tr th:only-of-type {
-            vertical-align: middle;
-        }
-    
-        .dataframe tbody tr th {
-            vertical-align: top;
-        }
-    
-        .dataframe thead th {
-            text-align: right;
-        }
-    </style>
-    <table border="1" class="dataframe">
-      <thead>
-        <tr style="text-align: right;">
-          <th></th>
-          <th>site</th>
-          <th>letter</th>
-          <th>height</th>
-          <th>color</th>
-          <th>site_label</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th>0</th>
-          <td>1</td>
-          <td>A</td>
-          <td>1.0</td>
-          <td>red</td>
-          <td>D1</td>
-        </tr>
-        <tr>
-          <th>1</th>
-          <td>1</td>
-          <td>C</td>
-          <td>0.7</td>
-          <td>gray</td>
-          <td>D1</td>
-        </tr>
-        <tr>
-          <th>2</th>
-          <td>2</td>
-          <td>C</td>
-          <td>0.1</td>
-          <td>gray</td>
-          <td>A2</td>
-        </tr>
-        <tr>
-          <th>3</th>
-          <td>2</td>
-          <td>D</td>
-          <td>1.2</td>
-          <td>gray</td>
-          <td>A2</td>
-        </tr>
-        <tr>
-          <th>4</th>
-          <td>5</td>
-          <td>A</td>
-          <td>0.4</td>
-          <td>red</td>
-          <td>F5</td>
-        </tr>
-        <tr>
-          <th>5</th>
-          <td>5</td>
-          <td>K</td>
-          <td>0.4</td>
-          <td>gray</td>
-          <td>F5</td>
-        </tr>
-      </tbody>
-    </table>
-    </div>
-
+       site letter  height color site_label
+    0     1      A     1.0   red         D1
+    1     1      C     0.7  gray         D1
+    2     2      C     0.1  gray         A2
+    3     2      D     1.2  gray         A2
+    4     5      A     0.4   red         F5
+    5     5      K     0.4  gray         F5
 
 Now use ``xtick_col`` to set the xticks:
 
@@ -401,9 +181,6 @@ Now use ``xtick_col`` to set the xticks:
     ...                             letter_height_col='height',
     ...                             color_col='color',
     ...                             xtick_col='site_label')
-
-
-
 
 Adjusting size, axis labels, axes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -430,9 +207,6 @@ and get rid of the x-axis label:
     ...                             axisfontscale=1.5
     ...                             )
 
-
-
-
 Now we make a plot where we hide the axes and their labels altogether:
 
 .. nbplot::
@@ -445,9 +219,6 @@ Now we make a plot where we hide the axes and their labels altogether:
     ...                             xtick_col='site_label',
     ...                             hide_axis=True
     ...                             )
-
-
-
 
 Multiple logos in one figure
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -487,9 +258,6 @@ also do it using matplotlib subplots as here:
     ...                       ax=axes[1],
     ...                       ylabel='',
     ...                       title='user-specified colors')
-
-
-
 
 Real HIV data from Dingens et al
 --------------------------------
@@ -532,81 +300,12 @@ gives the immune selection (*mutfracsurvive*):
 .. nbplot::
 
     >>> data_hiv.head(n=5)
-
-
-
-.. raw:: html
-
-    <div>
-    <style scoped>
-        .dataframe tbody tr th:only-of-type {
-            vertical-align: middle;
-        }
-    
-        .dataframe tbody tr th {
-            vertical-align: top;
-        }
-    
-        .dataframe thead th {
-            text-align: right;
-        }
-    </style>
-    <table border="1" class="dataframe">
-      <thead>
-        <tr style="text-align: right;">
-          <th></th>
-          <th>site</th>
-          <th>wildtype</th>
-          <th>mutation</th>
-          <th>mutfracsurvive</th>
-          <th>antibody</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th>0</th>
-          <td>160</td>
-          <td>N</td>
-          <td>I</td>
-          <td>0.256342</td>
-          <td>PG9</td>
-        </tr>
-        <tr>
-          <th>1</th>
-          <td>160</td>
-          <td>N</td>
-          <td>L</td>
-          <td>0.207440</td>
-          <td>PG9</td>
-        </tr>
-        <tr>
-          <th>2</th>
-          <td>160</td>
-          <td>N</td>
-          <td>R</td>
-          <td>0.184067</td>
-          <td>PG9</td>
-        </tr>
-        <tr>
-          <th>3</th>
-          <td>171</td>
-          <td>K</td>
-          <td>E</td>
-          <td>0.176118</td>
-          <td>PG9</td>
-        </tr>
-        <tr>
-          <th>4</th>
-          <td>428</td>
-          <td>Q</td>
-          <td>Y</td>
-          <td>0.150981</td>
-          <td>PG9</td>
-        </tr>
-      </tbody>
-    </table>
-    </div>
-
+      site wildtype mutation  mutfracsurvive antibody
+    0  160        N        I        0.256342      PG9
+    1  160        N        L        0.207440      PG9
+    2  160        N        R        0.184067      PG9
+    3  171        K        E        0.176118      PG9
+    4  428        Q        Y        0.150981      PG9
 
 The sites in this data frame are in the `HXB2 numbering
 scheme <https://www.hiv.lanl.gov/content/sequence/HIV/REVIEWS/HXB2.html>`__,
@@ -635,87 +334,12 @@ sequential integer numbering of the sequence:
 .. nbplot::
 
     >>> data_hiv.head(n=5)
-
-
-
-.. raw:: html
-
-    <div>
-    <style scoped>
-        .dataframe tbody tr th:only-of-type {
-            vertical-align: middle;
-        }
-    
-        .dataframe tbody tr th {
-            vertical-align: top;
-        }
-    
-        .dataframe thead th {
-            text-align: right;
-        }
-    </style>
-    <table border="1" class="dataframe">
-      <thead>
-        <tr style="text-align: right;">
-          <th></th>
-          <th>site</th>
-          <th>isite</th>
-          <th>wildtype</th>
-          <th>mutation</th>
-          <th>mutfracsurvive</th>
-          <th>antibody</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th>0</th>
-          <td>31</td>
-          <td>30</td>
-          <td>A</td>
-          <td>Y</td>
-          <td>0.030824</td>
-          <td>PG9</td>
-        </tr>
-        <tr>
-          <th>1</th>
-          <td>31</td>
-          <td>30</td>
-          <td>A</td>
-          <td>K</td>
-          <td>0.006860</td>
-          <td>PG9</td>
-        </tr>
-        <tr>
-          <th>2</th>
-          <td>31</td>
-          <td>30</td>
-          <td>A</td>
-          <td>D</td>
-          <td>0.006774</td>
-          <td>PG9</td>
-        </tr>
-        <tr>
-          <th>3</th>
-          <td>31</td>
-          <td>30</td>
-          <td>A</td>
-          <td>S</td>
-          <td>0.004407</td>
-          <td>PG9</td>
-        </tr>
-        <tr>
-          <th>4</th>
-          <td>31</td>
-          <td>30</td>
-          <td>A</td>
-          <td>R</td>
-          <td>0.003501</td>
-          <td>PG9</td>
-        </tr>
-      </tbody>
-    </table>
-    </div>
-
+      site  isite wildtype mutation  mutfracsurvive antibody
+    0   31     30        A        Y        0.030824      PG9
+    1   31     30        A        K        0.006860      PG9
+    2   31     30        A        D        0.006774      PG9
+    3   31     30        A        S        0.004407      PG9
+    4   31     30        A        R        0.003501      PG9
 
 We add a column (``site_label``) that gives the site labeled with the
 wildtype identity that we can use for axis ticks. We also indicate which
@@ -726,7 +350,7 @@ just the same ones in Figure 3 of the `Dingens et al
 .. nbplot::
 
     >>> # same sites in Figure 3D,E of Dingens et al (2019)
-    >>> sites_to_show = map(str, list(range(119, 125)) + 
+    >>> sites_to_show = map(str, list(range(119, 125)) +
     ...                          [127] +
     ...                          list(range(156, 174)) +
     ...                          list(range(199, 205)) +
@@ -746,99 +370,12 @@ columns:
 .. nbplot::
 
     >>> data_hiv.head(n=5)
-
-
-
-.. raw:: html
-
-    <div>
-    <style scoped>
-        .dataframe tbody tr th:only-of-type {
-            vertical-align: middle;
-        }
-    
-        .dataframe tbody tr th {
-            vertical-align: top;
-        }
-    
-        .dataframe thead th {
-            text-align: right;
-        }
-    </style>
-    <table border="1" class="dataframe">
-      <thead>
-        <tr style="text-align: right;">
-          <th></th>
-          <th>site</th>
-          <th>isite</th>
-          <th>wildtype</th>
-          <th>mutation</th>
-          <th>mutfracsurvive</th>
-          <th>antibody</th>
-          <th>site_label</th>
-          <th>show_site</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th>0</th>
-          <td>31</td>
-          <td>30</td>
-          <td>A</td>
-          <td>Y</td>
-          <td>0.030824</td>
-          <td>PG9</td>
-          <td>A31</td>
-          <td>False</td>
-        </tr>
-        <tr>
-          <th>1</th>
-          <td>31</td>
-          <td>30</td>
-          <td>A</td>
-          <td>K</td>
-          <td>0.006860</td>
-          <td>PG9</td>
-          <td>A31</td>
-          <td>False</td>
-        </tr>
-        <tr>
-          <th>2</th>
-          <td>31</td>
-          <td>30</td>
-          <td>A</td>
-          <td>D</td>
-          <td>0.006774</td>
-          <td>PG9</td>
-          <td>A31</td>
-          <td>False</td>
-        </tr>
-        <tr>
-          <th>3</th>
-          <td>31</td>
-          <td>30</td>
-          <td>A</td>
-          <td>S</td>
-          <td>0.004407</td>
-          <td>PG9</td>
-          <td>A31</td>
-          <td>False</td>
-        </tr>
-        <tr>
-          <th>4</th>
-          <td>31</td>
-          <td>30</td>
-          <td>A</td>
-          <td>R</td>
-          <td>0.003501</td>
-          <td>PG9</td>
-          <td>A31</td>
-          <td>False</td>
-        </tr>
-      </tbody>
-    </table>
-    </div>
-
+      site  isite wildtype mutation  mutfracsurvive antibody site_label  show_site
+    0   31     30        A        Y        0.030824      PG9        A31      False
+    1   31     30        A        K        0.006860      PG9        A31      False
+    2   31     30        A        D        0.006774      PG9        A31      False
+    3   31     30        A        S        0.004407      PG9        A31      False
+    4   31     30        A        R        0.003501      PG9        A31      False
 
 Draw a logo plot
 ~~~~~~~~~~~~~~~~
@@ -861,9 +398,6 @@ just the antibody of interest:
     ...                             letter_height_col='mutfracsurvive',
     ...                             xtick_col='site_label',
     ...                             title='PG9')
-
-
-
 
 Draw site-level line plots
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -895,105 +429,12 @@ fraction surviving at each site:
 .. nbplot::
 
     >>> data_hiv.head(n=5)
-
-
-
-.. raw:: html
-
-    <div>
-    <style scoped>
-        .dataframe tbody tr th:only-of-type {
-            vertical-align: middle;
-        }
-    
-        .dataframe tbody tr th {
-            vertical-align: top;
-        }
-    
-        .dataframe thead th {
-            text-align: right;
-        }
-    </style>
-    <table border="1" class="dataframe">
-      <thead>
-        <tr style="text-align: right;">
-          <th></th>
-          <th>site</th>
-          <th>isite</th>
-          <th>wildtype</th>
-          <th>mutation</th>
-          <th>mutfracsurvive</th>
-          <th>antibody</th>
-          <th>site_label</th>
-          <th>show_site</th>
-          <th>avgfracsurvive</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th>0</th>
-          <td>31</td>
-          <td>30</td>
-          <td>A</td>
-          <td>Y</td>
-          <td>0.030824</td>
-          <td>PG9</td>
-          <td>A31</td>
-          <td>False</td>
-          <td>0.00329</td>
-        </tr>
-        <tr>
-          <th>1</th>
-          <td>31</td>
-          <td>30</td>
-          <td>A</td>
-          <td>K</td>
-          <td>0.006860</td>
-          <td>PG9</td>
-          <td>A31</td>
-          <td>False</td>
-          <td>0.00329</td>
-        </tr>
-        <tr>
-          <th>2</th>
-          <td>31</td>
-          <td>30</td>
-          <td>A</td>
-          <td>D</td>
-          <td>0.006774</td>
-          <td>PG9</td>
-          <td>A31</td>
-          <td>False</td>
-          <td>0.00329</td>
-        </tr>
-        <tr>
-          <th>3</th>
-          <td>31</td>
-          <td>30</td>
-          <td>A</td>
-          <td>S</td>
-          <td>0.004407</td>
-          <td>PG9</td>
-          <td>A31</td>
-          <td>False</td>
-          <td>0.00329</td>
-        </tr>
-        <tr>
-          <th>4</th>
-          <td>31</td>
-          <td>30</td>
-          <td>A</td>
-          <td>R</td>
-          <td>0.003501</td>
-          <td>PG9</td>
-          <td>A31</td>
-          <td>False</td>
-          <td>0.00329</td>
-        </tr>
-      </tbody>
-    </table>
-    </div>
-
+      site  isite wildtype mutation  mutfracsurvive antibody site_label  show_site  avgfracsurvive
+    0   31     30        A        Y        0.030824      PG9        A31      False         0.00329
+    1   31     30        A        K        0.006860      PG9        A31      False         0.00329
+    2   31     30        A        D        0.006774      PG9        A31      False         0.00329
+    3   31     30        A        S        0.004407      PG9        A31      False         0.00329
+    4   31     30        A        R        0.003501      PG9        A31      False         0.00329
 
 Now we use the :py:mod:`dmslogo.draw_line` function to draw the line plot for
 antibody *PG9*. Note how we provide our new ``avgfracsurvive`` column as
@@ -1004,16 +445,13 @@ logo plot underlined in orange:
 
 .. nbplot::
 
-    >>> fig, ax = dmslogo.draw_line(data_hiv.query('antibody == "PG9"'), 
+    >>> fig, ax = dmslogo.draw_line(data_hiv.query('antibody == "PG9"'),
     ...                             x_col='isite',
     ...                             height_col='avgfracsurvive',
     ...                             xtick_col='site',
     ...                             show_col='show_site',
     ...                             title='PG9',
     ...                             widthscale=2)
-
-
-
 
 Combining site-level line and mutation-level logo plots
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1051,9 +489,6 @@ underline to indicate which sites are zoomed in the logo plot:
     ...                       ax=axes[1],
     ...                       xtick_col='site_label')
 
-
-
-
 Faceting line and logo plots together
 -------------------------------------
 
@@ -1086,9 +521,6 @@ plots, and additional keyword arguments for
     ...                     logo_titlesuffix='mutation-level selection'
     ...                     )
 
-
-
-
 Write *DMSLOGO* in Comic Sans font
 ----------------------------------
 
@@ -1110,92 +542,20 @@ letters.
     ...     word_data['letter'].append(letter)
     ...     word_data['color'].append(color)
     ...     word_data['height'].append(random.uniform(1, 1.5))
-    ...     for otherletter in random.sample(set('ACTG') - {letter}, 3):
+    ...     for otherletter in random.sample(sorted(set('ACTG') - {letter}), 3):
     ...         word_data['x'].append(x)
     ...         word_data['letter'].append(otherletter)
     ...         word_data['color'].append(CBPALETTE[0])
     ...         word_data['height'].append(random.uniform(0.1, 0.5))
     >>> word_data = pd.DataFrame(word_data)
-    >>>
-    >>> print('Here are the first few rows of `word_data`:')
     >>> word_data.head(n=6)
-
-    Here are the first few rows of `word_data`:
-
-
-.. raw:: html
-
-    <div>
-    <style scoped>
-        .dataframe tbody tr th:only-of-type {
-            vertical-align: middle;
-        }
-    
-        .dataframe tbody tr th {
-            vertical-align: top;
-        }
-    
-        .dataframe thead th {
-            text-align: right;
-        }
-    </style>
-    <table border="1" class="dataframe">
-      <thead>
-        <tr style="text-align: right;">
-          <th></th>
-          <th>x</th>
-          <th>letter</th>
-          <th>height</th>
-          <th>color</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th>0</th>
-          <td>0</td>
-          <td>D</td>
-          <td>1.422211</td>
-          <td>#E69F00</td>
-        </tr>
-        <tr>
-          <th>1</th>
-          <td>0</td>
-          <td>A</td>
-          <td>0.486186</td>
-          <td>#999999</td>
-        </tr>
-        <tr>
-          <th>2</th>
-          <td>0</td>
-          <td>T</td>
-          <td>0.294371</td>
-          <td>#999999</td>
-        </tr>
-        <tr>
-          <th>3</th>
-          <td>0</td>
-          <td>G</td>
-          <td>0.467294</td>
-          <td>#999999</td>
-        </tr>
-        <tr>
-          <th>4</th>
-          <td>1</td>
-          <td>M</td>
-          <td>1.414926</td>
-          <td>#E69F00</td>
-        </tr>
-        <tr>
-          <th>5</th>
-          <td>1</td>
-          <td>A</td>
-          <td>0.301875</td>
-          <td>#999999</td>
-        </tr>
-      </tbody>
-    </table>
-    </div>
-
+       x letter    height    color
+    0  0      D  1.422211  #E69F00
+    1  0      T  0.486186  #999999
+    2  0      A  0.294371  #999999
+    3  0      C  0.467294  #999999
+    4  1      M  1.414926  #E69F00
+    5  1      T  0.301875  #999999
 
 Now draw the logo. We use the ``fontfamily`` argument to set a Comic
 Sans font This also requires us to increase ``fontaspect`` since this
@@ -1214,7 +574,3 @@ sticks out beyond its baseline:
     ...                             fontaspect=0.85,
     ...                             letterpad=0.05
     ...                             )
-
-
-
-
