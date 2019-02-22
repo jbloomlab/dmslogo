@@ -98,8 +98,9 @@ def facet_plot(
             if any(firstgroup[col] != group[col]):
                 raise ValueError(
                       f"different entries for {col} "
-                      f"in `data`: differs between {firstgroupname} "
-                      f"and {groupname}")
+                      f"in `data`, differs between {firstgroupname} "
+                      f"and {groupname}:\n"
+                      f"{firstgroup[col]}\n{group[col]}")
 
     # determine which draw_funcs are being used
     draw_funcs = collections.OrderedDict()
@@ -117,10 +118,13 @@ def facet_plot(
                                     )
             if name == 'draw_logo' and show_col is not None:
                 draw_funcs[name]['data'] = data.query(show_col)
+            if not len(draw_funcs[name]['data']):
+                raise ValueError(
+                        f"no data for {name}. You passed empty `data` "
+                        f"or `show_col` ({show_col}) is all False.")
     if len(draw_funcs) < 1:
-        raise ValueError('set at least one of: ' +
-                         ', '.join(f + '_kwargs') for f in
-                         list(zip(*possible_funcs)))
+        raise ValueError('set at least one of: ' + ', '.join(tup[0] +
+                         '_kwargs' for tup in possible_funcs))
 
     # harmonize top-function arg columns with plotting kwargs
     for name, name_d in draw_funcs.items():

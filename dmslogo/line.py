@@ -131,7 +131,7 @@ def draw_line(data,
 
     data = data[cols].drop_duplicates().sort_values(x_col)
 
-    if data[x_col].dtype != int:
+    if any(data[x_col] != data[x_col].astype(int)):
         raise ValueError('`x_col` does not have integer values')
 
     xmin = data[x_col].min()

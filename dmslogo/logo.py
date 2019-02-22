@@ -248,7 +248,7 @@ def draw_logo(data,
         raise ValueError(f"`data` lacks column {color_col}")
     if any(data[letter_height_col] < 0):
         raise ValueError('`letter_height_col` has negative heights')
-    if data[x_col].dtype != int:
+    if any(data[x_col] != data[x_col].astype(int)):
         raise ValueError('`x_col` does not have integer values')
     if any(len(set(g[xtick_col])) != 1 for _, g in data.groupby(x_col)):
         raise ValueError('not unique mapping of `x_col` to `xtick_col`')
