@@ -167,7 +167,8 @@ def draw_logo(data,
               letterheightscale=0.98,
               ax=None,
               fixed_ymin=None,
-              fixed_ymax=None):
+              fixed_ymax=None,
+              clip_negative_heights=False):
     """Draw sequence logo from specified letter heights.
 
     Args:
@@ -223,6 +224,8 @@ def draw_logo(data,
             If not `None`, then fixed y-axis minimum.
         `fixed_ymax` (`None` or float)
             If not `None`, then fixed y-axis maximum.
+        `clip_negative_heights` (bool)
+            Set to 0 any value in `letter_height_col` that is < 0.
 
     Returns:
         The 2-tuple `(fig, ax)` giving the figure and axis.
@@ -246,8 +249,12 @@ def draw_logo(data,
             raise ValueError(f"`data` lacks column {col}")
     if (color_col is not None) and (color_col not in data.columns):
         raise ValueError(f"`data` lacks column {color_col}")
+    if clip_negative_heights:
+        data = data.assign(**{letter_height_col: lambda x: numpy.clip(
+                           x[letter_height_col], 0, None)})
     if any(data[letter_height_col] < 0):
-        raise ValueError('`letter_height_col` has negative heights')
+        raise ValueError('`letter_height_col` has negative heights.\n'
+                         'Consider setting `clip_negative_heights`.')
     if any(data[x_col] != data[x_col].astype(int)):
         raise ValueError('`x_col` does not have integer values')
     if any(len(set(g[xtick_col])) != 1 for _, g in data.groupby(x_col)):
