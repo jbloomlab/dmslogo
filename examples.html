@@ -276,7 +276,7 @@ and get rid of the x-axis label:</p>
 <div class="section" id="multiple-logos-in-one-figure">
 <h3><a class="toc-backref" href="#id9">Multiple logos in one figure</a><a class="headerlink" href="#multiple-logos-in-one-figure" title="Permalink to this headline">¶</a></h3>
 <p>So far we have made individual plots on newly generate figures created
-by <code class="xref py py-mod docutils literal notranslate"><span class="pre">dmslogo.draw_logo</span></code>.</p>
+by <a class="reference internal" href="dmslogo.logo.html#dmslogo.logo.draw_logo" title="dmslogo.logo.draw_logo"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dmslogo.logo.draw_logo</span></code></a>.</p>
 <p>But we can also create a multi-axis figure, and then draw several logos
 onto that. The easiest way to do this is with the
 <a class="reference internal" href="dmslogo.facet.html#dmslogo.facet.facet_plot" title="dmslogo.facet.facet_plot"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dmslogo.facet.facet_plot</span></code></a> command described below. But we can
@@ -471,7 +471,7 @@ fraction surviving at each site:</p>
 <span class="go">4   31     30        A        R        0.003501      PG9        A31      False         0.00329</span>
 </pre></div>
 </div>
-<p>Now we use the <code class="xref py py-mod docutils literal notranslate"><span class="pre">dmslogo.draw_line</span></code> function to draw the line plot for
+<p>Now we use the <a class="reference internal" href="dmslogo.line.html#dmslogo.line.draw_line" title="dmslogo.line.draw_line"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dmslogo.line.draw_line</span></code></a> function to draw the line plot for
 antibody <em>PG9</em>. Note how we provide our new <code class="docutils literal notranslate"><span class="pre">avgfracsurvive</span></code> column as
 <code class="docutils literal notranslate"><span class="pre">height_col</span></code>. We also provide our previously defined <code class="docutils literal notranslate"><span class="pre">show_site</span></code>
 column (which indicates which sites were shown in the logo plot) as the
@@ -495,7 +495,7 @@ logo plot underlined in orange:</p>
 <h3><a class="toc-backref" href="#id14">Combining site-level line and mutation-level logo plots</a><a class="headerlink" href="#combining-site-level-line-and-mutation-level-logo-plots" title="Permalink to this headline">¶</a></h3>
 <p>Of course, a line plot isn’t that hard to make, but the advantage of
 doing this using the approach above is that we can combine
-<code class="xref py py-mod docutils literal notranslate"><span class="pre">dmslogo.draw_line</span></code> and <code class="xref py py-mod docutils literal notranslate"><span class="pre">dmslogo.draw_logo</span></code> to create a single
+<a class="reference internal" href="dmslogo.line.html#dmslogo.line.draw_line" title="dmslogo.line.draw_line"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dmslogo.line.draw_line</span></code></a> and <a class="reference internal" href="dmslogo.logo.html#dmslogo.logo.draw_logo" title="dmslogo.logo.draw_logo"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dmslogo.logo.draw_logo</span></code></a> to create a single
 figure that shows the site-selection in a line plot and the selected
 sites as logo plots.</p>
 <p>The easiest way to do this using the

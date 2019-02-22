@@ -226,7 +226,7 @@ Multiple logos in one figure
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 So far we have made individual plots on newly generate figures created
-by :py:mod:`dmslogo.draw_logo`.
+by :py:mod:`dmslogo.logo.draw_logo`.
 
 But we can also create a multi-axis figure, and then draw several logos
 onto that. The easiest way to do this is with the
@@ -438,7 +438,7 @@ fraction surviving at each site:
     3   31     30        A        S        0.004407      PG9        A31      False         0.00329
     4   31     30        A        R        0.003501      PG9        A31      False         0.00329
 
-Now we use the :py:mod:`dmslogo.draw_line` function to draw the line plot for
+Now we use the :py:mod:`dmslogo.line.draw_line` function to draw the line plot for
 antibody *PG9*. Note how we provide our new ``avgfracsurvive`` column as
 ``height_col``. We also provide our previously defined ``show_site``
 column (which indicates which sites were shown in the logo plot) as the
@@ -460,7 +460,7 @@ Combining site-level line and mutation-level logo plots
 
 Of course, a line plot isn’t that hard to make, but the advantage of
 doing this using the approach above is that we can combine
-:py:mod:`dmslogo.draw_line` and :py:mod:`dmslogo.draw_logo` to create a single
+:py:mod:`dmslogo.line.draw_line` and :py:mod:`dmslogo.logo.draw_logo` to create a single
 figure that shows the site-selection in a line plot and the selected
 sites as logo plots.
 
