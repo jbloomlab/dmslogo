@@ -168,7 +168,8 @@ def draw_logo(data,
               ax=None,
               fixed_ymin=None,
               fixed_ymax=None,
-              clip_negative_heights=False):
+              clip_negative_heights=False,
+              drop_na_letter_heights=True):
     """Draw sequence logo from specified letter heights.
 
     Args:
@@ -226,6 +227,8 @@ def draw_logo(data,
             If not `None`, then fixed y-axis maximum.
         `clip_negative_heights` (bool)
             Set to 0 any value in `letter_height_col` that is < 0.
+        `drop_na_letter_heights` (bool)
+            Drop any rows in `data` where `letter_height_col` is NaN.
 
     Returns:
         The 2-tuple `(fig, ax)` giving the figure and axis.
@@ -249,6 +252,10 @@ def draw_logo(data,
             raise ValueError(f"`data` lacks column {col}")
     if (color_col is not None) and (color_col not in data.columns):
         raise ValueError(f"`data` lacks column {color_col}")
+    if drop_na_letter_heights:
+        data = data[-data[letter_height_col].isna()]
+        if len(data) == 0:
+            raise ValueError('no data after dropping nan heights')
     if clip_negative_heights:
         data = data.assign(**{letter_height_col: lambda x: numpy.clip(
                            x[letter_height_col], 0, None)})
@@ -323,9 +330,15 @@ def draw_logo(data,
     xpad = 0.2
     ax.set_xlim(-xpad, nstacks + xpad)
     ylimpad = 0.05 * max_stack_height
-    ax.set_ylim(-ylimpad if fixed_ymin is None else fixed_ymin,
-                max_stack_height + ylimpad if fixed_ymax is None
-                else fixed_ymax)
+    if fixed_ymin is None:
+        ymin = -ylimpad
+    else:
+        ymin = fixed_ymin
+    if fixed_ymax is None:
+        ymax = max_stack_height + ylimpad
+    else:
+        ymax = fixed_ymax
+    ax.set_ylim(ymin, ymax)
 
     if not hide_axis:
         ax.set_xticks(numpy.arange(nstacks) + 0.5)
