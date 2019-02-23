@@ -93,6 +93,7 @@ def facet_plot(
     firstgroupname, firstgroup = list(groups)[0]
     firstgroup = firstgroup.reset_index(drop=True)
     for groupname, group in groups:
+        assert len(group), f"empty group {groupname}"
         group = group.reset_index(drop=True)
         for col in cols[2:]:
             if any(firstgroup[col] != group[col]):
@@ -265,10 +266,23 @@ def _draw_facet_plots(axes, draw_funcs, ncols_per_func,
                       gridrow_col, gridcol_col, nrows):
     """Helper function draws plots on axes for :func:`facet_plots`."""
     for ifunc, func_d in enumerate(draw_funcs.values()):
-        for irow, (row_name, row_data) in enumerate(
-                    func_d['data'].groupby(gridrow_col)):
-            for icol, (col_name, col_data) in enumerate(
-                        row_data.groupby(gridcol_col)):
+
+        groups = [(row_name, row_data) for row_name, row_data in
+                  func_d['data'].groupby(gridrow_col) if len(row_data)]
+        assert len(groups) == nrows
+
+        for irow, (row_name, row_data) in enumerate(groups):
+
+            assert (0 <= irow < nrows), (
+                    f"irow out of bound\nirow: {irow}\nnrows: {nrows}\n"
+                    f"row_name: {row_name}\nngroups: {len(groups)}")
+
+            row_groups = [(col_name, col_data) for col_name, col_data in
+                          row_data.groupby(gridcol_col) if len(col_data)]
+            assert len(row_groups) == ncols_per_func
+
+            for icol, (col_name, col_data) in enumerate(row_groups):
+
                 ax = axes[irow, ifunc * ncols_per_func + icol]
                 title = (row_name +
                          (' ' if row_name and col_name else '') +
