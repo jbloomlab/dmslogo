@@ -108,14 +108,19 @@ def _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect,
     max_stack_height = max(sum([tup[1] for tup in row]) for
                            row in height_matrix)
 
-    letterpadheight = max_stack_height * letterpad
+    (ymin, ymax) = ax.get_ylim()
+    if max_stack_height > ymax:
+        raise ValueError('`max_stack_height` exceeds `ymax`')
+    if ymin > 0:
+        raise ValueError('`ymin` > 0')
+    yextent = ymax - ymin
 
-    fontsize = (height / max_stack_height) * 72.0 / fig.dpi
+    letterpadheight = yextent * letterpad
+    fontsize = (height / yextent) * 72.0 / fig.dpi
     font = _setup_font(fontsize=fontsize, fontfamily=fontfamily)
     frac_above_baseline = _frac_above_baseline(font)
-
-    fontwidthscale = width * max_stack_height / (height * fontaspect *
-                                                 len(height_matrix))
+    fontwidthscale = width * yextent / (height * fontaspect *
+                                        len(height_matrix))
 
     for xindex, xcol in enumerate(height_matrix):
 
