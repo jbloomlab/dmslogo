@@ -46,6 +46,22 @@ def _setup_font(fontfamily, fontsize):
     return font
 
 
+class Memoize:
+    """Memoize function.
+
+    Taken from here: https://stackoverflow.com/a/1988826"""
+    def __init__(self, f):
+        self.f = f
+        self.memo = {}
+
+    def __call__(self, *args):
+        if args not in self.memo:
+            self.memo[args] = self.f(*args)
+        # Warning: You may wish to do a deepcopy here if returning objects
+        return self.memo[args]
+
+
+@Memoize
 def _frac_above_baseline(font):
     """Returns fraction of font height that is above baseline.
 
@@ -145,8 +161,6 @@ def _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect,
                      ])
 
             ypos += letterheight
-
-    fig.canvas.draw()
 
 
 def draw_logo(data,
