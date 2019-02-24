@@ -272,11 +272,13 @@ def draw_logo(data,
     if any(len(set(g[xtick_col])) != 1 for _, g in data.groupby(x_col)):
         raise ValueError('not unique mapping of `x_col` to `xtick_col`')
 
-    # construct height_matrix: list of lists of (letter, hegith, color)
+    # construct height_matrix: list of lists of (letter, heigth, color)
     height_matrix = []
+    xticklabels = []
     xticks = []
     lastx = None
     breaks = []
+    xtick = 0.5
     for x, xdata in (data
                      .sort_values([x_col, letter_height_col])
                      .groupby(x_col)
@@ -285,7 +287,7 @@ def draw_logo(data,
         if addbreaks and (lastx is not None) and (x != lastx + 1):
             breaks.append(len(height_matrix))
             height_matrix.append([])
-            xticks.append('')
+            xtick += 1
         lastx = x
 
         if len(xdata[letter_col]) != len(xdata[letter_col].unique()):
@@ -311,10 +313,12 @@ def draw_logo(data,
         height_matrix.append(row)
 
         assert len(xdata[xtick_col].unique()) == 1
-        xticks.append(str(xdata[xtick_col].values[0]))
+        xticklabels.append(str(xdata[xtick_col].values[0]))
 
-    nstacks = len(height_matrix)
-    assert len(xticks) == nstacks
+        xticks.append(xtick)
+        xtick += 1
+
+    assert len(xticklabels) == len(xticks)
     max_stack_height = max(sum([tup[1] for tup in row]) for
                            row in height_matrix)
 
@@ -322,7 +326,8 @@ def draw_logo(data,
     if not ax:
         fig, ax = plt.subplots()
         fig.set_size_inches(
-                (widthscale * 0.45 * (nstacks + int(not hide_axis)),
+                (widthscale * 0.4 * (len(height_matrix) +
+                                     int(not hide_axis)),
                  heightscale * (2 + 0.5 * int(not hide_axis) +
                                 0.5 * int(bool(title)))
                  ))
@@ -333,7 +338,7 @@ def draw_logo(data,
         ax.set_title(title, fontsize=18 * axisfontscale)
 
     xpad = 0.2
-    ax.set_xlim(-xpad, nstacks + xpad)
+    ax.set_xlim(-xpad, len(height_matrix) + xpad)
     ylimpad = 0.05 * max_stack_height
     if fixed_ymin is None:
         ymin = -ylimpad
@@ -346,8 +351,9 @@ def draw_logo(data,
     ax.set_ylim(ymin, ymax)
 
     if not hide_axis:
-        ax.set_xticks(numpy.arange(nstacks) + 0.5)
-        ax.set_xticklabels(xticks, rotation=90, ha='center', va='top')
+        ax.set_xticks(xticks)
+        ax.tick_params(length=5, width=1)
+        ax.set_xticklabels(xticklabels, rotation=90, ha='center', va='top')
         ax.yaxis.set_major_locator(matplotlib.ticker.MaxNLocator(4))
         ax.tick_params('both', labelsize=12 * axisfontscale)
         ax.set_xlabel(xlabel, fontsize=17 * axisfontscale)

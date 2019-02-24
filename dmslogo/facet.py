@@ -18,6 +18,7 @@ def facet_plot(
             *,
             x_col,
             show_col,
+            height_per_ax=2.25,
             gridrow_col=None,
             gridcol_col=None,
             draw_line_kwargs=None,
@@ -41,6 +42,8 @@ def facet_plot(
         `show_col` (str or `None`)
             Column in `data` with x-axis values to highlight in line
             plots and to show in logo plots.
+        `height_per_ax` (float)
+            Height of each axis in the faceted plot.
         `gridrow_col` (str or `None`)
             Column in `data` to facet over for rows of plot.
         `gridcol_col` (str or `None`)
@@ -112,6 +115,9 @@ def facet_plot(
             for col in ['ax', 'title']:
                 if col in kwargs:
                     raise ValueError(f"{name}_kwargs can't have {col}")
+            if 'heightscale' in kwargs:
+                raise ValueError(f"do not set `heightscale` in "
+                                 f"{name}_kwargs; use `height_per_ax`")
             draw_funcs[name] = dict(kwargs=kwargs,
                                     func=getattr(dmslogo, name),
                                     data=data,
@@ -148,26 +154,33 @@ def facet_plot(
         for i, idata in name_d['data'].groupby(([gridrow_col,
                                                  gridcol_col])):
             fig, ax = name_d['func'](idata, **name_d['kwargs'])
-            width, height = fig.get_size_inches()
+            fig.tight_layout()
+            ax_bbox = ax.get_window_extent().transformed(
+                      fig.dpi_scale_trans.inverted())
+            width = fig.get_size_inches()[0]
+            xlabel_height = ax_bbox.y0
             xticks = list(ax.get_xticks())
             xticklabels = [t.get_text() for t in ax.get_xticklabels()]
             ymin, ymax = ax.get_ylim()
             plt.close(fig)
             for key, val in [('width', width),
-                             ('height', height),
                              ('xticks', xticks),
                              ('xticklabels', xticklabels)]:
                 if key not in name_d:
                     name_d[key] = val
                 elif name_d[key] != val:
                     raise ValueError(f"inconsistent {key} for {name}: "
-                                     "{val} {name_d[key]}")
+                                     f"{val} {name_d[key]}")
             if 'ymin' not in name_d:
                 name_d['ymin'] = ymin
             name_d['ymin'] = min(name_d['ymin'], ymin)
             if 'ymax' not in name_d:
                 name_d['ymax'] = ymax
             name_d['ymax'] = max(name_d['ymax'], ymax)
+            if 'xlabel_height' not in name_d:
+                name_d['xlabel_height'] = xlabel_height
+            name_d['xlabel_height'] = max(name_d['xlabel_height'],
+                                          xlabel_height)
 
         # add the fixed y limits
         name_d['kwargs']['fixed_ymin'] = name_d['ymin']
@@ -182,10 +195,11 @@ def facet_plot(
                                  for d in draw_funcs.values()
                                  for _ in range(ncols_per_func)]}
                     )
-    fig.set_size_inches(ncols_per_func * sum(d['width']
-                        for d in draw_funcs.values()),
-                        nrows * max(d['height']
-                        for d in draw_funcs.values()))
+    width = ncols_per_func * sum(d['width'] for d in
+                                 draw_funcs.values())
+    height = nrows * height_per_ax + max(d['xlabel_height'] for d
+                                         in draw_funcs.values())
+    fig.set_size_inches(width, height)
     fig.subplots_adjust(wspace=0.01)
 
     # Add plots, adjust to tight layout, clear axes, and replot.

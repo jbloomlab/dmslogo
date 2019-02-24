@@ -156,10 +156,10 @@ def draw_line(data,
     # setup axis for plotting
     if not ax:
         fig, ax = plt.subplots()
-        # width per site ranges from 0.03 for xlen <= 100 to
-        # 0.01 for xlen > 700
-        xwidth = 0.03 - 0.02 * (min(700, max(100, xlen)) - 100
-                                ) / (700 - 100)
+        # width per site ranges from 0.02 for xlen <= 100 to
+        # 0.07 for xlen > 700
+        xwidth = 0.02 - 0.013 * (min(700, max(100, xlen)) - 100
+                                 ) / (700 - 100)
         fig.set_size_inches(
                 (widthscale * xwidth * xlen + 0.5 * int(not hide_axis),
                  heightscale * (2 + 0.5 * int(not hide_axis) +
@@ -183,6 +183,7 @@ def draw_line(data,
                             data[xtick_col].tolist(),
                             max(4, xlen // 50))
         ax.set_xticks(xbreaks)
+        ax.tick_params(length=5, width=1)
         ax.set_xticklabels(xlabels, rotation=90, ha='center', va='top')
         ax.yaxis.set_major_locator(matplotlib.ticker.MaxNLocator(4))
         ax.tick_params('both', labelsize=12 * axisfontscale)
