@@ -27,6 +27,8 @@ def facet_plot(
             logo_titlesuffix='',
             hspace=0.8,
             wspace=1.1,
+            share_xlabel=False,
+            share_ylabel=False,
             ):
     """Facet together plots of different types on same figure.
 
@@ -67,6 +69,10 @@ def facet_plot(
             Vertical space between axes.
         `wspace` (float)
             Horizontal space between axes.
+        `share_xlabel` (bool)
+            Share the x-labels across the line and logo plots.
+        `share_ylabel` (bool)
+            Share the y-labels across the line and logo plots.
 
     Returns:
         The 2-tuple `fig, axes` where `fig` is the matplotlib
@@ -207,19 +213,37 @@ def facet_plot(
     fig.canvas.draw()
 
     # only show one label for aligned axes
-    nrows, nfuncs, ncols_per_func
     assert axes.shape == (nrows, nfuncs * ncols_per_func)
-    for ifunc in range(nfuncs):
-        _axes_to_centered_fig_label(
-                fig,
-                [axes[irow, ifunc * ncols_per_func]
-                 for irow in range(nrows)],
-                'yaxis')
+
+    if share_xlabel:
         _axes_to_centered_fig_label(
                 fig,
                 [axes[nrows - 1, ifunc * ncols_per_func + icol]
-                 for icol in range(ncols_per_func)],
-                'xaxis')
+                 for icol in range(ncols_per_func)
+                 for ifunc in range(nfuncs)],
+                'x')
+    else:
+        for ifunc in range(nfuncs):
+            _axes_to_centered_fig_label(
+                    fig,
+                    [axes[nrows - 1, ifunc * ncols_per_func + icol]
+                     for icol in range(ncols_per_func)],
+                    'x')
+
+    if share_ylabel:
+        _axes_to_centered_fig_label(
+                fig,
+                [axes[irow, ifunc * ncols_per_func]
+                 for irow in range(nrows)
+                 for ifunc in range(nfuncs)],
+                'y')
+    else:
+        for ifunc in range(nfuncs):
+            _axes_to_centered_fig_label(
+                    fig,
+                    [axes[irow, ifunc * ncols_per_func]
+                     for irow in range(nrows)],
+                    'y')
 
     return fig, axes
 
@@ -233,23 +257,22 @@ def _axes_to_centered_fig_label(fig, axlist, axistype):
         `axlist` (list)
             List of the Axes with the labels to replace.
         `axistype` (str)
-            Either `xaxis` or `yaxis.
+            Either 'x' or 'y'.
     """
-    if axistype not in ['xaxis', 'yaxis']:
+    if axistype not in ['x', 'y']:
         raise ValueError(f"invalid `axistype` of {axistype}")
     if not len(axlist):
         raise ValueError('empty `axlist`')
 
-    xs = []
-    ys = []
+    loclists = collections.defaultdict(list)
     label_props = collections.defaultdict(set)
     for ax in axlist:
-        axis = getattr(ax, axistype)
+        axis = getattr(ax, axistype + 'axis')
         label = axis.get_label()
         bbox = label.get_window_extent().transformed(
                 transform=fig.transFigure.inverted())
-        xs += [bbox.x0, bbox.x1]
-        ys += [bbox.y0, bbox.y1]
+        for loc in ['x0', 'x1', 'y0', 'y1']:
+            loclists[loc].append(getattr(bbox, loc))
         label_props['fontproperties'].add(label.get_fontproperties())
         label_props['rotation'].add(label.get_rotation())
         label_props['text'].add(label.get_text())
@@ -261,8 +284,12 @@ def _axes_to_centered_fig_label(fig, axlist, axistype):
                              f"{propset}")
         label_props[propname] = list(propset)[0]
 
-    x = sum(xs) / len(xs)
-    y = sum(ys) / len(ys)
+    if axistype == 'x':
+        x = (min(loclists['x0']) + max(loclists['x1'])) / 2
+        y = (min(loclists['y0']) + min(loclists['y1'])) / 2
+    elif axistype == 'y':
+        x = (min(loclists['x0']) + min(loclists['x1'])) / 2
+        y = (min(loclists['y0']) + max(loclists['y1'])) / 2
     fig.text(x, y, label_props['text'],
              ha='center', va='center',
              rotation=label_props['rotation'],
