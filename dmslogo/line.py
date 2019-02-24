@@ -137,7 +137,7 @@ def draw_line(data,
     xmin = data[x_col].min()
     xmax = data[x_col].max()
     xlen = xmax - xmin + 1
-    if list(range(xmin, xmax + 1)) != data[x_col].tolist():
+    if any(list(range(xmin, xmax + 1)) != data[x_col].unique()):
         raise ValueError('`x_col` not sequential unbroken integers')
 
     for col in cols:
