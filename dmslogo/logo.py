@@ -182,7 +182,7 @@ def draw_logo(data,
               hide_axis=False,
               fontfamily='DejaVu Sans Mono',
               fontaspect=0.58,
-              letterpad=0.01,
+              letterpad=0.013,
               letterheightscale=0.98,
               ax=None,
               fixed_ymin=None,
@@ -349,7 +349,7 @@ def draw_logo(data,
         fig = ax.get_figure()
 
     if title:
-        ax.set_title(title, fontsize=18 * axisfontscale)
+        ax.set_title(title, fontsize=17 * axisfontscale)
 
     xpad = 0.2
     ax.set_xlim(-xpad, len(height_matrix) + xpad)
@@ -381,7 +381,6 @@ def draw_logo(data,
         ax.axis('off')
 
     # draw the letters
-    fig.canvas.draw()
     _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect,
                           letterpad, letterheightscale, xpad)
 

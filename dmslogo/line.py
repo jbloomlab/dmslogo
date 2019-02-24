@@ -169,7 +169,7 @@ def draw_line(data,
         fig = ax.get_figure()
 
     if title:
-        ax.set_title(title, fontsize=18 * axisfontscale)
+        ax.set_title(title, fontsize=17 * axisfontscale)
 
     ylimpad = 0.05 * ylen  # pad y-limits by this much
     ax.set_xlim(xmin - 0.5 - 0.02 * xlen,

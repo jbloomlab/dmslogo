@@ -18,13 +18,15 @@ def facet_plot(
             *,
             x_col,
             show_col,
-            height_per_ax=2.25,
+            height_per_ax=2.5,
             gridrow_col=None,
             gridcol_col=None,
             draw_line_kwargs=None,
             draw_logo_kwargs=None,
             line_titlesuffix='',
             logo_titlesuffix='',
+            hspace=0.8,
+            wspace=1.1,
             ):
     """Facet together plots of different types on same figure.
 
@@ -61,6 +63,10 @@ def facet_plot(
             String suffixed to titles for line plots.
         `logo_titlesuffix`
             String suffixed to titles for logo plots.
+        `hspace` (float)
+            Vertical space between axes.
+        `wspace` (float)
+            Horizontal space between axes.
 
     Returns:
         The 2-tuple `fig, axes` where `fig` is the matplotlib
@@ -155,10 +161,7 @@ def facet_plot(
                                                  gridcol_col])):
             fig, ax = name_d['func'](idata, **name_d['kwargs'])
             fig.tight_layout()
-            ax_bbox = ax.get_window_extent().transformed(
-                      fig.dpi_scale_trans.inverted())
             width = fig.get_size_inches()[0]
-            xlabel_height = ax_bbox.y0
             xticks = list(ax.get_xticks())
             xticklabels = [t.get_text() for t in ax.get_xticklabels()]
             ymin, ymax = ax.get_ylim()
@@ -177,10 +180,6 @@ def facet_plot(
             if 'ymax' not in name_d:
                 name_d['ymax'] = ymax
             name_d['ymax'] = max(name_d['ymax'], ymax)
-            if 'xlabel_height' not in name_d:
-                name_d['xlabel_height'] = xlabel_height
-            name_d['xlabel_height'] = max(name_d['xlabel_height'],
-                                          xlabel_height)
 
         # add the fixed y limits
         name_d['kwargs']['fixed_ymin'] = name_d['ymin']
@@ -197,21 +196,15 @@ def facet_plot(
                     )
     width = ncols_per_func * sum(d['width'] for d in
                                  draw_funcs.values())
-    height = nrows * height_per_ax + max(d['xlabel_height'] for d
-                                         in draw_funcs.values())
+    height = nrows * height_per_ax
     fig.set_size_inches(width, height)
-    fig.subplots_adjust(wspace=0.01)
+    fig.subplots_adjust(wspace=wspace * nfuncs * ncols_per_func / width,
+                        hspace=hspace / height_per_ax)
 
-    # Add plots, adjust to tight layout, clear axes, and replot.
-    # This is so we have right size after tight layout call. Unclear
-    # if this is necessary vs just adding plots & calling tight_layout.
+    # Add plots, adjust to tight layout
     _draw_facet_plots(axes, draw_funcs, ncols_per_func,
                       gridrow_col, gridcol_col, nrows)
-    fig.tight_layout()
-    for ax in axes.flat:
-        ax.clear()
-    _draw_facet_plots(axes, draw_funcs, ncols_per_func,
-                      gridrow_col, gridcol_col, nrows)
+    fig.canvas.draw()
 
     # only show one label for aligned axes
     nrows, nfuncs, ncols_per_func

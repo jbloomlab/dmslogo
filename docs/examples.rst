@@ -512,13 +512,11 @@ plots, and additional keyword arguments for
     ...                     x_col='isite',
     ...                     show_col='show_site',
     ...                     draw_line_kwargs=dict(height_col='avgfracsurvive',
-    ...                                           xtick_col='site',
-    ...                                           widthscale=0.8),
+    ...                                           xtick_col='site'),
     ...                     draw_logo_kwargs=dict(letter_col='mutation',
     ...                                           letter_height_col='mutfracsurvive',
     ...                                           xtick_col='site_label',
-    ...                                           xlabel='site',
-    ...                                           widthscale=0.6),
+    ...                                           xlabel='site'),
     ...                     line_titlesuffix='site-level selection',
     ...                     logo_titlesuffix='mutation-level selection'
     ...                     )
