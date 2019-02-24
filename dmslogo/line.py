@@ -146,12 +146,21 @@ def draw_line(data,
 
     assert len(data) == xlen
 
-    ymax = data[height_col].max()
-    ymin = data[height_col].min()
-    if ymin < 0:
+    ylimpad = 0.05 * (data[height_col].max() - data[height_col].min())
+    if fixed_ymax is None:
+        ymax = data[height_col].max() + ylimpad
+    else:
+        if fixed_ymax < data[height_col].max():
+            raise ValueError('`fixed_ymax` less then max of data')
+        ymax = fixed_ymax
+    if data[height_col].min() < 0:
         raise ValueError('cannot handle negatives in `height_col`')
-    ymin = 0  # put ymin at 0
-    ylen = ymax - ymin
+    if fixed_ymin is None:
+        ymin = -ylimpad
+    else:
+        if fixed_ymin > 0:
+            raise ValueError('`fixed_ymin` greater than 0')
+        ymin = fixed_ymin
 
     # setup axis for plotting
     if not ax:
@@ -171,11 +180,9 @@ def draw_line(data,
     if title:
         ax.set_title(title, fontsize=17 * axisfontscale)
 
-    ylimpad = 0.05 * ylen  # pad y-limits by this much
     ax.set_xlim(xmin - 0.5 - 0.02 * xlen,
                 xmax + 0.5 + 0.02 * xlen)
-    ax.set_ylim(ymin - ylimpad if fixed_ymin is None else fixed_ymin,
-                ymax + ylimpad if fixed_ymax is None else fixed_ymax)
+    ax.set_ylim(ymin, ymax)
 
     if not hide_axis:
         xbreaks, xlabels = dmslogo.utils.breaksAndLabels(
@@ -211,9 +218,9 @@ def draw_line(data,
         lw_to_ydata = data_units_from_linewidth(linewidth, ax, 'y')
         for x in data.query(f"{show_col}")[x_col].tolist():
             ax.add_patch(plt.Rectangle(
-                            xy=(x - 0.5 - lw_to_xdata, - ylimpad),
+                            xy=(x - 0.5 - lw_to_xdata, ymin),
                             width=2 + 1 * lw_to_xdata,
-                            height=ylimpad - lw_to_ydata,
+                            height=-ymin - lw_to_ydata,
                             edgecolor='none',
                             facecolor=dmslogo.colorschemes.CBPALETTE[1]
                             ))
