@@ -39,6 +39,14 @@
 <p>Some of this code is borrowed and modified from
 <a class="reference external" href="https://github.com/saketkc/pyseqlogo">pyseqlogo</a>.</p>
 <dl class="class">
+<dt id="dmslogo.logo.Memoize">
+<em class="property">class </em><code class="descclassname">dmslogo.logo.</code><code class="descname">Memoize</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/logo.html#Memoize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.logo.Memoize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Memoize function.</p>
+<p>Taken from here: <a class="reference external" href="https://stackoverflow.com/a/1988826">https://stackoverflow.com/a/1988826</a></p>
+</dd></dl>
+
+<dl class="class">
 <dt id="dmslogo.logo.Scale">
 <em class="property">class </em><code class="descclassname">dmslogo.logo.</code><code class="descname">Scale</code><span class="sig-paren">(</span><em>sx</em>, <em>sy=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/logo.html#Scale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.logo.Scale" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.backend_bases.RendererBase</span></code></p>
@@ -55,7 +63,7 @@ given affine transform.</p>
 
 <dl class="function">
 <dt id="dmslogo.logo.draw_logo">
-<code class="descclassname">dmslogo.logo.</code><code class="descname">draw_logo</code><span class="sig-paren">(</span><em>data</em>, <em>*</em>, <em>x_col</em>, <em>letter_col</em>, <em>letter_height_col</em>, <em>xtick_col=None</em>, <em>color_col=None</em>, <em>xlabel=None</em>, <em>ylabel=None</em>, <em>title=None</em>, <em>colorscheme={'A': '#f76ab4'</em>, <em>'C': '#ff7f00'</em>, <em>'D': '#e41a1c'</em>, <em>'E': '#e41a1c'</em>, <em>'F': '#84380b'</em>, <em>'G': '#f76ab4'</em>, <em>'H': '#3c58e5'</em>, <em>'I': '#12ab0d'</em>, <em>'K': '#3c58e5'</em>, <em>'L': '#12ab0d'</em>, <em>'M': '#12ab0d'</em>, <em>'N': '#972aa8'</em>, <em>'P': '#12ab0d'</em>, <em>'Q': '#972aa8'</em>, <em>'R': '#3c58e5'</em>, <em>'S': '#ff7f00'</em>, <em>'T': '#ff7f00'</em>, <em>'V': '#12ab0d'</em>, <em>'W': '#84380b'</em>, <em>'Y': '#84380b'}</em>, <em>missing_color='gray'</em>, <em>addbreaks=True</em>, <em>widthscale=1</em>, <em>heightscale=1</em>, <em>axisfontscale=1</em>, <em>hide_axis=False</em>, <em>fontfamily='DejaVu Sans Mono'</em>, <em>fontaspect=0.58</em>, <em>letterpad=0.01</em>, <em>letterheightscale=0.98</em>, <em>ax=None</em>, <em>fixed_ymin=None</em>, <em>fixed_ymax=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/logo.html#draw_logo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.logo.draw_logo" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">dmslogo.logo.</code><code class="descname">draw_logo</code><span class="sig-paren">(</span><em>data</em>, <em>*</em>, <em>x_col</em>, <em>letter_col</em>, <em>letter_height_col</em>, <em>xtick_col=None</em>, <em>color_col=None</em>, <em>xlabel=None</em>, <em>ylabel=None</em>, <em>title=None</em>, <em>colorscheme={'A': '#f76ab4'</em>, <em>'C': '#ff7f00'</em>, <em>'D': '#e41a1c'</em>, <em>'E': '#e41a1c'</em>, <em>'F': '#84380b'</em>, <em>'G': '#f76ab4'</em>, <em>'H': '#3c58e5'</em>, <em>'I': '#12ab0d'</em>, <em>'K': '#3c58e5'</em>, <em>'L': '#12ab0d'</em>, <em>'M': '#12ab0d'</em>, <em>'N': '#972aa8'</em>, <em>'P': '#12ab0d'</em>, <em>'Q': '#972aa8'</em>, <em>'R': '#3c58e5'</em>, <em>'S': '#ff7f00'</em>, <em>'T': '#ff7f00'</em>, <em>'V': '#12ab0d'</em>, <em>'W': '#84380b'</em>, <em>'Y': '#84380b'}</em>, <em>missing_color='gray'</em>, <em>addbreaks=True</em>, <em>widthscale=1</em>, <em>heightscale=1</em>, <em>axisfontscale=1</em>, <em>hide_axis=False</em>, <em>fontfamily='DejaVu Sans Mono'</em>, <em>fontaspect=0.58</em>, <em>letterpad=0.013</em>, <em>letterheightscale=0.98</em>, <em>ax=None</em>, <em>fixed_ymin=None</em>, <em>fixed_ymax=None</em>, <em>clip_negative_heights=False</em>, <em>drop_na_letter_heights=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/logo.html#draw_logo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.logo.draw_logo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draw sequence logo from specified letter heights.</p>
 <dl class="docutils">
 <dt>Args:</dt>
@@ -112,6 +120,10 @@ as fraction of total stack height.</dd>
 <dd>If not <cite>None</cite>, then fixed y-axis minimum.</dd>
 <dt><cite>fixed_ymax</cite> (<cite>None</cite> or float)</dt>
 <dd>If not <cite>None</cite>, then fixed y-axis maximum.</dd>
+<dt><cite>clip_negative_heights</cite> (bool)</dt>
+<dd>Set to 0 any value in <cite>letter_height_col</cite> that is &lt; 0.</dd>
+<dt><cite>drop_na_letter_heights</cite> (bool)</dt>
+<dd>Drop any rows in <cite>data</cite> where <cite>letter_height_col</cite> is NaN.</dd>
 </dl>
 </dd>
 <dt>Returns:</dt>

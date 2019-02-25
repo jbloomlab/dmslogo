@@ -38,7 +38,7 @@
 <p>Facet multiple plots on the same figure.</p>
 <dl class="function">
 <dt id="dmslogo.facet.facet_plot">
-<code class="descclassname">dmslogo.facet.</code><code class="descname">facet_plot</code><span class="sig-paren">(</span><em>data</em>, <em>*</em>, <em>x_col</em>, <em>show_col</em>, <em>gridrow_col=None</em>, <em>gridcol_col=None</em>, <em>draw_line_kwargs=None</em>, <em>draw_logo_kwargs=None</em>, <em>line_titlesuffix=''</em>, <em>logo_titlesuffix=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/facet.html#facet_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.facet.facet_plot" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">dmslogo.facet.</code><code class="descname">facet_plot</code><span class="sig-paren">(</span><em>data</em>, <em>*</em>, <em>x_col</em>, <em>show_col</em>, <em>height_per_ax=2.5</em>, <em>gridrow_col=None</em>, <em>gridcol_col=None</em>, <em>draw_line_kwargs=None</em>, <em>draw_logo_kwargs=None</em>, <em>line_titlesuffix=''</em>, <em>logo_titlesuffix=''</em>, <em>hspace=0.8</em>, <em>wspace=1.1</em>, <em>share_xlabel=False</em>, <em>share_ylabel=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/facet.html#facet_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.facet.facet_plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Facet together plots of different types on same figure.</p>
 <p>Useful for combining multiple instances of the plots you
 could create with <a class="reference internal" href="dmslogo.logo.html#dmslogo.logo.draw_logo" title="dmslogo.logo.draw_logo"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dmslogo.logo.draw_logo</span></code></a> and
@@ -55,6 +55,8 @@ could create with <a class="reference internal" href="dmslogo.logo.html#dmslogo.
 <dt><cite>show_col</cite> (str or <cite>None</cite>)</dt>
 <dd>Column in <cite>data</cite> with x-axis values to highlight in line
 plots and to show in logo plots.</dd>
+<dt><cite>height_per_ax</cite> (float)</dt>
+<dd>Height of each axis in the faceted plot.</dd>
 <dt><cite>gridrow_col</cite> (str or <cite>None</cite>)</dt>
 <dd>Column in <cite>data</cite> to facet over for rows of plot.</dd>
 <dt><cite>gridcol_col</cite> (str or <cite>None</cite>)</dt>
@@ -72,6 +74,14 @@ from faceting variables.</dd>
 <dd>String suffixed to titles for line plots.</dd>
 <dt><cite>logo_titlesuffix</cite></dt>
 <dd>String suffixed to titles for logo plots.</dd>
+<dt><cite>hspace</cite> (float)</dt>
+<dd>Vertical space between axes.</dd>
+<dt><cite>wspace</cite> (float)</dt>
+<dd>Horizontal space between axes.</dd>
+<dt><cite>share_xlabel</cite> (bool)</dt>
+<dd>Share the x-labels across the line and logo plots.</dd>
+<dt><cite>share_ylabel</cite> (bool)</dt>
+<dd>Share the y-labels across the line and logo plots.</dd>
 </dl>
 </dd>
 <dt>Returns:</dt>
