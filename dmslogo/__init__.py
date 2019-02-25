@@ -15,7 +15,7 @@ into the package namespace:
 
 __author__ = 'Jesse Bloom'
 __email__ = 'jbloom@fredhutch.org'
-__version__ = '0.1.0'
+__version__ = '0.1.dev1'
 __url__ = 'https://github.com/jbloomlab/dmslogo'
 
 from dmslogo.logo import draw_logo  # noqa: F401
