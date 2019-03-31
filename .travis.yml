@@ -8,6 +8,7 @@ cache: pip
 install:
   - pip install flake8
   - pip install flake8-docstrings
+  - pip install flake8-rst-docstrings
   - pip install -e .
 
 script: 
