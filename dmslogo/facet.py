@@ -132,11 +132,11 @@ def facet_plot(
             if 'heightscale' in kwargs:
                 raise ValueError(f"do not set `heightscale` in "
                                  f"{name}_kwargs; use `height_per_ax`")
-            draw_funcs[name] = dict(kwargs=kwargs,
-                                    func=getattr(dmslogo, name),
-                                    data=data,
-                                    titlesuffix=titlesuffix
-                                    )
+            draw_funcs[name] = {'kwargs': kwargs,
+                                'func': getattr(dmslogo, name),
+                                'data': data,
+                                'titlesuffix': titlesuffix
+                                }
             if name == 'draw_logo' and show_col is not None:
                 draw_funcs[name]['data'] = data.query(show_col)
             if not len(draw_funcs[name]['data']):

@@ -45,7 +45,7 @@ def breaksAndLabels(xi, x, n):
     """
     if len(xi) != len(x):
         raise ValueError('`xi` and `x` differ in length.')
-    if not all([isinstance(i, (int, np.integer)) for i in xi]):
+    if not all(isinstance(i, (int, np.integer)) for i in xi):
         raise ValueError('xi not integer values')
     xi = list(xi)
     if sorted(set(xi)) != xi:

@@ -76,9 +76,9 @@ def _frac_above_baseline(font):
     ax.set_ylim(0, 1)
 
     txt_baseline = ax.text(0, 0, 'A', fontproperties=font,
-                           va='baseline', bbox=dict(pad=0))
+                           va='baseline', bbox={'pad': 0})
     txt_bottom = ax.text(0, 0, 'A', fontproperties=font,
-                         va='bottom', bbox=dict(pad=0))
+                         va='bottom', bbox={'pad': 0})
 
     fig.canvas.draw()
     bbox_baseline = txt_baseline.get_window_extent()
@@ -123,7 +123,7 @@ def _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect,
             2 * xpad + len(height_matrix))
     height = bbox.height * fig.dpi
 
-    max_stack_height = max(sum([tup[1] for tup in row]) for
+    max_stack_height = max(sum(tup[1] for tup in row) for
                            row in height_matrix)
 
     (ymin, ymax) = ax.get_ylim()
@@ -153,7 +153,7 @@ def _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect,
                 ha='left',
                 va='baseline',
                 fontproperties=font,
-                bbox=dict(pad=0, edgecolor='none', facecolor='none')
+                bbox={'pad': 0, 'edgecolor': 'none', 'facecolor': 'none'}
                 )
 
             txt.set_path_effects(
@@ -336,7 +336,7 @@ def draw_logo(data,
         xtick += 1
 
     assert len(xticklabels) == len(xticks)
-    max_stack_height = max(sum([tup[1] for tup in row]) for
+    max_stack_height = max(sum(tup[1] for tup in row) for
                            row in height_matrix)
 
     # setup axis for plotting

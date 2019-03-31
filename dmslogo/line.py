@@ -122,7 +122,7 @@ def draw_line(data,
     if ylabel is None:
         ylabel = height_col
 
-    cols = list(set([x_col, xtick_col, height_col]))
+    cols = list({x_col, xtick_col, height_col})
     if show_col:
         cols.append(show_col)
         if not data[show_col].dtype == bool:
