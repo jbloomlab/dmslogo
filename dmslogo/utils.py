@@ -7,9 +7,10 @@ Utility functions for plotting.
 """
 
 
-import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker
+
+import numpy as np
 
 
 def breaksAndLabels(xi, x, n):

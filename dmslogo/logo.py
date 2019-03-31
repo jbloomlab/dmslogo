@@ -10,15 +10,15 @@ Some of this code is borrowed and modified from
 """
 
 
-import numpy
-
-import matplotlib.pyplot as plt
-import matplotlib.patheffects
 import matplotlib.font_manager
+import matplotlib.patheffects
+import matplotlib.pyplot as plt
 import matplotlib.ticker
 
-import dmslogo.utils
+import numpy
+
 import dmslogo.colorschemes
+import dmslogo.utils
 
 
 class Scale(matplotlib.patheffects.RendererBase):

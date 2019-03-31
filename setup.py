@@ -3,8 +3,8 @@
 Written by Jesse Bloom.
 """
 
-import sys
 import re
+import sys
 try:
     from setuptools import setup
 except ImportError:

@@ -7,13 +7,13 @@ Draw line plots of site-level properties.
 """
 
 
-import numpy
-
 import matplotlib.pyplot as plt
 import matplotlib.ticker
 
-import dmslogo.utils
+import numpy
+
 import dmslogo.colorschemes
+import dmslogo.utils
 
 
 def data_units_from_linewidth(linewidth, ax, reference):

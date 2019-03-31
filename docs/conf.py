@@ -16,10 +16,11 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 """Configuration for sphinx."""
 
-import os
-import sys
-import re
 import datetime
+import os
+import re
+import sys
+
 sys.path.insert(0, '{0}/../dmslogo'.format(os.path.abspath('.')))
 
 
