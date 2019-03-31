@@ -6,14 +6,14 @@ python:
 cache: pip
 
 install:
-  - |
-    pip install
-    flake8
-    flake8-docstrings
-    flake8-rst-docstrings
-    flake8-builtins
-    flake8-import-order
-    flake8-comprehensions
+  - >
+     pip install
+     flake8
+     flake8-docstrings
+     flake8-rst-docstrings
+     flake8-builtins
+     flake8-import-order
+     flake8-comprehensions
   - pip install -e .
 
 script: 
