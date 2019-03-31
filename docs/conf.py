@@ -62,7 +62,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'dmslogo'
-copyright = u'2019--{0}, the Bloom lab'.format(datetime.datetime.now().year)
+copyright = f"2019--{datetime.datetime.now().year}, Bloom lab"  # noqa: A001
 author = u'the Bloom lab'
 
 # The version info for the project you're documenting, acts as replacement for
