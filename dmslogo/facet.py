@@ -165,7 +165,7 @@ def facet_plot(
     # get sizes of fig, axis limits of plots for each func
     for name, name_d in draw_funcs.items():
 
-        for i, idata in name_d['data'].groupby(([gridrow_col,
+        for _, idata in name_d['data'].groupby(([gridrow_col,
                                                  gridcol_col])):
             fig, ax = name_d['func'](idata, **name_d['kwargs'])
             fig.tight_layout()
