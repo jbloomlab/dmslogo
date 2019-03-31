@@ -34,6 +34,7 @@ def data_units_from_linewidth(linewidth, ax, reference):
 
     Function is the inverse of the one defined here:
     https://stackoverflow.com/a/35501485
+
     """
     fig = ax.get_figure()
     if reference == 'x':
@@ -111,6 +112,7 @@ def draw_line(data,
 
     Returns:
         The 2-tuple `(fig, ax)` giving the figure and axis.
+
     """
     # set default values of arguments that can be None
     if xtick_col is None:

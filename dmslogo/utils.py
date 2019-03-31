@@ -40,6 +40,7 @@ def breaksAndLabels(xi, x, n):
     [0, 50, 100, 150, 200]
     >>> labels
     ['1', '51', '101', '151', '201']
+
     """
     if len(xi) != len(x):
         raise ValueError('`xi` and `x` differ in length.')

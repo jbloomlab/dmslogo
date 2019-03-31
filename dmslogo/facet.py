@@ -3,7 +3,8 @@
 facet
 ======
 
-Facet multiple plots on the same figure."""
+Facet multiple plots on the same figure.
+"""
 
 
 import collections
@@ -80,6 +81,7 @@ def facet_plot(
 
     `x_col` and `show_col` must have the same unique entries in `data`
     for all groups in being faceted over.
+
     """
     if gridrow_col is None:
         gridrow_col = '_gridrow_col_'
@@ -298,7 +300,7 @@ def _axes_to_centered_fig_label(fig, axlist, axistype):
 
 def _draw_facet_plots(axes, draw_funcs, ncols_per_func,
                       gridrow_col, gridcol_col, nrows):
-    """Helper function draws plots on axes for :func:`facet_plots`."""
+    """Draws plots on axes for :func:`facet_plots`."""
     for ifunc, func_d in enumerate(draw_funcs.values()):
 
         groups = [(row_name, row_data) for row_name, row_data in

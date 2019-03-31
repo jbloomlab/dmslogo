@@ -28,17 +28,18 @@ class Scale(matplotlib.patheffects.RendererBase):
     """
 
     def __init__(self, sx, sy=None):
+        """See main class docstring."""
         self._sx = sx
         self._sy = sy
 
     def draw_path(self, renderer, gc, tpath, affine, rgbFace):
+        """Draw the letters."""
         affine = affine.identity().scale(self._sx, self._sy) + affine
         renderer.draw_path(gc, tpath, affine, rgbFace)
 
 
 def _setup_font(fontfamily, fontsize):
     """Get `FontProperties` for `fontfamily` and `fontsize`."""
-
     font = matplotlib.font_manager.FontProperties()
     font.set_size(fontsize)
     font.set_weight('bold')
@@ -47,14 +48,15 @@ def _setup_font(fontfamily, fontsize):
 
 
 class Memoize:
-    """Memoize function.
+    """Memoize function from https://stackoverflow.com/a/1988826"""
 
-    Taken from here: https://stackoverflow.com/a/1988826"""
     def __init__(self, f):
+        """See main class docstring."""
         self.f = f
         self.memo = {}
 
     def __call__(self, *args):
+        """Call class."""
         if args not in self.memo:
             self.memo[args] = self.f(*args)
         # Warning: You may wish to do a deepcopy here if returning objects
@@ -63,7 +65,7 @@ class Memoize:
 
 @Memoize
 def _frac_above_baseline(font):
-    """Returns fraction of font height that is above baseline.
+    """Fraction of font height that is above baseline.
 
     Args:
         `font` (FontProperties)
@@ -251,6 +253,7 @@ def draw_logo(data,
 
     Returns:
         The 2-tuple `(fig, ax)` giving the figure and axis.
+
     """
     # set default values of arguments that can be None
     if xtick_col is None:
