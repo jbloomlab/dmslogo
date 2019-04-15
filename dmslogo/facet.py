@@ -11,6 +11,8 @@ import collections
 
 import matplotlib.pyplot as plt
 
+import numpy
+
 import dmslogo
 
 
@@ -210,8 +212,8 @@ def facet_plot(
                         hspace=hspace / height_per_ax)
 
     # Add plots, adjust to tight layout
-    _draw_facet_plots(axes, draw_funcs, ncols_per_func,
-                      gridrow_col, gridcol_col, nrows)
+    axes_has_plot = _draw_facet_plots(axes, draw_funcs, ncols_per_func,
+                                      gridrow_col, gridcol_col, nrows)
     fig.canvas.draw()
 
     # only show one label for aligned axes
@@ -246,6 +248,13 @@ def facet_plot(
                     [axes[irow, ifunc * ncols_per_func]
                      for irow in range(nrows)],
                     'y')
+
+    # hide empty axes
+    assert axes.shape == axes_has_plot.shape
+    for ax, has_plot in zip(axes.ravel(), axes_has_plot.ravel()):
+        if not has_plot:
+            ax.clear()
+            ax.set_axis_off()
 
     return fig, axes
 
@@ -300,7 +309,15 @@ def _axes_to_centered_fig_label(fig, axlist, axistype):
 
 def _draw_facet_plots(axes, draw_funcs, ncols_per_func,
                       gridrow_col, gridcol_col, nrows):
-    """Draws plots on axes for :func:`facet_plots`."""
+    """Draws plots on axes for :func:`facet_plots`.
+
+    Returns array of same shape as axes indicating whether a plot
+    was drawn on each axis. If the value in this array is `False`,
+    then the plot should be hidden by the calling function as it
+    may have incorrect data purely for the purpose of axes formatting.
+
+    """
+    axes_has_plot = numpy.ndarray(axes.shape, dtype='bool')
     for ifunc, func_d in enumerate(draw_funcs.values()):
 
         groups = [(row_name, row_data) for row_name, row_data in
@@ -315,28 +332,43 @@ def _draw_facet_plots(axes, draw_funcs, ncols_per_func,
 
             row_groups = [(col_name, col_data) for col_name, col_data in
                           row_data.groupby(gridcol_col) if len(col_data)]
-            assert len(row_groups) == ncols_per_func
 
-            for icol, (col_name, col_data) in enumerate(row_groups):
+            assert len(row_groups) <= ncols_per_func
+            if len(row_groups) == 0:
+                raise ValueError(f"no data for row {row_name}")
 
-                ax = axes[irow, ifunc * ncols_per_func + icol]
-                title = (row_name +
-                         (' ' if row_name and col_name else '') +
-                         col_name +
-                         (' ' if func_d['titlesuffix'] else '') +
-                         func_d['titlesuffix']
-                         )
-                func_d['func'](
-                        col_data,
-                        ax=ax,
-                        title=title,
-                        **func_d['kwargs'])
+            for icol in range(ncols_per_func):
+
+                colnum = ifunc * ncols_per_func + icol
+                ax = axes[irow, colnum]
+
+                if icol < len(row_groups):
+                    col_name, col_data = row_groups[icol]
+                    axes_has_plot[irow, colnum] = True
+                    title = (row_name +
+                             (' ' if row_name and col_name else '') +
+                             col_name +
+                             (' ' if func_d['titlesuffix'] else '') +
+                             func_d['titlesuffix']
+                             )
+                else:
+                    col_name, col_data = row_groups[0]  # dummy data
+                    axes_has_plot[irow, colnum] = False
+                    title = 'dummy data (error if you see this)'
+
+                func_d['func'](col_data,
+                               ax=ax,
+                               title=title,
+                               **func_d['kwargs'])
+
                 if irow != nrows - 1:
                     ax.set_xlabel('')
                     ax.set_xticklabels([])
                 if icol != 0:
                     ax.set_ylabel('')
                     ax.set_yticklabels([])
+
+    return axes_has_plot
 
 
 if __name__ == '__main__':
