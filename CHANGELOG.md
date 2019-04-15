@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com).
 
+## 0.1.dev2
+
+### Added
+- Added `share_ylim_across_rows` to `facet_plot` to allow rows to have different y-limits.
+
 ## 0.1.1
 
 ### Added

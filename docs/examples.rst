@@ -518,6 +518,34 @@ plots, and additional keyword arguments for
     ...                     logo_titlesuffix='mutation-level selection'
     ...                     )
 
+There are various options to tweak the formatting of the faceted plot. Here we demonstrate a few of them:
+
+  - We assign a more generic ylabel ("immune selection") to each plot via the appropriate ``*_kwargs`` option.
+  - We use the ``share_ylim_across_rows=False`` option to allow each row to have its own y-axis limits.
+  - We use the ``share_xlabel`` and ``share_ylabel`` options to share the x- and y-labels across the line and logo plots.
+
+.. nbplot::
+
+    >>> fig, axes = dmslogo.facet_plot(
+    ...                     data_hiv,
+    ...                     gridrow_col='antibody',
+    ...                     x_col='isite',
+    ...                     show_col='show_site',
+    ...                     draw_line_kwargs=dict(height_col='avgfracsurvive',
+    ...                                           xtick_col='site',
+    ...                                           ylabel='immune selection'),
+    ...                     draw_logo_kwargs=dict(letter_col='mutation',
+    ...                                           letter_height_col='mutfracsurvive',
+    ...                                           xtick_col='site_label',
+    ...                                           xlabel='site',
+    ...                                           ylabel='immune selection'),
+    ...                     line_titlesuffix='site-level selection',
+    ...                     logo_titlesuffix='mutation-level selection',
+    ...                     share_ylim_across_rows=False,
+    ...                     share_xlabel=True,
+    ...                     share_ylabel=True,
+    ...                     )
+
 Write *DMSLOGO* in Comic Sans font
 ----------------------------------
 

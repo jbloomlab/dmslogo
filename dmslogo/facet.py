@@ -32,6 +32,7 @@ def facet_plot(
             wspace=1.1,
             share_xlabel=False,
             share_ylabel=False,
+            share_ylim_across_rows=True,
             ):
     """Facet together plots of different types on same figure.
 
@@ -76,6 +77,8 @@ def facet_plot(
             Share the x-labels across the line and logo plots.
         `share_ylabel` (bool)
             Share the y-labels across the line and logo plots.
+        `share_ylim_across_rows` (bool)
+            Do we share y-limits across rows?
 
     Returns:
         The 2-tuple `fig, axes` where `fig` is the matplotlib
@@ -165,10 +168,11 @@ def facet_plot(
     ncols_per_func = len(data[gridcol_col].unique())
 
     # get sizes of fig, axis limits of plots for each func
+    fixed_ylims = {'min': {}, 'max': {}}  # keys 'min' / 'max', then row name
     for name, name_d in draw_funcs.items():
 
-        for _, idata in name_d['data'].groupby(([gridrow_col,
-                                                 gridcol_col])):
+        for (row, _), idata in name_d['data'].groupby(([gridrow_col,
+                                                        gridcol_col])):
             fig, ax = name_d['func'](idata, **name_d['kwargs'])
             fig.tight_layout()
             width = fig.get_size_inches()[0]
@@ -191,9 +195,19 @@ def facet_plot(
                 name_d['ymax'] = ymax
             name_d['ymax'] = max(name_d['ymax'], ymax)
 
-        # add the fixed y limits
-        name_d['kwargs']['fixed_ymin'] = name_d['ymin']
-        name_d['kwargs']['fixed_ymax'] = name_d['ymax']
+            for ltype, lfunc, val in [('min', min, ymin),
+                                      ('max', max, ymax)]:
+                if row not in fixed_ylims[ltype]:
+                    fixed_ylims[ltype][row] = val
+                else:
+                    fixed_ylims[ltype][row] = lfunc(val,
+                                                    fixed_ylims[ltype][row])
+
+    if share_ylim_across_rows:
+        for ltype, lfunc in [('min', min), ('max', max)]:
+            lim = lfunc(fixed_ylims[ltype].values())
+            for row in list(fixed_ylims[ltype].keys()):
+                fixed_ylims[ltype][row] = lim
 
     # make figure
     fig, axes = plt.subplots(
@@ -213,7 +227,8 @@ def facet_plot(
 
     # Add plots, adjust to tight layout
     axes_has_plot = _draw_facet_plots(axes, draw_funcs, ncols_per_func,
-                                      gridrow_col, gridcol_col, nrows)
+                                      gridrow_col, gridcol_col, nrows,
+                                      fixed_ylims)
     fig.canvas.draw()
 
     # only show one label for aligned axes
@@ -308,7 +323,8 @@ def _axes_to_centered_fig_label(fig, axlist, axistype):
 
 
 def _draw_facet_plots(axes, draw_funcs, ncols_per_func,
-                      gridrow_col, gridcol_col, nrows):
+                      gridrow_col, gridcol_col, nrows,
+                      fixed_ylims):
     """Draws plots on axes for :func:`facet_plots`.
 
     Returns array of same shape as axes indicating whether a plot
@@ -359,6 +375,8 @@ def _draw_facet_plots(axes, draw_funcs, ncols_per_func,
                 func_d['func'](col_data,
                                ax=ax,
                                title=title,
+                               fixed_ymin=fixed_ylims['min'][row_name],
+                               fixed_ymax=fixed_ylims['max'][row_name],
                                **func_d['kwargs'])
 
                 if irow != nrows - 1:
