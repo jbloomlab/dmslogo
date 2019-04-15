@@ -29,7 +29,7 @@ these examples:
     >>> import dmslogo
     >>> from dmslogo.colorschemes import CBPALETTE
 
-Set options for display pandas DataFrames:
+Set options to display pandas DataFrames:
 
 .. nbplot::
 
@@ -47,8 +47,11 @@ function.
 
 This function takes in as input a pandas DataFrame that has columns
 with:
+
  - site in sequential integer numbering
+
  - letter (i.e., amino acid or nucleotide)
+
  - height of letter (can be any positive number)
 
 Here make a simple data frame that fits these specs:
@@ -383,14 +386,8 @@ Draw a logo plot
 ~~~~~~~~~~~~~~~~
 
 Now we make logo plots of the sites that we have selected to show, here
-just for the *PG9* antibody:
-
-We want two plots stacked on each other. So as in the toy example above
-we first make a figure with two axes. We then plot onto each axis,
-showing xticks and and xlabel only for the last (bottom) plot. Note how
-for both logo plots we query ``data_hiv`` for only the sites of interest
-(``show_site`` is ``True``), and for each plot we query ``data_hiv`` for
-just the antibody of interest:
+just for the *PG9* antibody. Note how we query ``data_hiv`` for only the
+antibody (*PG9*) and the sites of interest (``show_site`` is ``True``):
 
 .. nbplot::
 
@@ -467,7 +464,7 @@ sites as logo plots.
 The easiest way to do this using the
 :py:mod:`dmslogo.facet.facet_plot` command described below. But first
 here we do it using matplotlib subplots. Note how the resulting
-Bcombines the line and logo plots, with the line plot using the orange
+plot combines the line and logo plots, with the line plot using the orange
 underline to indicate which sites are zoomed in the logo plot:
 
 .. nbplot::

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>dmslogo.line &#8212; dmslogo 0.1.0 documentation</title>
+    <title>dmslogo.line &#8212; dmslogo 0.1.1 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -41,13 +41,13 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 
-<span class="kn">import</span> <span class="nn">numpy</span>
-
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">matplotlib.ticker</span>
 
-<span class="kn">import</span> <span class="nn">dmslogo.utils</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
 <span class="kn">import</span> <span class="nn">dmslogo.colorschemes</span>
+<span class="kn">import</span> <span class="nn">dmslogo.utils</span>
 
 
 <div class="viewcode-block" id="data_units_from_linewidth"><a class="viewcode-back" href="../../dmslogo.line.html#dmslogo.line.data_units_from_linewidth">[docs]</a><span class="k">def</span> <span class="nf">data_units_from_linewidth</span><span class="p">(</span><span class="n">linewidth</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">reference</span><span class="p">):</span>
@@ -68,6 +68,7 @@
 
 <span class="sd">    Function is the inverse of the one defined here:</span>
 <span class="sd">    https://stackoverflow.com/a/35501485</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">fig</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_figure</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">reference</span> <span class="o">==</span> <span class="s1">&#39;x&#39;</span><span class="p">:</span>
@@ -145,6 +146,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        The 2-tuple `(fig, ax)` giving the figure and axis.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># set default values of arguments that can be None</span>
     <span class="k">if</span> <span class="n">xtick_col</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -154,7 +156,7 @@
     <span class="k">if</span> <span class="n">ylabel</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">ylabel</span> <span class="o">=</span> <span class="n">height_col</span>
 
-    <span class="n">cols</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="n">x_col</span><span class="p">,</span> <span class="n">xtick_col</span><span class="p">,</span> <span class="n">height_col</span><span class="p">]))</span>
+    <span class="n">cols</span> <span class="o">=</span> <span class="nb">list</span><span class="p">({</span><span class="n">x_col</span><span class="p">,</span> <span class="n">xtick_col</span><span class="p">,</span> <span class="n">height_col</span><span class="p">})</span>
     <span class="k">if</span> <span class="n">show_col</span><span class="p">:</span>
         <span class="n">cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">show_col</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">[</span><span class="n">show_col</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="nb">bool</span><span class="p">:</span>
@@ -353,7 +355,7 @@
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2019--2019, the Bloom lab.
+      &copy;2019--2019, Bloom lab.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
