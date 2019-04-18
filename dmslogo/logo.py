@@ -10,6 +10,9 @@ Some of this code is borrowed and modified from
 """
 
 
+import os
+import glob
+
 import matplotlib.font_manager
 import matplotlib.patheffects
 import matplotlib.pyplot as plt
@@ -17,8 +20,31 @@ import matplotlib.ticker
 
 import numpy
 
+import pkg_resources
+
 import dmslogo.colorschemes
 import dmslogo.utils
+
+
+# default font
+_DEFAULT_FONT = 'DejaVuSansMonoBold_SeqLogo'
+
+# add fonts to font manager
+_FONT_PATH = pkg_resources.resource_filename('dmslogo', 'ttf_fonts/')
+if not os.path.isdir(_FONT_PATH):
+    raise RuntimeError(f"Cannot find font directory {_FONT_PATH}")
+
+matplotlib.font_manager.fontManager.ttflist.extend(
+    matplotlib.font_manager.createFontList(
+        matplotlib.font_manager.findSystemFonts(_FONT_PATH)))
+
+_fontlist = {f.name for f in matplotlib.font_manager.fontManager.ttflist}
+if _DEFAULT_FONT not in _fontlist:
+    raise RuntimeError(f"Could not find default font {_DEFAULT_FONT}")
+for _fontfile in glob.glob(f"{_FONT_PATH}/*.ttf"):
+    _font = os.path.splitext(os.path.basename(_fontfile))[0]
+    if _font not in _fontlist:
+        raise RuntimeError(f"Could not find font {_font} in file {_fontfile}")
 
 
 class Scale(matplotlib.patheffects.RendererBase):
@@ -38,15 +64,6 @@ class Scale(matplotlib.patheffects.RendererBase):
         renderer.draw_path(gc, tpath, affine, rgbFace)
 
 
-def _setup_font(fontfamily, fontsize):
-    """Get `FontProperties` for `fontfamily` and `fontsize`."""
-    font = matplotlib.font_manager.FontProperties()
-    font.set_size(fontsize)
-    font.set_weight('bold')
-    font.set_family(fontfamily)
-    return font
-
-
 class Memoize:
     """Memoize function from https://stackoverflow.com/a/1988826"""
 
@@ -61,6 +78,15 @@ class Memoize:
             self.memo[args] = self.f(*args)
         # Warning: You may wish to do a deepcopy here if returning objects
         return self.memo[args]
+
+
+@Memoize
+def _setup_font(fontfamily, fontsize):
+    """Get `FontProperties` for `fontfamily` and `fontsize`."""
+    font = matplotlib.font_manager.FontProperties(family=fontfamily,
+                                                  size=fontsize,
+                                                  weight='bold')
+    return font
 
 
 @Memoize
@@ -126,7 +152,7 @@ def _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect,
     max_stack_height = max(sum(tup[1] for tup in row) for
                            row in height_matrix)
 
-    (ymin, ymax) = ax.get_ylim()
+    ymin, ymax = ax.get_ylim()
     if max_stack_height > ymax:
         raise ValueError('`max_stack_height` exceeds `ymax`')
     if ymin > 0:
@@ -134,8 +160,8 @@ def _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect,
     yextent = ymax - ymin
 
     letterpadheight = yextent * letterpad
-    fontsize = (height / yextent) * 72.0 / fig.dpi
-    font = _setup_font(fontsize=fontsize, fontfamily=fontfamily)
+    fontsize = (height / yextent) * 72 / fig.dpi
+    font = _setup_font(fontfamily, fontsize)
     frac_above_baseline = _frac_above_baseline(font)
     fontwidthscale = width * yextent / (height * fontaspect *
                                         len(height_matrix))
@@ -182,7 +208,7 @@ def draw_logo(data,
               heightscale=1,
               axisfontscale=1,
               hide_axis=False,
-              fontfamily='DejaVu Sans Mono',
+              fontfamily=_DEFAULT_FONT,
               fontaspect=0.58,
               letterpad=0.013,
               letterheightscale=0.98,
