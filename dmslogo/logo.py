@@ -36,6 +36,7 @@ if not os.path.isdir(_FONT_PATH):
 
 matplotlib.font_manager.fontManager.ttflist.extend(
     matplotlib.font_manager.createFontList(
+        matplotlib.font_manager.findSystemFonts(None) +
         matplotlib.font_manager.findSystemFonts(_FONT_PATH)))
 
 _fontlist = {f.name for f in matplotlib.font_manager.fontManager.ttflist}
@@ -144,11 +145,12 @@ def _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect,
             x-axis is padded by this many data units on each side.
     """
     fig = ax.get_figure()
+    # get bbox in **inches**
     bbox = ax.get_window_extent().transformed(
             fig.dpi_scale_trans.inverted())
-    width = bbox.width * fig.dpi * len(height_matrix) / (
+    width = bbox.width * len(height_matrix) / (
             2 * xpad + len(height_matrix))
-    height = bbox.height * fig.dpi
+    height = bbox.height
 
     max_stack_height = max(sum(tup[1] for tup in row) for
                            row in height_matrix)
@@ -161,11 +163,11 @@ def _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect,
     yextent = ymax - ymin
 
     letterpadheight = yextent * letterpad
-    fontsize = (height / yextent) * 72 / fig.dpi
+    fontsize = 72
     font = _setup_font(fontfamily, fontsize)
     frac_above_baseline = _frac_above_baseline(font)
-    fontwidthscale = width * yextent / (height * fontaspect *
-                                        len(height_matrix))
+
+    fontwidthscale = width / (fontaspect * len(height_matrix))
 
     for xindex, xcol in enumerate(height_matrix):
 
@@ -191,7 +193,9 @@ def _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect,
             scaled_height = adj_letterheight / frac_above_baseline
             scaled_padding = padding / frac_above_baseline
             txt.set_path_effects([Scale(fontwidthscale,
-                                        scaled_height - scaled_padding)])
+                                        ((scaled_height - scaled_padding) *
+                                         height / yextent))
+                                  ])
 
             ypos += letterheight
 
@@ -215,8 +219,8 @@ def draw_logo(data,
               hide_axis=False,
               fontfamily=_DEFAULT_FONT,
               fontaspect=0.58,
-              letterpad=0.0075,
-              letterheightscale=0.97,
+              letterpad=0.01,
+              letterheightscale=0.96,
               ax=None,
               fixed_ymin=None,
               fixed_ymax=None,
