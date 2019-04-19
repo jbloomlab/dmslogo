@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com).
 
-## 0.2.dev0
+## 0.2.0
 
 ## Added
 - Better letter sizing in logo plots by adding manually adjusted fonts as package data, and changing how font scaling and spacing are done.
