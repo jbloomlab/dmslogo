@@ -10,8 +10,8 @@ Some of this code is borrowed and modified from
 """
 
 
-import os
 import glob
+import os
 
 import matplotlib.font_manager
 import matplotlib.patheffects
@@ -96,6 +96,7 @@ def _frac_above_baseline(font):
     Args:
         `font` (FontProperties)
             Font for which we are computing fraction.
+
     """
     fig, ax = plt.subplots()
     ax.set_xlim(0, 1)
@@ -170,9 +171,14 @@ def _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect,
 
         ypos = 0
         for letter, letterheight, lettercolor in xcol:
+
+            adj_letterheight = letterheightscale * letterheight
+            padding = min(letterheight / 2, letterpadheight)
+
             txt = ax.text(
                 xindex,
-                ypos,
+                # all padding goes **below** letter
+                ypos + letterheight - adj_letterheight + padding,
                 letter,
                 fontsize=fontsize,
                 color=lettercolor,
@@ -182,11 +188,10 @@ def _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect,
                 bbox={'pad': 0, 'edgecolor': 'none', 'facecolor': 'none'}
                 )
 
-            txt.set_path_effects(
-                    [Scale(fontwidthscale,
-                     max(0, letterheightscale * letterheight /
-                         frac_above_baseline - letterpadheight))
-                     ])
+            scaled_height = adj_letterheight / frac_above_baseline
+            scaled_padding = padding / frac_above_baseline
+            txt.set_path_effects([Scale(fontwidthscale,
+                                        scaled_height - scaled_padding)])
 
             ypos += letterheight
 
@@ -210,8 +215,8 @@ def draw_logo(data,
               hide_axis=False,
               fontfamily=_DEFAULT_FONT,
               fontaspect=0.58,
-              letterpad=0.013,
-              letterheightscale=0.98,
+              letterpad=0.0075,
+              letterheightscale=0.97,
               ax=None,
               fixed_ymin=None,
               fixed_ymax=None,
