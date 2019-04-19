@@ -57,5 +57,5 @@ setup(
     platforms='Linux and Mac OS X.',
     packages=['dmslogo'],
     package_dir={'dmslogo': 'dmslogo'},
-    package_data=['ttf_fonts/*.ttf'],
+    package_data={'dmslogo': ['ttf_fonts/*.ttf']},
 )
