@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>dmslogo.logo &#8212; dmslogo 0.1.2 documentation</title>
+    <title>dmslogo.logo &#8212; dmslogo 0.2.0 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -44,6 +44,9 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
 <span class="kn">import</span> <span class="nn">matplotlib.font_manager</span>
 <span class="kn">import</span> <span class="nn">matplotlib.patheffects</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -51,8 +54,32 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span>
 
+<span class="kn">import</span> <span class="nn">pkg_resources</span>
+
 <span class="kn">import</span> <span class="nn">dmslogo.colorschemes</span>
 <span class="kn">import</span> <span class="nn">dmslogo.utils</span>
+
+
+<span class="c1"># default font</span>
+<span class="n">_DEFAULT_FONT</span> <span class="o">=</span> <span class="s1">&#39;DejaVuSansMonoBold_SeqLogo&#39;</span>
+
+<span class="c1"># add fonts to font manager</span>
+<span class="n">_FONT_PATH</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s1">&#39;dmslogo&#39;</span><span class="p">,</span> <span class="s1">&#39;ttf_fonts/&#39;</span><span class="p">)</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">_FONT_PATH</span><span class="p">):</span>
+    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Cannot find font directory </span><span class="si">{_FONT_PATH}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">matplotlib</span><span class="o">.</span><span class="n">font_manager</span><span class="o">.</span><span class="n">fontManager</span><span class="o">.</span><span class="n">ttflist</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+    <span class="n">matplotlib</span><span class="o">.</span><span class="n">font_manager</span><span class="o">.</span><span class="n">createFontList</span><span class="p">(</span>
+        <span class="n">matplotlib</span><span class="o">.</span><span class="n">font_manager</span><span class="o">.</span><span class="n">findSystemFonts</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span> <span class="o">+</span>
+        <span class="n">matplotlib</span><span class="o">.</span><span class="n">font_manager</span><span class="o">.</span><span class="n">findSystemFonts</span><span class="p">(</span><span class="n">_FONT_PATH</span><span class="p">)))</span>
+
+<span class="n">_fontlist</span> <span class="o">=</span> <span class="p">{</span><span class="n">f</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">font_manager</span><span class="o">.</span><span class="n">fontManager</span><span class="o">.</span><span class="n">ttflist</span><span class="p">}</span>
+<span class="k">if</span> <span class="n">_DEFAULT_FONT</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_fontlist</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Could not find default font </span><span class="si">{_DEFAULT_FONT}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">_fontfile</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;</span><span class="si">{_FONT_PATH}</span><span class="s2">/*.ttf&quot;</span><span class="p">):</span>
+    <span class="n">_font</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">_fontfile</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">_font</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_fontlist</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Could not find font </span><span class="si">{_font}</span><span class="s2"> in file </span><span class="si">{_fontfile}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Scale"><a class="viewcode-back" href="../../dmslogo.logo.html#dmslogo.logo.Scale">[docs]</a><span class="k">class</span> <span class="nc">Scale</span><span class="p">(</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">patheffects</span><span class="o">.</span><span class="n">RendererBase</span><span class="p">):</span>
@@ -72,15 +99,6 @@
         <span class="n">renderer</span><span class="o">.</span><span class="n">draw_path</span><span class="p">(</span><span class="n">gc</span><span class="p">,</span> <span class="n">tpath</span><span class="p">,</span> <span class="n">affine</span><span class="p">,</span> <span class="n">rgbFace</span><span class="p">)</span></div></div>
 
 
-<span class="k">def</span> <span class="nf">_setup_font</span><span class="p">(</span><span class="n">fontfamily</span><span class="p">,</span> <span class="n">fontsize</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Get `FontProperties` for `fontfamily` and `fontsize`.&quot;&quot;&quot;</span>
-    <span class="n">font</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">font_manager</span><span class="o">.</span><span class="n">FontProperties</span><span class="p">()</span>
-    <span class="n">font</span><span class="o">.</span><span class="n">set_size</span><span class="p">(</span><span class="n">fontsize</span><span class="p">)</span>
-    <span class="n">font</span><span class="o">.</span><span class="n">set_weight</span><span class="p">(</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
-    <span class="n">font</span><span class="o">.</span><span class="n">set_family</span><span class="p">(</span><span class="n">fontfamily</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">font</span>
-
-
 <div class="viewcode-block" id="Memoize"><a class="viewcode-back" href="../../dmslogo.logo.html#dmslogo.logo.Memoize">[docs]</a><span class="k">class</span> <span class="nc">Memoize</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Memoize function from https://stackoverflow.com/a/1988826&quot;&quot;&quot;</span>
 
@@ -98,12 +116,22 @@
 
 
 <span class="nd">@Memoize</span>
+<span class="k">def</span> <span class="nf">_setup_font</span><span class="p">(</span><span class="n">fontfamily</span><span class="p">,</span> <span class="n">fontsize</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get `FontProperties` for `fontfamily` and `fontsize`.&quot;&quot;&quot;</span>
+    <span class="n">font</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">font_manager</span><span class="o">.</span><span class="n">FontProperties</span><span class="p">(</span><span class="n">family</span><span class="o">=</span><span class="n">fontfamily</span><span class="p">,</span>
+                                                  <span class="n">size</span><span class="o">=</span><span class="n">fontsize</span><span class="p">,</span>
+                                                  <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">font</span>
+
+
+<span class="nd">@Memoize</span>
 <span class="k">def</span> <span class="nf">_frac_above_baseline</span><span class="p">(</span><span class="n">font</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Fraction of font height that is above baseline.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        `font` (FontProperties)</span>
 <span class="sd">            Font for which we are computing fraction.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
@@ -151,16 +179,17 @@
 <span class="sd">            x-axis is padded by this many data units on each side.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">fig</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_figure</span><span class="p">()</span>
+    <span class="c1"># get bbox in **inches**</span>
     <span class="n">bbox</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_window_extent</span><span class="p">()</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span>
             <span class="n">fig</span><span class="o">.</span><span class="n">dpi_scale_trans</span><span class="o">.</span><span class="n">inverted</span><span class="p">())</span>
-    <span class="n">width</span> <span class="o">=</span> <span class="n">bbox</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="n">fig</span><span class="o">.</span><span class="n">dpi</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">height_matrix</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
+    <span class="n">width</span> <span class="o">=</span> <span class="n">bbox</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">height_matrix</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
             <span class="mi">2</span> <span class="o">*</span> <span class="n">xpad</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">height_matrix</span><span class="p">))</span>
-    <span class="n">height</span> <span class="o">=</span> <span class="n">bbox</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="n">fig</span><span class="o">.</span><span class="n">dpi</span>
+    <span class="n">height</span> <span class="o">=</span> <span class="n">bbox</span><span class="o">.</span><span class="n">height</span>
 
     <span class="n">max_stack_height</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">tup</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">tup</span> <span class="ow">in</span> <span class="n">row</span><span class="p">)</span> <span class="k">for</span>
                            <span class="n">row</span> <span class="ow">in</span> <span class="n">height_matrix</span><span class="p">)</span>
 
-    <span class="p">(</span><span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span><span class="p">)</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()</span>
+    <span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">max_stack_height</span> <span class="o">&gt;</span> <span class="n">ymax</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;`max_stack_height` exceeds `ymax`&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">ymin</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
@@ -168,19 +197,24 @@
     <span class="n">yextent</span> <span class="o">=</span> <span class="n">ymax</span> <span class="o">-</span> <span class="n">ymin</span>
 
     <span class="n">letterpadheight</span> <span class="o">=</span> <span class="n">yextent</span> <span class="o">*</span> <span class="n">letterpad</span>
-    <span class="n">fontsize</span> <span class="o">=</span> <span class="p">(</span><span class="n">height</span> <span class="o">/</span> <span class="n">yextent</span><span class="p">)</span> <span class="o">*</span> <span class="mf">72.0</span> <span class="o">/</span> <span class="n">fig</span><span class="o">.</span><span class="n">dpi</span>
-    <span class="n">font</span> <span class="o">=</span> <span class="n">_setup_font</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">,</span> <span class="n">fontfamily</span><span class="o">=</span><span class="n">fontfamily</span><span class="p">)</span>
+    <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">72</span>
+    <span class="n">font</span> <span class="o">=</span> <span class="n">_setup_font</span><span class="p">(</span><span class="n">fontfamily</span><span class="p">,</span> <span class="n">fontsize</span><span class="p">)</span>
     <span class="n">frac_above_baseline</span> <span class="o">=</span> <span class="n">_frac_above_baseline</span><span class="p">(</span><span class="n">font</span><span class="p">)</span>
-    <span class="n">fontwidthscale</span> <span class="o">=</span> <span class="n">width</span> <span class="o">*</span> <span class="n">yextent</span> <span class="o">/</span> <span class="p">(</span><span class="n">height</span> <span class="o">*</span> <span class="n">fontaspect</span> <span class="o">*</span>
-                                        <span class="nb">len</span><span class="p">(</span><span class="n">height_matrix</span><span class="p">))</span>
+
+    <span class="n">fontwidthscale</span> <span class="o">=</span> <span class="n">width</span> <span class="o">/</span> <span class="p">(</span><span class="n">fontaspect</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">height_matrix</span><span class="p">))</span>
 
     <span class="k">for</span> <span class="n">xindex</span><span class="p">,</span> <span class="n">xcol</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">height_matrix</span><span class="p">):</span>
 
         <span class="n">ypos</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">letter</span><span class="p">,</span> <span class="n">letterheight</span><span class="p">,</span> <span class="n">lettercolor</span> <span class="ow">in</span> <span class="n">xcol</span><span class="p">:</span>
+
+            <span class="n">adj_letterheight</span> <span class="o">=</span> <span class="n">letterheightscale</span> <span class="o">*</span> <span class="n">letterheight</span>
+            <span class="n">padding</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">letterheight</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">letterpadheight</span><span class="p">)</span>
+
             <span class="n">txt</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
                 <span class="n">xindex</span><span class="p">,</span>
-                <span class="n">ypos</span><span class="p">,</span>
+                <span class="c1"># all padding goes **below** letter</span>
+                <span class="n">ypos</span> <span class="o">+</span> <span class="n">letterheight</span> <span class="o">-</span> <span class="n">adj_letterheight</span> <span class="o">+</span> <span class="n">padding</span><span class="p">,</span>
                 <span class="n">letter</span><span class="p">,</span>
                 <span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">,</span>
                 <span class="n">color</span><span class="o">=</span><span class="n">lettercolor</span><span class="p">,</span>
@@ -190,11 +224,12 @@
                 <span class="n">bbox</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;pad&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;edgecolor&#39;</span><span class="p">:</span> <span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="s1">&#39;facecolor&#39;</span><span class="p">:</span> <span class="s1">&#39;none&#39;</span><span class="p">}</span>
                 <span class="p">)</span>
 
-            <span class="n">txt</span><span class="o">.</span><span class="n">set_path_effects</span><span class="p">(</span>
-                    <span class="p">[</span><span class="n">Scale</span><span class="p">(</span><span class="n">fontwidthscale</span><span class="p">,</span>
-                     <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">letterheightscale</span> <span class="o">*</span> <span class="n">letterheight</span> <span class="o">/</span>
-                         <span class="n">frac_above_baseline</span> <span class="o">-</span> <span class="n">letterpadheight</span><span class="p">))</span>
-                     <span class="p">])</span>
+            <span class="n">scaled_height</span> <span class="o">=</span> <span class="n">adj_letterheight</span> <span class="o">/</span> <span class="n">frac_above_baseline</span>
+            <span class="n">scaled_padding</span> <span class="o">=</span> <span class="n">padding</span> <span class="o">/</span> <span class="n">frac_above_baseline</span>
+            <span class="n">txt</span><span class="o">.</span><span class="n">set_path_effects</span><span class="p">([</span><span class="n">Scale</span><span class="p">(</span><span class="n">fontwidthscale</span><span class="p">,</span>
+                                        <span class="p">((</span><span class="n">scaled_height</span> <span class="o">-</span> <span class="n">scaled_padding</span><span class="p">)</span> <span class="o">*</span>
+                                         <span class="n">height</span> <span class="o">/</span> <span class="n">yextent</span><span class="p">))</span>
+                                  <span class="p">])</span>
 
             <span class="n">ypos</span> <span class="o">+=</span> <span class="n">letterheight</span>
 
@@ -216,10 +251,10 @@
               <span class="n">heightscale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
               <span class="n">axisfontscale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
               <span class="n">hide_axis</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-              <span class="n">fontfamily</span><span class="o">=</span><span class="s1">&#39;DejaVu Sans Mono&#39;</span><span class="p">,</span>
+              <span class="n">fontfamily</span><span class="o">=</span><span class="n">_DEFAULT_FONT</span><span class="p">,</span>
               <span class="n">fontaspect</span><span class="o">=</span><span class="mf">0.58</span><span class="p">,</span>
-              <span class="n">letterpad</span><span class="o">=</span><span class="mf">0.013</span><span class="p">,</span>
-              <span class="n">letterheightscale</span><span class="o">=</span><span class="mf">0.98</span><span class="p">,</span>
+              <span class="n">letterpad</span><span class="o">=</span><span class="mf">0.0105</span><span class="p">,</span>
+              <span class="n">letterheightscale</span><span class="o">=</span><span class="mf">0.96</span><span class="p">,</span>
               <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
               <span class="n">fixed_ymin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
               <span class="n">fixed_ymax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
