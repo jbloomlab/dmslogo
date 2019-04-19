@@ -142,9 +142,8 @@ def draw_line(data,
     if any(list(range(xmin, xmax + 1)) != data[x_col].unique()):
         raise ValueError('`x_col` not sequential unbroken integers')
 
-    for col in cols:
-        if any(len(set(g[col])) != 1 for _, g in data.groupby(x_col)):
-            raise ValueError(f"not unique mapping of `x_col` to {col}")
+    if len(data[x_col]) != len(data[x_col].unique()):
+        raise ValueError(f"not unique mapping of `x_col` to other cols {cols}")
 
     assert len(data) == xlen
 

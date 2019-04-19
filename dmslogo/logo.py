@@ -10,6 +10,9 @@ Some of this code is borrowed and modified from
 """
 
 
+import glob
+import os
+
 import matplotlib.font_manager
 import matplotlib.patheffects
 import matplotlib.pyplot as plt
@@ -17,8 +20,32 @@ import matplotlib.ticker
 
 import numpy
 
+import pkg_resources
+
 import dmslogo.colorschemes
 import dmslogo.utils
+
+
+# default font
+_DEFAULT_FONT = 'DejaVuSansMonoBold_SeqLogo'
+
+# add fonts to font manager
+_FONT_PATH = pkg_resources.resource_filename('dmslogo', 'ttf_fonts/')
+if not os.path.isdir(_FONT_PATH):
+    raise RuntimeError(f"Cannot find font directory {_FONT_PATH}")
+
+matplotlib.font_manager.fontManager.ttflist.extend(
+    matplotlib.font_manager.createFontList(
+        matplotlib.font_manager.findSystemFonts(None) +
+        matplotlib.font_manager.findSystemFonts(_FONT_PATH)))
+
+_fontlist = {f.name for f in matplotlib.font_manager.fontManager.ttflist}
+if _DEFAULT_FONT not in _fontlist:
+    raise RuntimeError(f"Could not find default font {_DEFAULT_FONT}")
+for _fontfile in glob.glob(f"{_FONT_PATH}/*.ttf"):
+    _font = os.path.splitext(os.path.basename(_fontfile))[0]
+    if _font not in _fontlist:
+        raise RuntimeError(f"Could not find font {_font} in file {_fontfile}")
 
 
 class Scale(matplotlib.patheffects.RendererBase):
@@ -38,15 +65,6 @@ class Scale(matplotlib.patheffects.RendererBase):
         renderer.draw_path(gc, tpath, affine, rgbFace)
 
 
-def _setup_font(fontfamily, fontsize):
-    """Get `FontProperties` for `fontfamily` and `fontsize`."""
-    font = matplotlib.font_manager.FontProperties()
-    font.set_size(fontsize)
-    font.set_weight('bold')
-    font.set_family(fontfamily)
-    return font
-
-
 class Memoize:
     """Memoize function from https://stackoverflow.com/a/1988826"""
 
@@ -64,12 +82,22 @@ class Memoize:
 
 
 @Memoize
+def _setup_font(fontfamily, fontsize):
+    """Get `FontProperties` for `fontfamily` and `fontsize`."""
+    font = matplotlib.font_manager.FontProperties(family=fontfamily,
+                                                  size=fontsize,
+                                                  weight='bold')
+    return font
+
+
+@Memoize
 def _frac_above_baseline(font):
     """Fraction of font height that is above baseline.
 
     Args:
         `font` (FontProperties)
             Font for which we are computing fraction.
+
     """
     fig, ax = plt.subplots()
     ax.set_xlim(0, 1)
@@ -117,16 +145,17 @@ def _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect,
             x-axis is padded by this many data units on each side.
     """
     fig = ax.get_figure()
+    # get bbox in **inches**
     bbox = ax.get_window_extent().transformed(
             fig.dpi_scale_trans.inverted())
-    width = bbox.width * fig.dpi * len(height_matrix) / (
+    width = bbox.width * len(height_matrix) / (
             2 * xpad + len(height_matrix))
-    height = bbox.height * fig.dpi
+    height = bbox.height
 
     max_stack_height = max(sum(tup[1] for tup in row) for
                            row in height_matrix)
 
-    (ymin, ymax) = ax.get_ylim()
+    ymin, ymax = ax.get_ylim()
     if max_stack_height > ymax:
         raise ValueError('`max_stack_height` exceeds `ymax`')
     if ymin > 0:
@@ -134,19 +163,24 @@ def _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect,
     yextent = ymax - ymin
 
     letterpadheight = yextent * letterpad
-    fontsize = (height / yextent) * 72.0 / fig.dpi
-    font = _setup_font(fontsize=fontsize, fontfamily=fontfamily)
+    fontsize = 72
+    font = _setup_font(fontfamily, fontsize)
     frac_above_baseline = _frac_above_baseline(font)
-    fontwidthscale = width * yextent / (height * fontaspect *
-                                        len(height_matrix))
+
+    fontwidthscale = width / (fontaspect * len(height_matrix))
 
     for xindex, xcol in enumerate(height_matrix):
 
         ypos = 0
         for letter, letterheight, lettercolor in xcol:
+
+            adj_letterheight = letterheightscale * letterheight
+            padding = min(letterheight / 2, letterpadheight)
+
             txt = ax.text(
                 xindex,
-                ypos,
+                # all padding goes **below** letter
+                ypos + letterheight - adj_letterheight + padding,
                 letter,
                 fontsize=fontsize,
                 color=lettercolor,
@@ -156,11 +190,12 @@ def _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect,
                 bbox={'pad': 0, 'edgecolor': 'none', 'facecolor': 'none'}
                 )
 
-            txt.set_path_effects(
-                    [Scale(fontwidthscale,
-                     max(0, letterheightscale * letterheight /
-                         frac_above_baseline - letterpadheight))
-                     ])
+            scaled_height = adj_letterheight / frac_above_baseline
+            scaled_padding = padding / frac_above_baseline
+            txt.set_path_effects([Scale(fontwidthscale,
+                                        ((scaled_height - scaled_padding) *
+                                         height / yextent))
+                                  ])
 
             ypos += letterheight
 
@@ -182,10 +217,10 @@ def draw_logo(data,
               heightscale=1,
               axisfontscale=1,
               hide_axis=False,
-              fontfamily='DejaVu Sans Mono',
+              fontfamily=_DEFAULT_FONT,
               fontaspect=0.58,
-              letterpad=0.013,
-              letterheightscale=0.98,
+              letterpad=0.0105,
+              letterheightscale=0.96,
               ax=None,
               fixed_ymin=None,
               fixed_ymax=None,

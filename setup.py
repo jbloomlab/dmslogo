@@ -52,8 +52,10 @@ setup(
         'numpy>=1.13',
         'pandas>=0.23',
         'matplotlib>=3.0.0',
+        'setuptools',
         ],
     platforms='Linux and Mac OS X.',
     packages=['dmslogo'],
     package_dir={'dmslogo': 'dmslogo'},
+    package_data={'dmslogo': ['ttf_fonts/*.ttf']},
 )
