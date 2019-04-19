@@ -615,4 +615,4 @@ The reason is that for a clean and accurate letter-height logo plots, the font m
 
 You can manually edit a font to do this as has been done for the
 current ``dmslogo`` default font; to see more information on this
-look [here for details](https://github.com/jbloomlab/dmslogo/tree/master/dmslogo/ttf_fonts).
+look `here for details <https://github.com/jbloomlab/dmslogo/tree/master/dmslogo/ttf_fonts>`_.
