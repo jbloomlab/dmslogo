@@ -16,4 +16,4 @@ Created as follows:
 
  - Downloaded *DejaVu Fonts* from [here](https://sourceforge.net/projects/dejavu/files/dejavu/2.37/dejavu-fonts-ttf-2.37.zip/download).
 
- - Used [FontForge](https://fontforge.github.io) to open the `DejaVuSansMona-Bold.ttf` font, and adjusted the heights of all **capitol** letters as well as the asterisk to be the full height.
+ - Used [FontForge](https://fontforge.github.io) to open the `DejaVuSansMona-Bold.ttf` font, and adjusted the heights of all **capital** letters as well as the asterisk to be the full height.

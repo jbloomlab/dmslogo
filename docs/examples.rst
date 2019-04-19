@@ -599,3 +599,20 @@ sticks out beyond its baseline:
     ...                             fontaspect=0.85,
     ...                             letterpad=0.05
     ...                             )
+
+Subtleties of non-default fonts
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Note however that you in general may have difficulty using most fonts
+(other than the ``dmslogo`` default) for good-looking logos.
+The reason is that for a clean and accurate letter-height logo plots, the font must:
+
+ - be mono-spaced
+
+ - not have descenders
+
+ - have all letters go exactly from the baseline to the top
+
+You can manually edit a font to do this as has been done for the
+current ``dmslogo`` default font; to see more information on this
+look [here for details](https://github.com/jbloomlab/dmslogo/tree/master/dmslogo/ttf_fonts).
