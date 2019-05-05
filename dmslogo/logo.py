@@ -378,8 +378,8 @@ def draw_logo(data,
     if not ax:
         fig, ax = plt.subplots()
         fig.set_size_inches(
-                (widthscale * 0.4 * (len(height_matrix) +
-                                     int(not hide_axis)),
+                (widthscale * 0.35 * (len(height_matrix) +
+                                      int(not hide_axis)),
                  heightscale * (2 + 0.5 * int(not hide_axis) +
                                 0.5 * int(bool(title)))
                  ))
