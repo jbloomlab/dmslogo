@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com).
 
-## 0.2.dev1
+## 0.2.1
 
 ### Added
 - Parameters to set better margins for `facet_plot`.
