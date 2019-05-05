@@ -1,18 +1,17 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Examples &#8212; dmslogo 0.2.0 documentation</title>
+    <meta charset="utf-8" />
+    <title>Examples &#8212; dmslogo 0.2.1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="dmslogo package" href="dmslogo.html" />
@@ -29,34 +28,35 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          
-
           <div class="body" role="main">
             
   <div class="section" id="examples">
 <span id="id1"></span><h1>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h1>
 <div class="contents local topic" id="contents">
 <ul class="simple">
-<li><a class="reference internal" href="#import-packages-modules" id="id2">Import packages / modules</a></li>
-<li><a class="reference internal" href="#simple-example-on-toy-data" id="id3">Simple example on toy data</a><ul>
-<li><a class="reference internal" href="#draw-a-basic-logo" id="id4">Draw a basic logo</a></li>
-<li><a class="reference internal" href="#drawing-without-breaks" id="id5">Drawing without breaks</a></li>
-<li><a class="reference internal" href="#setting-letter-colors" id="id6">Setting letter colors</a></li>
-<li><a class="reference internal" href="#labeling-x-axis-ticks" id="id7">Labeling x-axis ticks</a></li>
-<li><a class="reference internal" href="#adjusting-size-axis-labels-axes" id="id8">Adjusting size, axis labels, axes</a></li>
-<li><a class="reference internal" href="#multiple-logos-in-one-figure" id="id9">Multiple logos in one figure</a></li>
+<li><p><a class="reference internal" href="#import-packages-modules" id="id2">Import packages / modules</a></p></li>
+<li><p><a class="reference internal" href="#simple-example-on-toy-data" id="id3">Simple example on toy data</a></p>
+<ul>
+<li><p><a class="reference internal" href="#draw-a-basic-logo" id="id4">Draw a basic logo</a></p></li>
+<li><p><a class="reference internal" href="#drawing-without-breaks" id="id5">Drawing without breaks</a></p></li>
+<li><p><a class="reference internal" href="#setting-letter-colors" id="id6">Setting letter colors</a></p></li>
+<li><p><a class="reference internal" href="#labeling-x-axis-ticks" id="id7">Labeling x-axis ticks</a></p></li>
+<li><p><a class="reference internal" href="#adjusting-size-axis-labels-axes" id="id8">Adjusting size, axis labels, axes</a></p></li>
+<li><p><a class="reference internal" href="#multiple-logos-in-one-figure" id="id9">Multiple logos in one figure</a></p></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#real-hiv-data-from-dingens-et-al" id="id10">Real HIV data from Dingens et al</a><ul>
-<li><a class="reference internal" href="#download-data-to-plot" id="id11">Download data to plot</a></li>
-<li><a class="reference internal" href="#draw-a-logo-plot" id="id12">Draw a logo plot</a></li>
-<li><a class="reference internal" href="#draw-site-level-line-plots" id="id13">Draw site-level line plots</a></li>
-<li><a class="reference internal" href="#combining-site-level-line-and-mutation-level-logo-plots" id="id14">Combining site-level line and mutation-level logo plots</a></li>
+<li><p><a class="reference internal" href="#real-hiv-data-from-dingens-et-al" id="id10">Real HIV data from Dingens et al</a></p>
+<ul>
+<li><p><a class="reference internal" href="#download-data-to-plot" id="id11">Download data to plot</a></p></li>
+<li><p><a class="reference internal" href="#draw-a-logo-plot" id="id12">Draw a logo plot</a></p></li>
+<li><p><a class="reference internal" href="#draw-site-level-line-plots" id="id13">Draw site-level line plots</a></p></li>
+<li><p><a class="reference internal" href="#combining-site-level-line-and-mutation-level-logo-plots" id="id14">Combining site-level line and mutation-level logo plots</a></p></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#faceting-line-and-logo-plots-together" id="id15">Faceting line and logo plots together</a></li>
-<li><a class="reference internal" href="#write-dmslogo-in-comic-sans-font" id="id16">Write <em>DMSLOGO</em> in Comic Sans font</a><ul>
-<li><a class="reference internal" href="#subtleties-of-non-default-fonts" id="id17">Subtleties of non-default fonts</a></li>
+<li><p><a class="reference internal" href="#faceting-line-and-logo-plots-together" id="id15">Faceting line and logo plots together</a></p></li>
+<li><p><a class="reference internal" href="#write-dmslogo-in-comic-sans-font" id="id16">Write <em>DMSLOGO</em> in Comic Sans font</a></p>
+<ul>
+<li><p><a class="reference internal" href="#subtleties-of-non-default-fonts" id="id17">Subtleties of non-default fonts</a></p></li>
 </ul>
 </li>
 </ul>
@@ -94,9 +94,9 @@ function.</p>
 with:</p>
 <blockquote>
 <div><ul class="simple">
-<li>site in sequential integer numbering</li>
-<li>letter (i.e., amino acid or nucleotide)</li>
-<li>height of letter (can be any positive number)</li>
+<li><p>site in sequential integer numbering</p></li>
+<li><p>letter (i.e., amino acid or nucleotide)</p></li>
+<li><p>height of letter (can be any positive number)</p></li>
 </ul>
 </div></blockquote>
 <p>Here make a simple data frame that fits these specs:</p>
@@ -128,7 +128,7 @@ the names of the columns with each piece of required data:</p>
 </pre></div>
 </div>
 <p>(<a class="reference external" href=".//examples-4.png">png</a>, <a class="reference external" href=".//examples-4.hires.png">hires.png</a>, <a class="reference external" href=".//examples-4.pdf">pdf</a>)</p>
-<div class="figure">
+<div class="figure align-center">
 <img alt="_images/examples-4.png" src="_images/examples-4.png" />
 </div>
 <p>Add a title:</p>
@@ -140,7 +140,7 @@ the names of the columns with each piece of required data:</p>
 </pre></div>
 </div>
 <p>(<a class="reference external" href=".//examples-5.png">png</a>, <a class="reference external" href=".//examples-5.hires.png">hires.png</a>, <a class="reference external" href=".//examples-5.pdf">pdf</a>)</p>
-<div class="figure">
+<div class="figure align-center">
 <img alt="_images/examples-5.png" src="_images/examples-5.png" />
 </div>
 <p>Note that the call to <a class="reference internal" href="dmslogo.logo.html#dmslogo.logo.draw_logo" title="dmslogo.logo.draw_logo"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dmslogo.logo.draw_logo</span></code></a> returns
@@ -170,7 +170,7 @@ directly from 2 to 5 without indicating a break:</p>
 </pre></div>
 </div>
 <p>(<a class="reference external" href=".//examples-7.png">png</a>, <a class="reference external" href=".//examples-7.hires.png">hires.png</a>, <a class="reference external" href=".//examples-7.pdf">pdf</a>)</p>
-<div class="figure">
+<div class="figure align-center">
 <img alt="_images/examples-7.png" src="_images/examples-7.png" />
 </div>
 </div>
@@ -201,7 +201,7 @@ color letters at site-specific level:</p>
 </pre></div>
 </div>
 <p>(<a class="reference external" href=".//examples-9.png">png</a>, <a class="reference external" href=".//examples-9.hires.png">hires.png</a>, <a class="reference external" href=".//examples-9.pdf">pdf</a>)</p>
-<div class="figure">
+<div class="figure align-center">
 <img alt="_images/examples-9.png" src="_images/examples-9.png" />
 </div>
 </div>
@@ -231,7 +231,7 @@ xtick labels to <code class="docutils literal notranslate"><span class="pre">dat
 </pre></div>
 </div>
 <p>(<a class="reference external" href=".//examples-11.png">png</a>, <a class="reference external" href=".//examples-11.hires.png">hires.png</a>, <a class="reference external" href=".//examples-11.pdf">pdf</a>)</p>
-<div class="figure">
+<div class="figure align-center">
 <img alt="_images/examples-11.png" src="_images/examples-11.png" />
 </div>
 </div>
@@ -257,7 +257,7 @@ and get rid of the x-axis label:</p>
 </pre></div>
 </div>
 <p>(<a class="reference external" href=".//examples-12.png">png</a>, <a class="reference external" href=".//examples-12.hires.png">hires.png</a>, <a class="reference external" href=".//examples-12.pdf">pdf</a>)</p>
-<div class="figure">
+<div class="figure align-center">
 <img alt="_images/examples-12.png" src="_images/examples-12.png" />
 </div>
 <p>Now we make a plot where we hide the axes and their labels altogether:</p>
@@ -272,7 +272,7 @@ and get rid of the x-axis label:</p>
 </pre></div>
 </div>
 <p>(<a class="reference external" href=".//examples-13.png">png</a>, <a class="reference external" href=".//examples-13.hires.png">hires.png</a>, <a class="reference external" href=".//examples-13.pdf">pdf</a>)</p>
-<div class="figure">
+<div class="figure align-center">
 <img alt="_images/examples-13.png" src="_images/examples-13.png" />
 </div>
 </div>
@@ -312,7 +312,7 @@ also do it using matplotlib subplots as here:</p>
 </pre></div>
 </div>
 <p>(<a class="reference external" href=".//examples-14.png">png</a>, <a class="reference external" href=".//examples-14.hires.png">hires.png</a>, <a class="reference external" href=".//examples-14.pdf">pdf</a>)</p>
-<div class="figure">
+<div class="figure align-center">
 <img alt="_images/examples-14.png" src="_images/examples-14.png" />
 </div>
 </div>
@@ -434,7 +434,7 @@ antibody (<em>PG9</em>) and the sites of interest (<code class="docutils literal
 </pre></div>
 </div>
 <p>(<a class="reference external" href=".//examples-21.png">png</a>, <a class="reference external" href=".//examples-21.hires.png">hires.png</a>, <a class="reference external" href=".//examples-21.pdf">pdf</a>)</p>
-<div class="figure">
+<div class="figure align-center">
 <img alt="_images/examples-21.png" src="_images/examples-21.png" />
 </div>
 </div>
@@ -485,7 +485,7 @@ logo plot underlined in orange:</p>
 </pre></div>
 </div>
 <p>(<a class="reference external" href=".//examples-24.png">png</a>, <a class="reference external" href=".//examples-24.hires.png">hires.png</a>, <a class="reference external" href=".//examples-24.pdf">pdf</a>)</p>
-<div class="figure">
+<div class="figure align-center">
 <img alt="_images/examples-24.png" src="_images/examples-24.png" />
 </div>
 </div>
@@ -522,7 +522,7 @@ underline to indicate which sites are zoomed in the logo plot:</p>
 </pre></div>
 </div>
 <p>(<a class="reference external" href=".//examples-25.png">png</a>, <a class="reference external" href=".//examples-25.hires.png">hires.png</a>, <a class="reference external" href=".//examples-25.pdf">pdf</a>)</p>
-<div class="figure">
+<div class="figure align-center">
 <img alt="_images/examples-25.png" src="_images/examples-25.png" />
 </div>
 </div>
@@ -554,15 +554,15 @@ plots, and additional keyword arguments for
 </pre></div>
 </div>
 <p>(<a class="reference external" href=".//examples-26.png">png</a>, <a class="reference external" href=".//examples-26.hires.png">hires.png</a>, <a class="reference external" href=".//examples-26.pdf">pdf</a>)</p>
-<div class="figure">
+<div class="figure align-center">
 <img alt="_images/examples-26.png" src="_images/examples-26.png" />
 </div>
 <p>There are various options to tweak the formatting of the faceted plot. Here we demonstrate a few of them:</p>
 <blockquote>
 <div><ul class="simple">
-<li>We assign a more generic ylabel (“immune selection”) to each plot via the appropriate <code class="docutils literal notranslate"><span class="pre">*_kwargs</span></code> option.</li>
-<li>We use the <code class="docutils literal notranslate"><span class="pre">share_ylim_across_rows=False</span></code> option to allow each row to have its own y-axis limits.</li>
-<li>We use the <code class="docutils literal notranslate"><span class="pre">share_xlabel</span></code> and <code class="docutils literal notranslate"><span class="pre">share_ylabel</span></code> options to share the x- and y-labels across the line and logo plots.</li>
+<li><p>We assign a more generic ylabel (“immune selection”) to each plot via the appropriate <code class="docutils literal notranslate"><span class="pre">*_kwargs</span></code> option.</p></li>
+<li><p>We use the <code class="docutils literal notranslate"><span class="pre">share_ylim_across_rows=False</span></code> option to allow each row to have its own y-axis limits.</p></li>
+<li><p>We use the <code class="docutils literal notranslate"><span class="pre">share_xlabel</span></code> and <code class="docutils literal notranslate"><span class="pre">share_ylabel</span></code> options to share the x- and y-labels across the line and logo plots.</p></li>
 </ul>
 </div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">dmslogo</span><span class="o">.</span><span class="n">facet_plot</span><span class="p">(</span>
@@ -587,7 +587,7 @@ plots, and additional keyword arguments for
 </pre></div>
 </div>
 <p>(<a class="reference external" href=".//examples-27.png">png</a>, <a class="reference external" href=".//examples-27.hires.png">hires.png</a>, <a class="reference external" href=".//examples-27.pdf">pdf</a>)</p>
-<div class="figure">
+<div class="figure align-center">
 <img alt="_images/examples-27.png" src="_images/examples-27.png" />
 </div>
 </div>
@@ -641,7 +641,7 @@ sticks out beyond its baseline:</p>
 </pre></div>
 </div>
 <p>(<a class="reference external" href=".//examples-29.png">png</a>, <a class="reference external" href=".//examples-29.hires.png">hires.png</a>, <a class="reference external" href=".//examples-29.pdf">pdf</a>)</p>
-<div class="figure">
+<div class="figure align-center">
 <img alt="_images/examples-29.png" src="_images/examples-29.png" />
 </div>
 <div class="section" id="subtleties-of-non-default-fonts">
@@ -651,9 +651,9 @@ sticks out beyond its baseline:</p>
 The reason is that for a clean and accurate letter-height logo plots, the font must:</p>
 <blockquote>
 <div><ul class="simple">
-<li>be mono-spaced</li>
-<li>not have descenders</li>
-<li>have all letters go exactly from the baseline to the top</li>
+<li><p>be mono-spaced</p></li>
+<li><p>not have descenders</p></li>
+<li><p>have all letters go exactly from the baseline to the top</p></li>
 </ul>
 </div></blockquote>
 <p>You can manually edit a font to do this as has been done for the
@@ -665,7 +665,6 @@ look <a class="reference external" href="https://github.com/jbloomlab/dmslogo/tr
 
 
           </div>
-          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -698,7 +697,7 @@ look <a class="reference external" href="https://github.com/jbloomlab/dmslogo/tr
     
 
 <p>
-<a class="badge" href="https://travis-ci.org/jbloomlab/dmslogo">
+<a href="https://travis-ci.org/jbloomlab/dmslogo">
     <img
         alt="https://secure.travis-ci.org/jbloomlab/dmslogo.svg?branch=master"
         src="https://secure.travis-ci.org/jbloomlab/dmslogo.svg?branch=master"
@@ -731,20 +730,10 @@ look <a class="reference external" href="https://github.com/jbloomlab/dmslogo/tr
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
-
-
-
-
-
-
-
-
         </div>
       </div>
       <div class="clearer"></div>
@@ -753,8 +742,8 @@ look <a class="reference external" href="https://github.com/jbloomlab/dmslogo/tr
       &copy;2019--2019, Bloom lab.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
       <a href="_sources/examples.rst.txt"

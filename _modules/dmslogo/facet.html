@@ -1,18 +1,17 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>dmslogo.facet &#8212; dmslogo 0.2.0 documentation</title>
+    <meta charset="utf-8" />
+    <title>dmslogo.facet &#8212; dmslogo 0.2.1 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
    
@@ -27,8 +26,6 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          
-
           <div class="body" role="main">
             
   <h1>Source code for dmslogo.facet</h1><div class="highlight"><pre>
@@ -64,6 +61,10 @@
             <span class="n">logo_titlesuffix</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
             <span class="n">hspace</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
             <span class="n">wspace</span><span class="o">=</span><span class="mf">1.1</span><span class="p">,</span>
+            <span class="n">lmargin</span><span class="o">=</span><span class="mf">0.08</span><span class="p">,</span>
+            <span class="n">rmargin</span><span class="o">=</span><span class="mf">0.98</span><span class="p">,</span>
+            <span class="n">tmargin</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span>
+            <span class="n">bmargin</span><span class="o">=</span><span class="mf">1.3</span><span class="p">,</span>
             <span class="n">share_xlabel</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">share_ylabel</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">share_ylim_across_rows</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -104,9 +105,17 @@
 <span class="sd">        `logo_titlesuffix`</span>
 <span class="sd">            String suffixed to titles for logo plots.</span>
 <span class="sd">        `hspace` (float)</span>
-<span class="sd">            Vertical space between axes.</span>
+<span class="sd">            Vertical space between axes in same units as `height_per_ax`.</span>
 <span class="sd">        `wspace` (float)</span>
 <span class="sd">            Horizontal space between axes.</span>
+<span class="sd">        `lmargin` (float)</span>
+<span class="sd">            Left margin as fraction of total width.</span>
+<span class="sd">        `rmargin` (float)</span>
+<span class="sd">            Right margin in figure coordinates.</span>
+<span class="sd">        `tmargin` (float)</span>
+<span class="sd">            Top margin in same units as `height_per_ax`.</span>
+<span class="sd">        `bmargin` (float)</span>
+<span class="sd">            Bottom margin in same units as `height_per_ax`.</span>
 <span class="sd">        `share_xlabel` (bool)</span>
 <span class="sd">            Share the x-labels across the line and logo plots.</span>
 <span class="sd">        `share_ylabel` (bool)</span>
@@ -254,10 +263,14 @@
                     <span class="p">)</span>
     <span class="n">width</span> <span class="o">=</span> <span class="n">ncols_per_func</span> <span class="o">*</span> <span class="nb">sum</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;width&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span>
                                  <span class="n">draw_funcs</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-    <span class="n">height</span> <span class="o">=</span> <span class="n">nrows</span> <span class="o">*</span> <span class="n">height_per_ax</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
+    <span class="n">hparams</span> <span class="o">=</span> <span class="n">height_params</span><span class="p">(</span><span class="n">nrows</span><span class="p">,</span> <span class="n">height_per_ax</span><span class="p">,</span> <span class="n">hspace</span><span class="p">,</span> <span class="n">tmargin</span><span class="p">,</span> <span class="n">bmargin</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">hparams</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">])</span>
     <span class="n">fig</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">wspace</span><span class="o">=</span><span class="n">wspace</span> <span class="o">*</span> <span class="n">nfuncs</span> <span class="o">*</span> <span class="n">ncols_per_func</span> <span class="o">/</span> <span class="n">width</span><span class="p">,</span>
-                        <span class="n">hspace</span><span class="o">=</span><span class="n">hspace</span> <span class="o">/</span> <span class="n">height_per_ax</span><span class="p">)</span>
+                        <span class="n">hspace</span><span class="o">=</span><span class="n">hparams</span><span class="p">[</span><span class="s1">&#39;hspace&#39;</span><span class="p">],</span>
+                        <span class="n">top</span><span class="o">=</span><span class="n">hparams</span><span class="p">[</span><span class="s1">&#39;top&#39;</span><span class="p">],</span>
+                        <span class="n">bottom</span><span class="o">=</span><span class="n">hparams</span><span class="p">[</span><span class="s1">&#39;bottom&#39;</span><span class="p">],</span>
+                        <span class="n">right</span><span class="o">=</span><span class="n">rmargin</span><span class="p">,</span>
+                        <span class="n">left</span><span class="o">=</span><span class="n">lmargin</span><span class="p">)</span>
 
     <span class="c1"># Add plots, adjust to tight layout</span>
     <span class="n">axes_has_plot</span> <span class="o">=</span> <span class="n">_draw_facet_plots</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">draw_funcs</span><span class="p">,</span> <span class="n">ncols_per_func</span><span class="p">,</span>
@@ -306,6 +319,28 @@
             <span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
 
     <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span></div>
+
+
+<div class="viewcode-block" id="height_params"><a class="viewcode-back" href="../../dmslogo.facet.html#dmslogo.facet.height_params">[docs]</a><span class="k">def</span> <span class="nf">height_params</span><span class="p">(</span><span class="n">nrows</span><span class="p">,</span> <span class="n">height_per_ax</span><span class="p">,</span> <span class="n">hspace</span><span class="p">,</span> <span class="n">tmargin</span><span class="p">,</span> <span class="n">bmargin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Values to set vertical figure subplots parameters.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        `nrow` (int)</span>
+<span class="sd">            Number of rows</span>
+<span class="sd">        `height_per_ax`, `hspace`, `tmargin`, `bmargin`</span>
+<span class="sd">            Same meaning as for :func:`facet_plot`.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A dict keyed by:</span>
+<span class="sd">            - `height`: height of figure;</span>
+<span class="sd">            - `hspace`, `top`, `bottom`: values for `subplots_adjust`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">height</span> <span class="o">=</span> <span class="n">nrows</span> <span class="o">*</span> <span class="n">height_per_ax</span> <span class="o">+</span> <span class="n">tmargin</span> <span class="o">+</span> <span class="n">bmargin</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;height&#39;</span><span class="p">:</span> <span class="n">height</span><span class="p">,</span>
+            <span class="s1">&#39;top&#39;</span><span class="p">:</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">tmargin</span> <span class="o">/</span> <span class="n">height</span><span class="p">,</span>
+            <span class="s1">&#39;bottom&#39;</span><span class="p">:</span> <span class="n">bmargin</span> <span class="o">/</span> <span class="n">height</span><span class="p">,</span>
+            <span class="s1">&#39;hspace&#39;</span><span class="p">:</span> <span class="n">hspace</span> <span class="o">/</span> <span class="n">height_per_ax</span><span class="p">}</span></div>
 
 
 <span class="k">def</span> <span class="nf">_axes_to_centered_fig_label</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">axlist</span><span class="p">,</span> <span class="n">axistype</span><span class="p">):</span>
@@ -429,7 +464,6 @@
 </pre></div>
 
           </div>
-          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -462,7 +496,7 @@
     
 
 <p>
-<a class="badge" href="https://travis-ci.org/jbloomlab/dmslogo">
+<a href="https://travis-ci.org/jbloomlab/dmslogo">
     <img
         alt="https://secure.travis-ci.org/jbloomlab/dmslogo.svg?branch=master"
         src="https://secure.travis-ci.org/jbloomlab/dmslogo.svg?branch=master"
@@ -495,20 +529,10 @@
     <form class="search" action="../../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
-
-
-
-
-
-
-
-
         </div>
       </div>
       <div class="clearer"></div>
@@ -517,8 +541,8 @@
       &copy;2019--2019, Bloom lab.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>
 

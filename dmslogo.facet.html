@@ -1,18 +1,17 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>facet &#8212; dmslogo 0.2.0 documentation</title>
+    <meta charset="utf-8" />
+    <title>facet &#8212; dmslogo 0.2.1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="line" href="dmslogo.line.html" />
@@ -29,8 +28,6 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          
-
           <div class="body" role="main">
             
   <span class="target" id="module-dmslogo.facet"></span><div class="section" id="facet">
@@ -38,67 +35,96 @@
 <p>Facet multiple plots on the same figure.</p>
 <dl class="function">
 <dt id="dmslogo.facet.facet_plot">
-<code class="descclassname">dmslogo.facet.</code><code class="descname">facet_plot</code><span class="sig-paren">(</span><em>data</em>, <em>*</em>, <em>x_col</em>, <em>show_col</em>, <em>height_per_ax=2.5</em>, <em>gridrow_col=None</em>, <em>gridcol_col=None</em>, <em>draw_line_kwargs=None</em>, <em>draw_logo_kwargs=None</em>, <em>line_titlesuffix=''</em>, <em>logo_titlesuffix=''</em>, <em>hspace=0.8</em>, <em>wspace=1.1</em>, <em>share_xlabel=False</em>, <em>share_ylabel=False</em>, <em>share_ylim_across_rows=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/facet.html#facet_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.facet.facet_plot" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">dmslogo.facet.</code><code class="descname">facet_plot</code><span class="sig-paren">(</span><em>data</em>, <em>*</em>, <em>x_col</em>, <em>show_col</em>, <em>height_per_ax=2.5</em>, <em>gridrow_col=None</em>, <em>gridcol_col=None</em>, <em>draw_line_kwargs=None</em>, <em>draw_logo_kwargs=None</em>, <em>line_titlesuffix=''</em>, <em>logo_titlesuffix=''</em>, <em>hspace=0.8</em>, <em>wspace=1.1</em>, <em>lmargin=0.08</em>, <em>rmargin=0.98</em>, <em>tmargin=0.4</em>, <em>bmargin=1.3</em>, <em>share_xlabel=False</em>, <em>share_ylabel=False</em>, <em>share_ylim_across_rows=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/facet.html#facet_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.facet.facet_plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Facet together plots of different types on same figure.</p>
 <p>Useful for combining multiple instances of the plots you
 could create with <a class="reference internal" href="dmslogo.logo.html#dmslogo.logo.draw_logo" title="dmslogo.logo.draw_logo"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dmslogo.logo.draw_logo</span></code></a> and
 <a class="reference internal" href="dmslogo.line.html#dmslogo.line.draw_line" title="dmslogo.line.draw_line"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dmslogo.line.draw_line</span></code></a>.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd><dl class="first last docutils">
-<dt><cite>data</cite> (pandas DataFrame)</dt>
-<dd>The data to plot.</dd>
-<dt><cite>x_col</cite> (str)</dt>
-<dd>Column in <cite>data</cite> with x-axis values, as for
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt><cite>data</cite> (pandas DataFrame)</dt><dd><p>The data to plot.</p>
+</dd>
+<dt><cite>x_col</cite> (str)</dt><dd><p>Column in <cite>data</cite> with x-axis values, as for
 <a class="reference internal" href="dmslogo.logo.html#dmslogo.logo.draw_logo" title="dmslogo.logo.draw_logo"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dmslogo.logo.draw_logo</span></code></a> and
-<a class="reference internal" href="dmslogo.line.html#dmslogo.line.draw_line" title="dmslogo.line.draw_line"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dmslogo.line.draw_line</span></code></a>.</dd>
-<dt><cite>show_col</cite> (str or <cite>None</cite>)</dt>
-<dd>Column in <cite>data</cite> with x-axis values to highlight in line
-plots and to show in logo plots.</dd>
-<dt><cite>height_per_ax</cite> (float)</dt>
-<dd>Height of each axis in the faceted plot.</dd>
-<dt><cite>gridrow_col</cite> (str or <cite>None</cite>)</dt>
-<dd>Column in <cite>data</cite> to facet over for rows of plot.</dd>
-<dt><cite>gridcol_col</cite> (str or <cite>None</cite>)</dt>
-<dd>Column in data to facet over for columns of plot.</dd>
-<dt><cite>draw_line_kwargs</cite> (dict)</dt>
-<dd>All arguments to be passed to
+<a class="reference internal" href="dmslogo.line.html#dmslogo.line.draw_line" title="dmslogo.line.draw_line"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dmslogo.line.draw_line</span></code></a>.</p>
+</dd>
+<dt><cite>show_col</cite> (str or <cite>None</cite>)</dt><dd><p>Column in <cite>data</cite> with x-axis values to highlight in line
+plots and to show in logo plots.</p>
+</dd>
+<dt><cite>height_per_ax</cite> (float)</dt><dd><p>Height of each axis in the faceted plot.</p>
+</dd>
+<dt><cite>gridrow_col</cite> (str or <cite>None</cite>)</dt><dd><p>Column in <cite>data</cite> to facet over for rows of plot.</p>
+</dd>
+<dt><cite>gridcol_col</cite> (str or <cite>None</cite>)</dt><dd><p>Column in data to facet over for columns of plot.</p>
+</dd>
+<dt><cite>draw_line_kwargs</cite> (dict)</dt><dd><p>All arguments to be passed to
 <a class="reference internal" href="dmslogo.line.html#dmslogo.line.draw_line" title="dmslogo.line.draw_line"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dmslogo.line.draw_line</span></code></a>
 <strong>except</strong> <cite>x_col</cite>, <cite>show_col</cite>, and <cite>title</cite>. These
 are passed separately, or (in case of title) come
-from faceting variables.</dd>
-<dt><cite>draw_logo_kwargs</cite></dt>
-<dd>Like <cite>draw_line_kwargs</cite> but for
-<a class="reference internal" href="dmslogo.logo.html#dmslogo.logo.draw_logo" title="dmslogo.logo.draw_logo"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dmslogo.logo.draw_logo</span></code></a>.</dd>
-<dt><cite>line_titlesuffix</cite> (str or <cite>None</cite>)</dt>
-<dd>String suffixed to titles for line plots.</dd>
-<dt><cite>logo_titlesuffix</cite></dt>
-<dd>String suffixed to titles for logo plots.</dd>
-<dt><cite>hspace</cite> (float)</dt>
-<dd>Vertical space between axes.</dd>
-<dt><cite>wspace</cite> (float)</dt>
-<dd>Horizontal space between axes.</dd>
-<dt><cite>share_xlabel</cite> (bool)</dt>
-<dd>Share the x-labels across the line and logo plots.</dd>
-<dt><cite>share_ylabel</cite> (bool)</dt>
-<dd>Share the y-labels across the line and logo plots.</dd>
-<dt><cite>share_ylim_across_rows</cite> (bool)</dt>
-<dd>Do we share y-limits across rows?</dd>
+from faceting variables.</p>
+</dd>
+<dt><cite>draw_logo_kwargs</cite></dt><dd><p>Like <cite>draw_line_kwargs</cite> but for
+<a class="reference internal" href="dmslogo.logo.html#dmslogo.logo.draw_logo" title="dmslogo.logo.draw_logo"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dmslogo.logo.draw_logo</span></code></a>.</p>
+</dd>
+<dt><cite>line_titlesuffix</cite> (str or <cite>None</cite>)</dt><dd><p>String suffixed to titles for line plots.</p>
+</dd>
+<dt><cite>logo_titlesuffix</cite></dt><dd><p>String suffixed to titles for logo plots.</p>
+</dd>
+<dt><cite>hspace</cite> (float)</dt><dd><p>Vertical space between axes in same units as <cite>height_per_ax</cite>.</p>
+</dd>
+<dt><cite>wspace</cite> (float)</dt><dd><p>Horizontal space between axes.</p>
+</dd>
+<dt><cite>lmargin</cite> (float)</dt><dd><p>Left margin as fraction of total width.</p>
+</dd>
+<dt><cite>rmargin</cite> (float)</dt><dd><p>Right margin in figure coordinates.</p>
+</dd>
+<dt><cite>tmargin</cite> (float)</dt><dd><p>Top margin in same units as <cite>height_per_ax</cite>.</p>
+</dd>
+<dt><cite>bmargin</cite> (float)</dt><dd><p>Bottom margin in same units as <cite>height_per_ax</cite>.</p>
+</dd>
+<dt><cite>share_xlabel</cite> (bool)</dt><dd><p>Share the x-labels across the line and logo plots.</p>
+</dd>
+<dt><cite>share_ylabel</cite> (bool)</dt><dd><p>Share the y-labels across the line and logo plots.</p>
+</dd>
+<dt><cite>share_ylim_across_rows</cite> (bool)</dt><dd><p>Do we share y-limits across rows?</p>
+</dd>
 </dl>
 </dd>
-<dt>Returns:</dt>
-<dd>The 2-tuple <cite>fig, axes</cite> where <cite>fig</cite> is the matplotlib
-Figure and <cite>axes</cite> is a numpy ndarray of the figure axes.</dd>
+<dt>Returns:</dt><dd><p>The 2-tuple <cite>fig, axes</cite> where <cite>fig</cite> is the matplotlib
+Figure and <cite>axes</cite> is a numpy ndarray of the figure axes.</p>
+</dd>
 </dl>
 <p><cite>x_col</cite> and <cite>show_col</cite> must have the same unique entries in <cite>data</cite>
 for all groups in being faceted over.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="dmslogo.facet.height_params">
+<code class="descclassname">dmslogo.facet.</code><code class="descname">height_params</code><span class="sig-paren">(</span><em>nrows</em>, <em>height_per_ax</em>, <em>hspace</em>, <em>tmargin</em>, <em>bmargin</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/facet.html#height_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.facet.height_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Values to set vertical figure subplots parameters.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt><cite>nrow</cite> (int)</dt><dd><p>Number of rows</p>
+</dd>
+<dt><cite>height_per_ax</cite>, <cite>hspace</cite>, <cite>tmargin</cite>, <cite>bmargin</cite></dt><dd><p>Same meaning as for <a class="reference internal" href="#dmslogo.facet.facet_plot" title="dmslogo.facet.facet_plot"><code class="xref py py-func docutils literal notranslate"><span class="pre">facet_plot()</span></code></a>.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>A dict keyed by:</dt><dd><ul class="simple">
+<li><p><cite>height</cite>: height of figure;</p></li>
+<li><p><cite>hspace</cite>, <cite>top</cite>, <cite>bottom</cite>: values for <cite>subplots_adjust</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
 
 
           </div>
-          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -131,7 +157,7 @@ for all groups in being faceted over.</p>
     
 
 <p>
-<a class="badge" href="https://travis-ci.org/jbloomlab/dmslogo">
+<a href="https://travis-ci.org/jbloomlab/dmslogo">
     <img
         alt="https://secure.travis-ci.org/jbloomlab/dmslogo.svg?branch=master"
         src="https://secure.travis-ci.org/jbloomlab/dmslogo.svg?branch=master"
@@ -166,20 +192,10 @@ for all groups in being faceted over.</p>
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
-
-
-
-
-
-
-
-
         </div>
       </div>
       <div class="clearer"></div>
@@ -188,8 +204,8 @@ for all groups in being faceted over.</p>
       &copy;2019--2019, Bloom lab.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
       <a href="_sources/dmslogo.facet.rst.txt"

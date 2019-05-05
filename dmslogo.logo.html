@@ -1,18 +1,17 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>logo &#8212; dmslogo 0.2.0 documentation</title>
+    <meta charset="utf-8" />
+    <title>logo &#8212; dmslogo 0.2.1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="utils" href="dmslogo.utils.html" />
@@ -29,8 +28,6 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          
-
           <div class="body" role="main">
             
   <span class="target" id="module-dmslogo.logo"></span><div class="section" id="logo">
@@ -63,69 +60,68 @@
 <dt id="dmslogo.logo.draw_logo">
 <code class="descclassname">dmslogo.logo.</code><code class="descname">draw_logo</code><span class="sig-paren">(</span><em>data</em>, <em>*</em>, <em>x_col</em>, <em>letter_col</em>, <em>letter_height_col</em>, <em>xtick_col=None</em>, <em>color_col=None</em>, <em>xlabel=None</em>, <em>ylabel=None</em>, <em>title=None</em>, <em>colorscheme={'A': '#f76ab4'</em>, <em>'C': '#ff7f00'</em>, <em>'D': '#e41a1c'</em>, <em>'E': '#e41a1c'</em>, <em>'F': '#84380b'</em>, <em>'G': '#f76ab4'</em>, <em>'H': '#3c58e5'</em>, <em>'I': '#12ab0d'</em>, <em>'K': '#3c58e5'</em>, <em>'L': '#12ab0d'</em>, <em>'M': '#12ab0d'</em>, <em>'N': '#972aa8'</em>, <em>'P': '#12ab0d'</em>, <em>'Q': '#972aa8'</em>, <em>'R': '#3c58e5'</em>, <em>'S': '#ff7f00'</em>, <em>'T': '#ff7f00'</em>, <em>'V': '#12ab0d'</em>, <em>'W': '#84380b'</em>, <em>'Y': '#84380b'}</em>, <em>missing_color='gray'</em>, <em>addbreaks=True</em>, <em>widthscale=1</em>, <em>heightscale=1</em>, <em>axisfontscale=1</em>, <em>hide_axis=False</em>, <em>fontfamily='DejaVuSansMonoBold_SeqLogo'</em>, <em>fontaspect=0.58</em>, <em>letterpad=0.0105</em>, <em>letterheightscale=0.96</em>, <em>ax=None</em>, <em>fixed_ymin=None</em>, <em>fixed_ymax=None</em>, <em>clip_negative_heights=False</em>, <em>drop_na_letter_heights=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/logo.html#draw_logo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.logo.draw_logo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draw sequence logo from specified letter heights.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd><dl class="first last docutils">
-<dt><cite>data</cite> (pandas DataFrame)</dt>
-<dd>Holds data to plot.</dd>
-<dt><cite>letter_height_col</cite> (str)</dt>
-<dd>Column in <cite>data</cite> with letter heights.</dd>
-<dt><cite>letter_col</cite> (str)</dt>
-<dd>Column in <cite>data</cite> with letter identities.</dd>
-<dt><cite>x_col</cite> (str)</dt>
-<dd>Column in <cite>data</cite> with integer site numbers.</dd>
-<dt><cite>xtick_col</cite> (<cite>None</cite> or str)</dt>
-<dd>Column in <cite>data</cite> used to label sites if not using <cite>x_col</cite>.</dd>
-<dt><cite>color_col</cite> (<cite>None</cite> or str)</dt>
-<dd>Column in data with colors for each letter; set to <cite>None</cite>
-to define colors via <cite>colorscheme</cite> and <cite>missing_color</cite>.</dd>
-<dt><cite>xlabel</cite> (<cite>None</cite> or str)</dt>
-<dd>Label for x-axis if not using <cite>xtick_col</cite> or <cite>x_col</cite>.</dd>
-<dt><cite>ylabel</cite> (<cite>None</cite> or str)</dt>
-<dd>Label for y-axis if not using <cite>letter_height_col</cite>.</dd>
-<dt><cite>title</cite> (<cite>None</cite> or str)</dt>
-<dd>Title to place above plot.</dd>
-<dt><cite>colorscheme</cite> (dict)</dt>
-<dd>Color for each letter. Ignored if <cite>color_col</cite> is not <cite>None</cite>.
-See <a class="reference internal" href="dmslogo.colorschemes.html#module-dmslogo.colorschemes" title="dmslogo.colorschemes"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dmslogo.colorschemes</span></code></a> for some color schemes.</dd>
-<dt><cite>missing_color</cite> (<cite>None</cite> or str)</dt>
-<dd>Color for letters not assigned in <cite>colorscheme</cite>,
-or <cite>None</cite> to raise an error for unassigned letters.</dd>
-<dt><cite>addbreaks</cite> (bool)</dt>
-<dd>Anywhere there is a gap in sequential numbering of
-<cite>x_col</cite>, add break consisting of space and dashed line.</dd>
-<dt><cite>widthscale</cite> (float)</dt>
-<dd>Scale width by this much.</dd>
-<dt><cite>heightscale</cite> (float)</dt>
-<dd>Scale height by this much.</dd>
-<dt><cite>axisfontscale</cite> (float)</dt>
-<dd>Scale size of font for axis ticks and labels by this much.</dd>
-<dt><cite>hide_axis</cite> (bool)</dt>
-<dd>Do we hide the axis and tick labels?</dd>
-<dt><cite>fontfamily</cite> (str)</dt>
-<dd>Font to use.</dd>
-<dt><cite>fontaspect</cite> (float)</dt>
-<dd>Aspect ratio of font (height to width). If letters are
-too crowded, increase this.</dd>
-<dt><cite>letterpad</cite> (float)</dt>
-<dd>Add this much fixed vertical padding between letters
-as fraction of total stack height.</dd>
-<dt><cite>letterheightscale</cite> (float)</dt>
-<dd>Scale height of all letters by this much.</dd>
-<dt><cite>ax</cite> (<cite>None</cite> or matplotlib axes.Axes object)</dt>
-<dd>Use to plot on an existing axis.</dd>
-<dt><cite>fixed_ymin</cite> (<cite>None</cite> or float)</dt>
-<dd>If not <cite>None</cite>, then fixed y-axis minimum.</dd>
-<dt><cite>fixed_ymax</cite> (<cite>None</cite> or float)</dt>
-<dd>If not <cite>None</cite>, then fixed y-axis maximum.</dd>
-<dt><cite>clip_negative_heights</cite> (bool)</dt>
-<dd>Set to 0 any value in <cite>letter_height_col</cite> that is &lt; 0.</dd>
-<dt><cite>drop_na_letter_heights</cite> (bool)</dt>
-<dd>Drop any rows in <cite>data</cite> where <cite>letter_height_col</cite> is NaN.</dd>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt><cite>data</cite> (pandas DataFrame)</dt><dd><p>Holds data to plot.</p>
+</dd>
+<dt><cite>letter_height_col</cite> (str)</dt><dd><p>Column in <cite>data</cite> with letter heights.</p>
+</dd>
+<dt><cite>letter_col</cite> (str)</dt><dd><p>Column in <cite>data</cite> with letter identities.</p>
+</dd>
+<dt><cite>x_col</cite> (str)</dt><dd><p>Column in <cite>data</cite> with integer site numbers.</p>
+</dd>
+<dt><cite>xtick_col</cite> (<cite>None</cite> or str)</dt><dd><p>Column in <cite>data</cite> used to label sites if not using <cite>x_col</cite>.</p>
+</dd>
+<dt><cite>color_col</cite> (<cite>None</cite> or str)</dt><dd><p>Column in data with colors for each letter; set to <cite>None</cite>
+to define colors via <cite>colorscheme</cite> and <cite>missing_color</cite>.</p>
+</dd>
+<dt><cite>xlabel</cite> (<cite>None</cite> or str)</dt><dd><p>Label for x-axis if not using <cite>xtick_col</cite> or <cite>x_col</cite>.</p>
+</dd>
+<dt><cite>ylabel</cite> (<cite>None</cite> or str)</dt><dd><p>Label for y-axis if not using <cite>letter_height_col</cite>.</p>
+</dd>
+<dt><cite>title</cite> (<cite>None</cite> or str)</dt><dd><p>Title to place above plot.</p>
+</dd>
+<dt><cite>colorscheme</cite> (dict)</dt><dd><p>Color for each letter. Ignored if <cite>color_col</cite> is not <cite>None</cite>.
+See <a class="reference internal" href="dmslogo.colorschemes.html#module-dmslogo.colorschemes" title="dmslogo.colorschemes"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dmslogo.colorschemes</span></code></a> for some color schemes.</p>
+</dd>
+<dt><cite>missing_color</cite> (<cite>None</cite> or str)</dt><dd><p>Color for letters not assigned in <cite>colorscheme</cite>,
+or <cite>None</cite> to raise an error for unassigned letters.</p>
+</dd>
+<dt><cite>addbreaks</cite> (bool)</dt><dd><p>Anywhere there is a gap in sequential numbering of
+<cite>x_col</cite>, add break consisting of space and dashed line.</p>
+</dd>
+<dt><cite>widthscale</cite> (float)</dt><dd><p>Scale width by this much.</p>
+</dd>
+<dt><cite>heightscale</cite> (float)</dt><dd><p>Scale height by this much.</p>
+</dd>
+<dt><cite>axisfontscale</cite> (float)</dt><dd><p>Scale size of font for axis ticks and labels by this much.</p>
+</dd>
+<dt><cite>hide_axis</cite> (bool)</dt><dd><p>Do we hide the axis and tick labels?</p>
+</dd>
+<dt><cite>fontfamily</cite> (str)</dt><dd><p>Font to use.</p>
+</dd>
+<dt><cite>fontaspect</cite> (float)</dt><dd><p>Aspect ratio of font (height to width). If letters are
+too crowded, increase this.</p>
+</dd>
+<dt><cite>letterpad</cite> (float)</dt><dd><p>Add this much fixed vertical padding between letters
+as fraction of total stack height.</p>
+</dd>
+<dt><cite>letterheightscale</cite> (float)</dt><dd><p>Scale height of all letters by this much.</p>
+</dd>
+<dt><cite>ax</cite> (<cite>None</cite> or matplotlib axes.Axes object)</dt><dd><p>Use to plot on an existing axis.</p>
+</dd>
+<dt><cite>fixed_ymin</cite> (<cite>None</cite> or float)</dt><dd><p>If not <cite>None</cite>, then fixed y-axis minimum.</p>
+</dd>
+<dt><cite>fixed_ymax</cite> (<cite>None</cite> or float)</dt><dd><p>If not <cite>None</cite>, then fixed y-axis maximum.</p>
+</dd>
+<dt><cite>clip_negative_heights</cite> (bool)</dt><dd><p>Set to 0 any value in <cite>letter_height_col</cite> that is &lt; 0.</p>
+</dd>
+<dt><cite>drop_na_letter_heights</cite> (bool)</dt><dd><p>Drop any rows in <cite>data</cite> where <cite>letter_height_col</cite> is NaN.</p>
+</dd>
 </dl>
 </dd>
-<dt>Returns:</dt>
-<dd>The 2-tuple <cite>(fig, ax)</cite> giving the figure and axis.</dd>
+<dt>Returns:</dt><dd><p>The 2-tuple <cite>(fig, ax)</cite> giving the figure and axis.</p>
+</dd>
 </dl>
 </dd></dl>
 
@@ -133,7 +129,6 @@ as fraction of total stack height.</dd>
 
 
           </div>
-          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -166,7 +161,7 @@ as fraction of total stack height.</dd>
     
 
 <p>
-<a class="badge" href="https://travis-ci.org/jbloomlab/dmslogo">
+<a href="https://travis-ci.org/jbloomlab/dmslogo">
     <img
         alt="https://secure.travis-ci.org/jbloomlab/dmslogo.svg?branch=master"
         src="https://secure.travis-ci.org/jbloomlab/dmslogo.svg?branch=master"
@@ -201,20 +196,10 @@ as fraction of total stack height.</dd>
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
-
-
-
-
-
-
-
-
         </div>
       </div>
       <div class="clearer"></div>
@@ -223,8 +208,8 @@ as fraction of total stack height.</dd>
       &copy;2019--2019, Bloom lab.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
       <a href="_sources/dmslogo.logo.rst.txt"

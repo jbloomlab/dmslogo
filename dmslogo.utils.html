@@ -1,18 +1,17 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>utils &#8212; dmslogo 0.2.0 documentation</title>
+    <meta charset="utf-8" />
+    <title>utils &#8212; dmslogo 0.2.1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="package index" href="package_index.html" />
@@ -29,8 +28,6 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          
-
           <div class="body" role="main">
             
   <span class="target" id="module-dmslogo.utils"></span><div class="section" id="utils">
@@ -43,21 +40,20 @@
 <p>Useful when you would like to re-label a numeric x-axis
 with string labels.</p>
 <p>Uses <cite>matplotlib.ticker.MaxNLocator</cite> to choose pretty breaks.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd><dl class="first last docutils">
-<dt><cite>xi</cite> (list or array)</dt>
-<dd>Integer values actually assigned to axis points.</dd>
-<dt><cite>x</cite> (list)</dt>
-<dd>Strings corresponding to each numeric value in <cite>xi</cite>.</dd>
-<dt><cite>n</cite> (int)</dt>
-<dd>Approximate number of ticks to use.</dd>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt><cite>xi</cite> (list or array)</dt><dd><p>Integer values actually assigned to axis points.</p>
+</dd>
+<dt><cite>x</cite> (list)</dt><dd><p>Strings corresponding to each numeric value in <cite>xi</cite>.</p>
+</dd>
+<dt><cite>n</cite> (int)</dt><dd><p>Approximate number of ticks to use.</p>
+</dd>
 </dl>
 </dd>
-<dt>Returns:</dt>
-<dd>The tuple <cite>(breaks, labels)</cite> where <cite>breaks</cite> gives the
+<dt>Returns:</dt><dd><p>The tuple <cite>(breaks, labels)</cite> where <cite>breaks</cite> gives the
 locations of breaks taken from <cite>xi</cite>, and <cite>labels</cite> is
-the label for each break.</dd>
+the label for each break.</p>
+</dd>
 </dl>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">xi</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">213</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">xi</span><span class="p">]</span>
@@ -74,23 +70,22 @@ the label for each break.</dd>
 <dt id="dmslogo.utils.despine">
 <code class="descclassname">dmslogo.utils.</code><code class="descname">despine</code><span class="sig-paren">(</span><em>fig=None</em>, <em>ax=None</em>, <em>top=True</em>, <em>right=True</em>, <em>left=False</em>, <em>bottom=False</em>, <em>offset=None</em>, <em>trim=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/utils.html#despine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.utils.despine" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove the top and right spines from plot(s).</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd><dl class="first last docutils">
-<dt><cite>fig</cite> (matplotlib figure)</dt>
-<dd>Figure to despine all axes of, default uses current figure.</dd>
-<dt><cite>ax</cite> (matplotlib axes)</dt>
-<dd>Specific axes object to despine.</dd>
-<dt><cite>top</cite>, <cite>right</cite>, <cite>left</cite>, <cite>bottom</cite> (bool)</dt>
-<dd>If True, remove that spine.</dd>
-<dt><cite>offset</cite> (int or dict)</dt>
-<dd>Absolute distance, in points, spines should be moved away
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt><cite>fig</cite> (matplotlib figure)</dt><dd><p>Figure to despine all axes of, default uses current figure.</p>
+</dd>
+<dt><cite>ax</cite> (matplotlib axes)</dt><dd><p>Specific axes object to despine.</p>
+</dd>
+<dt><cite>top</cite>, <cite>right</cite>, <cite>left</cite>, <cite>bottom</cite> (bool)</dt><dd><p>If True, remove that spine.</p>
+</dd>
+<dt><cite>offset</cite> (int or dict)</dt><dd><p>Absolute distance, in points, spines should be moved away
 from the axes (negative values move spines inward).
 A single value applies to all spines; a dict can be used
-to set offset values per side.</dd>
-<dt><cite>trim</cite> (bool)</dt>
-<dd>If True, limit spines to the smallest and largest major tick
-on each non-despined axis.</dd>
+to set offset values per side.</p>
+</dd>
+<dt><cite>trim</cite> (bool)</dt><dd><p>If True, limit spines to the smallest and largest major tick
+on each non-despined axis.</p>
+</dd>
 </dl>
 </dd>
 </dl>
@@ -100,7 +95,6 @@ on each non-despined axis.</dd>
 
 
           </div>
-          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -133,7 +127,7 @@ on each non-despined axis.</dd>
     
 
 <p>
-<a class="badge" href="https://travis-ci.org/jbloomlab/dmslogo">
+<a href="https://travis-ci.org/jbloomlab/dmslogo">
     <img
         alt="https://secure.travis-ci.org/jbloomlab/dmslogo.svg?branch=master"
         src="https://secure.travis-ci.org/jbloomlab/dmslogo.svg?branch=master"
@@ -168,20 +162,10 @@ on each non-despined axis.</dd>
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
-
-
-
-
-
-
-
-
         </div>
       </div>
       <div class="clearer"></div>
@@ -190,8 +174,8 @@ on each non-despined axis.</dd>
       &copy;2019--2019, Bloom lab.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
       <a href="_sources/dmslogo.utils.rst.txt"
