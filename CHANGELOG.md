@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com).
 
 ### Added
 - Parameters to set better margins for `facet_plot`.
+- Enable customization of underline colors in `draw_line`.
 
 ## 0.2.0
 
