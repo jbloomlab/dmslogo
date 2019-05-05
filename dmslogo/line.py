@@ -61,6 +61,7 @@ def draw_line(data,
               ylabel=None,
               title=None,
               color='black',
+              show_color=dmslogo.colorschemes.CBPALETTE[1],
               linewidth=1,
               widthscale=1,
               heightscale=1,
@@ -93,6 +94,8 @@ def draw_line(data,
             Title to place above plot.
         `color` (str)
             Color of line.
+        `show_color` (str)
+            Color of underlines specified by `show_col`.
         `linewidth` (float)
             Width of line.
         `widthscale` (float)
@@ -223,7 +226,7 @@ def draw_line(data,
                             width=2 + 1 * lw_to_xdata,
                             height=-ymin - lw_to_ydata,
                             edgecolor='none',
-                            facecolor=dmslogo.colorschemes.CBPALETTE[1]
+                            facecolor=show_color,
                             ))
 
     return fig, ax
