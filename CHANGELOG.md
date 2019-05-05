@@ -3,6 +3,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com).
 
+## 0.2.2
+
+### Changed
+- Left and right margins now absolute rather than relative for `facet_plot`.
+- Adjusted default width of plots created by `draw_logo`.
+
 ## 0.2.1
 
 ### Added

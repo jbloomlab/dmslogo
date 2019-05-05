@@ -30,8 +30,8 @@ def facet_plot(
             logo_titlesuffix='',
             hspace=0.8,
             wspace=1.1,
-            lmargin=0.08,
-            rmargin=0.98,
+            lmargin=1,
+            rmargin=0.2,
             tmargin=0.4,
             bmargin=1.3,
             share_xlabel=False,
@@ -78,9 +78,9 @@ def facet_plot(
         `wspace` (float)
             Horizontal space between axes.
         `lmargin` (float)
-            Left margin as fraction of total width.
+            Left margin in same units as `height_per_ax`.
         `rmargin` (float)
-            Right margin in figure coordinates.
+            Right margin in same units as `height_per_ax`.
         `tmargin` (float)
             Top margin in same units as `height_per_ax`.
         `bmargin` (float)
@@ -230,16 +230,16 @@ def facet_plot(
                                  for d in draw_funcs.values()
                                  for _ in range(ncols_per_func)]}
                     )
-    width = ncols_per_func * sum(d['width'] for d in
-                                 draw_funcs.values())
+    width = lmargin + rmargin + ncols_per_func * sum(d['width'] for d in
+                                                     draw_funcs.values())
     hparams = height_params(nrows, height_per_ax, hspace, tmargin, bmargin)
     fig.set_size_inches(width, hparams['height'])
     fig.subplots_adjust(wspace=wspace * nfuncs * ncols_per_func / width,
                         hspace=hparams['hspace'],
                         top=hparams['top'],
                         bottom=hparams['bottom'],
-                        right=rmargin,
-                        left=lmargin)
+                        right=1 - rmargin / width,
+                        left=lmargin / width)
 
     # Add plots, adjust to tight layout
     axes_has_plot = _draw_facet_plots(axes, draw_funcs, ncols_per_func,
