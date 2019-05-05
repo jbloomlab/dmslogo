@@ -30,6 +30,10 @@ def facet_plot(
             logo_titlesuffix='',
             hspace=0.8,
             wspace=1.1,
+            lmargin=0.08,
+            rmargin=0.98,
+            tmargin=0.4,
+            bmargin=1.3,
             share_xlabel=False,
             share_ylabel=False,
             share_ylim_across_rows=True,
@@ -70,9 +74,17 @@ def facet_plot(
         `logo_titlesuffix`
             String suffixed to titles for logo plots.
         `hspace` (float)
-            Vertical space between axes.
+            Vertical space between axes in same units as `height_per_ax`.
         `wspace` (float)
             Horizontal space between axes.
+        `lmargin` (float)
+            Left margin as fraction of total width.
+        `rmargin` (float)
+            Right margin in figure coordinates.
+        `tmargin` (float)
+            Top margin in same units as `height_per_ax`.
+        `bmargin` (float)
+            Bottom margin in same units as `height_per_ax`.
         `share_xlabel` (bool)
             Share the x-labels across the line and logo plots.
         `share_ylabel` (bool)
@@ -220,10 +232,14 @@ def facet_plot(
                     )
     width = ncols_per_func * sum(d['width'] for d in
                                  draw_funcs.values())
-    height = nrows * height_per_ax
-    fig.set_size_inches(width, height)
+    hparams = height_params(nrows, height_per_ax, hspace, tmargin, bmargin)
+    fig.set_size_inches(width, hparams['height'])
     fig.subplots_adjust(wspace=wspace * nfuncs * ncols_per_func / width,
-                        hspace=hspace / height_per_ax)
+                        hspace=hparams['hspace'],
+                        top=hparams['top'],
+                        bottom=hparams['bottom'],
+                        right=rmargin,
+                        left=lmargin)
 
     # Add plots, adjust to tight layout
     axes_has_plot = _draw_facet_plots(axes, draw_funcs, ncols_per_func,
@@ -272,6 +288,28 @@ def facet_plot(
             ax.set_axis_off()
 
     return fig, axes
+
+
+def height_params(nrows, height_per_ax, hspace, tmargin, bmargin):
+    """Values to set vertical figure subplots parameters.
+
+    Args:
+        `nrow` (int)
+            Number of rows
+        `height_per_ax`, `hspace`, `tmargin`, `bmargin`
+            Same meaning as for :func:`facet_plot`.
+
+    Returns:
+        A dict keyed by:
+            - `height`: height of figure;
+            - `hspace`, `top`, `bottom`: values for `subplots_adjust`.
+
+    """
+    height = nrows * height_per_ax + tmargin + bmargin
+    return {'height': height,
+            'top': 1 - tmargin / height,
+            'bottom': bmargin / height,
+            'hspace': hspace / height_per_ax}
 
 
 def _axes_to_centered_fig_label(fig, axlist, axistype):
