@@ -8,6 +8,7 @@ Facet multiple plots on the same figure.
 
 
 import collections
+import operator
 
 import matplotlib.pyplot as plt
 
@@ -37,6 +38,7 @@ def facet_plot(
             share_xlabel=False,
             share_ylabel=False,
             share_ylim_across_rows=True,
+            set_ylims=False,
             ):
     """Facet together plots of different types on same figure.
 
@@ -91,6 +93,8 @@ def facet_plot(
             Share the y-labels across the line and logo plots.
         `share_ylim_across_rows` (bool)
             Do we share y-limits across rows?
+        `set_ylims` (`False` or 2-tuple)
+            To set y-limits for all axes, specify the 2-tuple `(ymin, ymax)`.
 
     Returns:
         The 2-tuple `fig, axes` where `fig` is the matplotlib
@@ -220,6 +224,16 @@ def facet_plot(
             lim = lfunc(fixed_ylims[ltype].values())
             for row in list(fixed_ylims[ltype].keys()):
                 fixed_ylims[ltype][row] = lim
+
+    if set_ylims:
+        for ltype, op, setlim in [('min', operator.lt, set_ylims[0]),
+                                  ('max', operator.gt, set_ylims[1])]:
+            for row, lim in list(fixed_ylims[ltype].items()):
+                if op(lim, setlim):
+                    raise ValueError(f"invalid y{ltype} in `set_ylims`, must "
+                                     f"be at least {lim}.")
+                else:
+                    fixed_ylims[ltype][row] = setlim
 
     # make figure
     fig, axes = plt.subplots(
