@@ -336,6 +336,7 @@ def _axes_to_centered_fig_label(fig, axlist, axistype):
             List of the Axes with the labels to replace.
         `axistype` (str)
             Either 'x' or 'y'.
+
     """
     if axistype not in ['x', 'y']:
         raise ValueError(f"invalid `axistype` of {axistype}")
