@@ -2,19 +2,12 @@ language: python
 
 python:
   - "3.6"
+  - "3.7"
 
 cache: pip
 
 install:
-  - >
-     pip install
-     flake8
-     flake8-docstrings
-     flake8-rst-docstrings
-     flake8-builtins
-     flake8-import-order
-     flake8-comprehensions
-     flake8-bugbear
+  - pip install -r test_requirements.txt
   - pip install -e .
 
 script: 
