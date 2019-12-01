@@ -130,7 +130,8 @@ def _draw_text_data_coord(height_matrix, ystarts, ax, fontfamily, fontaspect,
         `height_matrix` (list of lists)
             Gives letter heights. In the main list, there is a list
             for each site, with the entries being 3-tuples giving
-            the letter, its height, and its color.
+            the letter, its height, its color, and 'pad_below' or
+            'pad_above' indicating where vertical padding is added.
         `ystarts` (list)
             Gives y position of bottom of first letter for each site.
         `ax` (matplotlib Axes)
@@ -181,15 +182,21 @@ def _draw_text_data_coord(height_matrix, ystarts, ax, fontfamily, fontaspect,
     for xindex, (xcol, ystart) in enumerate(zip(height_matrix, ystarts)):
 
         ypos = ystart
-        for letter, letterheight, lettercolor in xcol:
+        for letter, letterheight, lettercolor, pad_loc in xcol:
 
             adj_letterheight = letterheightscale * letterheight
             padding = min(letterheight / 2, letterpadheight)
+            if pad_loc == 'pad_below':
+                ypad = padding
+            elif pad_loc == 'pad_above':
+                ypad = 0
+            else:
+                raise ValueError(f"invalid `pad_loc` {pad_loc}")
 
             txt = ax.text(
                 xindex,
                 # all padding goes **below** letter
-                ypos + letterheight - adj_letterheight + padding,
+                ypos + letterheight - adj_letterheight + ypad,
                 letter,
                 fontsize=fontsize,
                 color=lettercolor,
@@ -369,7 +376,7 @@ def draw_logo(data,
             letter = getattr(tup, letter_col)
             if not (isinstance(letter, str) and len(letter) == 1):
                 raise ValueError(f"invalid letter of {letter}")
-            letter_height = abs(getattr(tup, letter_height_col))
+            letter_height = getattr(tup, letter_height_col)
             if color_col is not None:
                 color = getattr(tup, color_col)
             else:
@@ -380,7 +387,10 @@ def draw_logo(data,
                         color = missing_color
                     else:
                         raise ValueError(f"no color for {letter}")
-            row.append((letter, letter_height, color))
+            row.append((letter,
+                        abs(letter_height),
+                        color,
+                        'pad_below' if letter_height >= 0 else 'pad_above'))
         height_matrix.append(row)
 
         assert len(xdata[xtick_col].unique()) == 1
