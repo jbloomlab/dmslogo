@@ -3,6 +3,16 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com).
 
+## 0.3.0
+
+### Added
+- Example notebooks now run on `mybinder`.
+
+### Changed
+- Examples now in Jupyter notebooks and converted to docs via `nbpshinx`.
+- Tests now run on Python 3.7 as well as 3.6.
+- Some improvements to docs.
+
 ## 0.2.3
 
 ### Added
