@@ -1,0 +1,14 @@
+# name of conda environment
+name: dmslogo-environment
+
+# channels to install conda dependencies
+channels:
+  - conda-forge
+
+# conda dependencies
+dependencies:
+  - python==3.7
+  - pip
+  # install the current package with `pip install .`
+  - pip:
+      - .
