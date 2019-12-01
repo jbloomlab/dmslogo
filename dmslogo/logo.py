@@ -234,7 +234,9 @@ def draw_logo(data,
               fixed_ymin=None,
               fixed_ymax=None,
               clip_negative_heights=False,
-              drop_na_letter_heights=True):
+              drop_na_letter_heights=True,
+              draw_line_at_zero='if_negative',
+              ):
     """Draw sequence logo from specified letter heights.
 
     Args:
@@ -294,6 +296,11 @@ def draw_logo(data,
             Set to 0 any value in `letter_height_col` that is < 0.
         `drop_na_letter_heights` (bool)
             Drop any rows in `data` where `letter_height_col` is NaN.
+        `draw_line_at_zero` (str)
+            Draw a horizontal line at the value of zero? Can have following
+            values: 'if_negative' to only draw line if there are negative
+            letter heights, 'always' to always draw line, and 'never' to
+            never draw line.
 
     Returns:
         The 2-tuple `(fig, ax)` giving the figure and axis.
@@ -386,6 +393,18 @@ def draw_logo(data,
     max_stack_height = max(sum(tup[1] for tup in row) for
                            row in height_matrix)
 
+    if draw_line_at_zero == 'always':
+        line_at_zero = True
+    elif draw_line_at_zero == 'never':
+        line_at_zero = False
+    elif draw_line_at_zero == 'if_negative':
+        if min(min_by_site) < 0:
+            line_at_zero = True
+        else:
+            line_at_zero = False
+    else:
+        raise ValueError(f"invalid `draw_line_at_zero` {draw_line_at_zero}")
+
     # setup axis for plotting
     if not ax:
         fig, ax = plt.subplots()
@@ -439,6 +458,10 @@ def draw_logo(data,
         # loosely dotted line:
         # https://matplotlib.org/gallery/lines_bars_and_markers/linestyles.html
         ax.axvline(x=x + 0.5, ls=(0, (2, 5)), color='black', lw=1)
+
+    # draw line at zero
+    if line_at_zero:
+        ax.axhline(y=0, ls='-', color='black', lw=1)
 
     return fig, ax
 
