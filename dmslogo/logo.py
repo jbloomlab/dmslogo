@@ -187,7 +187,7 @@ def _draw_text_data_coord(height_matrix, ystarts, ax, fontfamily, fontaspect,
             adj_letterheight = letterheightscale * letterheight
             padding = min(letterheight / 2, letterpadheight)
             if pad_loc == 'pad_below':
-                ypad = padding
+                ypad = padding + letterheight - adj_letterheight
             elif pad_loc == 'pad_above':
                 ypad = 0
             else:
@@ -195,8 +195,7 @@ def _draw_text_data_coord(height_matrix, ystarts, ax, fontfamily, fontaspect,
 
             txt = ax.text(
                 xindex,
-                # all padding goes **below** letter
-                ypos + letterheight - adj_letterheight + ypad,
+                ypos + ypad,
                 letter,
                 fontsize=fontsize,
                 color=lettercolor,
