@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com).
 ## 0.3.0
 
 ### Added
+- `draw_logo` can now handle negative values.
+
+### Added
 - Example notebooks now run on `mybinder`.
 
 ### Changed

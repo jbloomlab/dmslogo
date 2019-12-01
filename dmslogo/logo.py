@@ -122,7 +122,7 @@ def _frac_above_baseline(font):
     return frac
 
 
-def _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect,
+def _draw_text_data_coord(height_matrix, ystarts, ax, fontfamily, fontaspect,
                           letterpad, letterheightscale, xpad):
     """Draws logo letters.
 
@@ -131,6 +131,8 @@ def _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect,
             Gives letter heights. In the main list, there is a list
             for each site, with the entries being 3-tuples giving
             the letter, its height, and its color.
+        `ystarts` (list)
+            Gives y position of bottom of first letter for each site.
         `ax` (matplotlib Axes)
             Axis on which we draw logo letters.
         `fontfamily` (str)
@@ -153,15 +155,21 @@ def _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect,
             2 * xpad + len(height_matrix))
     height = bbox.height
 
-    max_stack_height = max(sum(tup[1] for tup in row) for
+    max_stack_height = max(sum(abs(tup[1]) for tup in row) for
                            row in height_matrix)
 
+    if len(ystarts) != len(height_matrix):
+        raise ValueError('`ystarts` and `height_matrix` different lengths\n'
+                         f"ystarts={ystarts}\nheight_matrix={height_matrix}")
+
     ymin, ymax = ax.get_ylim()
-    if max_stack_height > ymax:
-        raise ValueError('`max_stack_height` exceeds `ymax`')
+    yextent = ymax - ymin
+    if max_stack_height > yextent:
+        raise ValueError('`max_stack_height` exceeds `yextent`')
     if ymin > 0:
         raise ValueError('`ymin` > 0')
-    yextent = ymax - ymin
+    if min(ystarts) < ymin:
+        raise ValueError('`ymin` exceeds smallest `ystarts`')
 
     letterpadheight = yextent * letterpad
     fontsize = 72
@@ -170,9 +178,9 @@ def _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect,
 
     fontwidthscale = width / (fontaspect * len(height_matrix))
 
-    for xindex, xcol in enumerate(height_matrix):
+    for xindex, (xcol, ystart) in enumerate(zip(height_matrix, ystarts)):
 
-        ypos = 0
+        ypos = ystart
         for letter, letterheight, lettercolor in xcol:
 
             adj_letterheight = letterheightscale * letterheight
@@ -317,16 +325,15 @@ def draw_logo(data,
     if clip_negative_heights:
         data = data.assign(**{letter_height_col: lambda x: numpy.clip(
                            x[letter_height_col], 0, None)})
-    if any(data[letter_height_col] < 0):
-        raise ValueError('`letter_height_col` has negative heights.\n'
-                         'Consider setting `clip_negative_heights`.')
     if any(data[x_col] != data[x_col].astype(int)):
         raise ValueError('`x_col` does not have integer values')
     if any(len(set(g[xtick_col])) != 1 for _, g in data.groupby(x_col)):
         raise ValueError('not unique mapping of `x_col` to `xtick_col`')
 
-    # construct height_matrix: list of lists of (letter, heigth, color)
+    # construct height_matrix: list of lists of (letter, height, color)
     height_matrix = []
+    min_by_site = []
+    max_by_site = []
     xticklabels = []
     xticks = []
     lastx = None
@@ -340,18 +347,22 @@ def draw_logo(data,
         if addbreaks and (lastx is not None) and (x != lastx + 1):
             breaks.append(len(height_matrix))
             height_matrix.append([])
+            min_by_site.append(0)
+            max_by_site.append(0)
             xtick += 1
         lastx = x
 
-        if len(xdata[letter_col]) != len(xdata[letter_col].unique()):
+        if len(xdata[letter_col]) != xdata[letter_col].nunique():
             raise ValueError(f"duplicate letters for `x_col` {x}")
 
+        min_by_site.append(xdata[letter_height_col].clip(None, 0).sum())
+        max_by_site.append(xdata[letter_height_col].clip(0, None).sum())
         row = []
         for tup in xdata.itertuples(index=False):
             letter = getattr(tup, letter_col)
             if not (isinstance(letter, str) and len(letter) == 1):
                 raise ValueError(f"invalid letter of {letter}")
-            letter_height = getattr(tup, letter_height_col)
+            letter_height = abs(getattr(tup, letter_height_col))
             if color_col is not None:
                 color = getattr(tup, color_col)
             else:
@@ -394,11 +405,11 @@ def draw_logo(data,
     ax.set_xlim(-xpad, len(height_matrix) + xpad)
     ylimpad = 0.05 * max_stack_height
     if fixed_ymin is None:
-        ymin = -ylimpad
+        ymin = min(min_by_site) - ylimpad
     else:
         ymin = fixed_ymin
     if fixed_ymax is None:
-        ymax = max_stack_height + ylimpad
+        ymax = max(max_by_site) + ylimpad
     else:
         ymax = fixed_ymax
     ax.set_ylim(ymin, ymax)
@@ -420,8 +431,8 @@ def draw_logo(data,
         ax.axis('off')
 
     # draw the letters
-    _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect,
-                          letterpad, letterheightscale, xpad)
+    _draw_text_data_coord(height_matrix, min_by_site, ax, fontfamily,
+                          fontaspect, letterpad, letterheightscale, xpad)
 
     # draw the breaks
     for x in breaks:
