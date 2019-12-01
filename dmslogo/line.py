@@ -55,12 +55,14 @@ def draw_line(data,
               *,
               x_col,
               height_col,
+              height_col2=None,
               xtick_col=None,
               show_col=None,
               xlabel=None,
               ylabel=None,
               title=None,
               color='black',
+              color2='gray',
               show_color=dmslogo.colorschemes.CBPALETTE[1],
               linewidth=1,
               widthscale=1,
@@ -78,6 +80,10 @@ def draw_line(data,
             the columns of interest, removes duplicates.
         `height_col` (str)
             Column in `data` with line height.
+        `height_col2` (str or `None`)
+            Optional second column in `data` giving second line height. This is
+            typically useful when `height_col` has positive values and you also
+            want to plot negative values: those can be in `height_col2`.
         `x_col` (str)
             Column in `data` with integer site numbers. Must be full
             set of sequential numbers, gaps in numbering not allowed.
@@ -93,7 +99,9 @@ def draw_line(data,
         `title` (`None` or str)
             Title to place above plot.
         `color` (str)
-            Color of line.
+            Color of line plotting data in `height_col`.
+        `color2` (str)
+            Color of line plotting any data in `height_col2`.
         `show_color` (str)
             Color of underlines specified by `show_col`.
         `linewidth` (float)
@@ -126,6 +134,8 @@ def draw_line(data,
         ylabel = height_col
 
     cols = list({x_col, xtick_col, height_col})
+    if height_col2 is not None:
+        cols.append(height_col2)
     if show_col:
         cols.append(show_col)
         if not data[show_col].dtype == bool:
@@ -150,19 +160,24 @@ def draw_line(data,
 
     assert len(data) == xlen
 
-    ylimpad = 0.05 * (data[height_col].max() - data[height_col].min())
+    ydata_min = data[height_col].min()
+    ydata_max = data[height_col].max()
+    if height_col2 is not None:
+        ydata_min = min(ydata_min, data[height_col2].min())
+        ydata_max = max(ydata_max, data[height_col2].max())
+    ylimpad = 0.05 * (ydata_max - ydata_min)
     if fixed_ymax is None:
-        ymax = max(0, data[height_col].max()) + ylimpad
+        ymax = max(0, ydata_max) + ylimpad
     else:
-        if fixed_ymax < data[height_col].max():
+        if fixed_ymax < ydata_max:
             raise ValueError('`fixed_ymax` less then max of data')
         ymax = fixed_ymax
     if fixed_ymin is None:
-        ymin = min(0, data[height_col].min()) - ylimpad
+        ymin = min(0, ydata_min) - ylimpad
     else:
         if fixed_ymin > 0:
             raise ValueError('`fixed_ymin` greater than 0')
-        if fixed_ymin > data[height_col].min():
+        if fixed_ymin > ydata_min:
             raise ValueError('`fixed_ymin` greater then min of data')
         ymin = fixed_ymin
 
@@ -216,6 +231,14 @@ def draw_line(data,
             color=color,
             where='mid',
             linewidth=linewidth)
+
+    if height_col2 is not None:
+        ydata2 = data[height_col2].tolist()
+        ax.step([xmin - 0.5] + xdata + [xmax + 0.5],
+                [ydata2[0]] + ydata2 + [ydata2[-1]],
+                color=color2,
+                where='mid',
+                linewidth=linewidth)
 
     if show_col:
         lw_to_xdata = data_units_from_linewidth(linewidth, ax, 'x')

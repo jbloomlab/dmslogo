@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com).
 ## 0.3.0
 
 ### Added
-- `draw_logo` can now handle negative values.
+- Negative values can be plotted using both `draw_logo` and `draw_line` (as well as `facet_plot`).
 
 ### Added
 - Example notebooks now run on `mybinder`.
