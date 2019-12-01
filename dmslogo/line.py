@@ -152,18 +152,18 @@ def draw_line(data,
 
     ylimpad = 0.05 * (data[height_col].max() - data[height_col].min())
     if fixed_ymax is None:
-        ymax = data[height_col].max() + ylimpad
+        ymax = max(0, data[height_col].max()) + ylimpad
     else:
         if fixed_ymax < data[height_col].max():
             raise ValueError('`fixed_ymax` less then max of data')
         ymax = fixed_ymax
-    if data[height_col].min() < 0:
-        raise ValueError('cannot handle negatives in `height_col`')
     if fixed_ymin is None:
-        ymin = -ylimpad
+        ymin = min(0, data[height_col].min()) - ylimpad
     else:
         if fixed_ymin > 0:
             raise ValueError('`fixed_ymin` greater than 0')
+        if fixed_ymin > data[height_col].min():
+            raise ValueError('`fixed_ymin` greater then min of data')
         ymin = fixed_ymin
 
     # setup axis for plotting
@@ -224,7 +224,7 @@ def draw_line(data,
             ax.add_patch(plt.Rectangle(
                             xy=(x - 0.5 - lw_to_xdata, ymin),
                             width=2 + 1 * lw_to_xdata,
-                            height=-ymin - lw_to_ydata,
+                            height=ylimpad - lw_to_ydata,
                             edgecolor='none',
                             facecolor=show_color,
                             ))
