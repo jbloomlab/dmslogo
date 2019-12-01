@@ -143,6 +143,7 @@ def _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect,
             Scale height of letters by this much.
         `xpad` (float)
             x-axis is padded by this many data units on each side.
+
     """
     fig = ax.get_figure()
     # get bbox in **inches**

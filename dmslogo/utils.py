@@ -101,6 +101,7 @@ def despine(fig=None,
         `trim` (bool)
             If True, limit spines to the smallest and largest major tick
             on each non-despined axis.
+
     """
     # Get references to the axes we want
     if fig is None and ax is None:
