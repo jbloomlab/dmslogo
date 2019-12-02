@@ -470,7 +470,7 @@ def draw_logo(data,
 
     # draw line at zero
     if line_at_zero:
-        ax.axhline(y=0, ls='-', color='black', lw=1)
+        ax.axhline(y=0, ls='-', color='black', lw=1, zorder=4)
 
     return fig, ax
 

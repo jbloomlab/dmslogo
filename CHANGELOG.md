@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com).
 
+## 0.3.1
+
+### Changed
+- Put the mid-line on logo plots from `draw_logo` with negative values on top of text.
+
 ## 0.3.0
 
 ### Added
