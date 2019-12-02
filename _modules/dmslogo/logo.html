@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>dmslogo.logo &#8212; dmslogo 0.2.3 documentation</title>
+    <title>dmslogo.logo &#8212; dmslogo 0.3.0 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -26,6 +26,8 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <h1>Source code for dmslogo.logo</h1><div class="highlight"><pre>
@@ -153,7 +155,7 @@
     <span class="k">return</span> <span class="n">frac</span>
 
 
-<span class="k">def</span> <span class="nf">_draw_text_data_coord</span><span class="p">(</span><span class="n">height_matrix</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">fontfamily</span><span class="p">,</span> <span class="n">fontaspect</span><span class="p">,</span>
+<span class="k">def</span> <span class="nf">_draw_text_data_coord</span><span class="p">(</span><span class="n">height_matrix</span><span class="p">,</span> <span class="n">ystarts</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">fontfamily</span><span class="p">,</span> <span class="n">fontaspect</span><span class="p">,</span>
                           <span class="n">letterpad</span><span class="p">,</span> <span class="n">letterheightscale</span><span class="p">,</span> <span class="n">xpad</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Draws logo letters.</span>
 
@@ -161,7 +163,10 @@
 <span class="sd">        `height_matrix` (list of lists)</span>
 <span class="sd">            Gives letter heights. In the main list, there is a list</span>
 <span class="sd">            for each site, with the entries being 3-tuples giving</span>
-<span class="sd">            the letter, its height, and its color.</span>
+<span class="sd">            the letter, its height, its color, and &#39;pad_below&#39; or</span>
+<span class="sd">            &#39;pad_above&#39; indicating where vertical padding is added.</span>
+<span class="sd">        `ystarts` (list)</span>
+<span class="sd">            Gives y position of bottom of first letter for each site.</span>
 <span class="sd">        `ax` (matplotlib Axes)</span>
 <span class="sd">            Axis on which we draw logo letters.</span>
 <span class="sd">        `fontfamily` (str)</span>
@@ -174,6 +179,7 @@
 <span class="sd">            Scale height of letters by this much.</span>
 <span class="sd">        `xpad` (float)</span>
 <span class="sd">            x-axis is padded by this many data units on each side.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">fig</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_figure</span><span class="p">()</span>
     <span class="c1"># get bbox in **inches**</span>
@@ -183,15 +189,21 @@
             <span class="mi">2</span> <span class="o">*</span> <span class="n">xpad</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">height_matrix</span><span class="p">))</span>
     <span class="n">height</span> <span class="o">=</span> <span class="n">bbox</span><span class="o">.</span><span class="n">height</span>
 
-    <span class="n">max_stack_height</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">tup</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">tup</span> <span class="ow">in</span> <span class="n">row</span><span class="p">)</span> <span class="k">for</span>
+    <span class="n">max_stack_height</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">tup</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">tup</span> <span class="ow">in</span> <span class="n">row</span><span class="p">)</span> <span class="k">for</span>
                            <span class="n">row</span> <span class="ow">in</span> <span class="n">height_matrix</span><span class="p">)</span>
 
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ystarts</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">height_matrix</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;`ystarts` and `height_matrix` different lengths</span><span class="se">\n</span><span class="s1">&#39;</span>
+                         <span class="n">f</span><span class="s2">&quot;ystarts=</span><span class="si">{ystarts}</span><span class="se">\n</span><span class="s2">height_matrix=</span><span class="si">{height_matrix}</span><span class="s2">&quot;</span><span class="p">)</span>
+
     <span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">max_stack_height</span> <span class="o">&gt;</span> <span class="n">ymax</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;`max_stack_height` exceeds `ymax`&#39;</span><span class="p">)</span>
+    <span class="n">yextent</span> <span class="o">=</span> <span class="n">ymax</span> <span class="o">-</span> <span class="n">ymin</span>
+    <span class="k">if</span> <span class="n">max_stack_height</span> <span class="o">&gt;</span> <span class="n">yextent</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;`max_stack_height` exceeds `yextent`&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">ymin</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;`ymin` &gt; 0&#39;</span><span class="p">)</span>
-    <span class="n">yextent</span> <span class="o">=</span> <span class="n">ymax</span> <span class="o">-</span> <span class="n">ymin</span>
+    <span class="k">if</span> <span class="nb">min</span><span class="p">(</span><span class="n">ystarts</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">ymin</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;`ymin` exceeds smallest `ystarts`&#39;</span><span class="p">)</span>
 
     <span class="n">letterpadheight</span> <span class="o">=</span> <span class="n">yextent</span> <span class="o">*</span> <span class="n">letterpad</span>
     <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">72</span>
@@ -200,18 +212,23 @@
 
     <span class="n">fontwidthscale</span> <span class="o">=</span> <span class="n">width</span> <span class="o">/</span> <span class="p">(</span><span class="n">fontaspect</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">height_matrix</span><span class="p">))</span>
 
-    <span class="k">for</span> <span class="n">xindex</span><span class="p">,</span> <span class="n">xcol</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">height_matrix</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">xindex</span><span class="p">,</span> <span class="p">(</span><span class="n">xcol</span><span class="p">,</span> <span class="n">ystart</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">height_matrix</span><span class="p">,</span> <span class="n">ystarts</span><span class="p">)):</span>
 
-        <span class="n">ypos</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">for</span> <span class="n">letter</span><span class="p">,</span> <span class="n">letterheight</span><span class="p">,</span> <span class="n">lettercolor</span> <span class="ow">in</span> <span class="n">xcol</span><span class="p">:</span>
+        <span class="n">ypos</span> <span class="o">=</span> <span class="n">ystart</span>
+        <span class="k">for</span> <span class="n">letter</span><span class="p">,</span> <span class="n">letterheight</span><span class="p">,</span> <span class="n">lettercolor</span><span class="p">,</span> <span class="n">pad_loc</span> <span class="ow">in</span> <span class="n">xcol</span><span class="p">:</span>
 
             <span class="n">adj_letterheight</span> <span class="o">=</span> <span class="n">letterheightscale</span> <span class="o">*</span> <span class="n">letterheight</span>
             <span class="n">padding</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">letterheight</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">letterpadheight</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">pad_loc</span> <span class="o">==</span> <span class="s1">&#39;pad_below&#39;</span><span class="p">:</span>
+                <span class="n">ypad</span> <span class="o">=</span> <span class="n">padding</span> <span class="o">+</span> <span class="n">letterheight</span> <span class="o">-</span> <span class="n">adj_letterheight</span>
+            <span class="k">elif</span> <span class="n">pad_loc</span> <span class="o">==</span> <span class="s1">&#39;pad_above&#39;</span><span class="p">:</span>
+                <span class="n">ypad</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;invalid `pad_loc` </span><span class="si">{pad_loc}</span><span class="s2">&quot;</span><span class="p">)</span>
 
             <span class="n">txt</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
                 <span class="n">xindex</span><span class="p">,</span>
-                <span class="c1"># all padding goes **below** letter</span>
-                <span class="n">ypos</span> <span class="o">+</span> <span class="n">letterheight</span> <span class="o">-</span> <span class="n">adj_letterheight</span> <span class="o">+</span> <span class="n">padding</span><span class="p">,</span>
+                <span class="n">ypos</span> <span class="o">+</span> <span class="n">ypad</span><span class="p">,</span>
                 <span class="n">letter</span><span class="p">,</span>
                 <span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">,</span>
                 <span class="n">color</span><span class="o">=</span><span class="n">lettercolor</span><span class="p">,</span>
@@ -256,7 +273,9 @@
               <span class="n">fixed_ymin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
               <span class="n">fixed_ymax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
               <span class="n">clip_negative_heights</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-              <span class="n">drop_na_letter_heights</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+              <span class="n">drop_na_letter_heights</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+              <span class="n">draw_line_at_zero</span><span class="o">=</span><span class="s1">&#39;if_negative&#39;</span><span class="p">,</span>
+              <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Draw sequence logo from specified letter heights.</span>
 
 <span class="sd">    Args:</span>
@@ -316,6 +335,11 @@
 <span class="sd">            Set to 0 any value in `letter_height_col` that is &lt; 0.</span>
 <span class="sd">        `drop_na_letter_heights` (bool)</span>
 <span class="sd">            Drop any rows in `data` where `letter_height_col` is NaN.</span>
+<span class="sd">        `draw_line_at_zero` (str)</span>
+<span class="sd">            Draw a horizontal line at the value of zero? Can have following</span>
+<span class="sd">            values: &#39;if_negative&#39; to only draw line if there are negative</span>
+<span class="sd">            letter heights, &#39;always&#39; to always draw line, and &#39;never&#39; to</span>
+<span class="sd">            never draw line.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        The 2-tuple `(fig, ax)` giving the figure and axis.</span>
@@ -347,16 +371,15 @@
     <span class="k">if</span> <span class="n">clip_negative_heights</span><span class="p">:</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="n">letter_height_col</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span>
                            <span class="n">x</span><span class="p">[</span><span class="n">letter_height_col</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">)})</span>
-    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">letter_height_col</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;`letter_height_col` has negative heights.</span><span class="se">\n</span><span class="s1">&#39;</span>
-                         <span class="s1">&#39;Consider setting `clip_negative_heights`.&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">x_col</span><span class="p">]</span> <span class="o">!=</span> <span class="n">data</span><span class="p">[</span><span class="n">x_col</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;`x_col` does not have integer values&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">g</span><span class="p">[</span><span class="n">xtick_col</span><span class="p">]))</span> <span class="o">!=</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">x_col</span><span class="p">)):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;not unique mapping of `x_col` to `xtick_col`&#39;</span><span class="p">)</span>
 
-    <span class="c1"># construct height_matrix: list of lists of (letter, heigth, color)</span>
+    <span class="c1"># construct height_matrix: list of lists of (letter, height, color)</span>
     <span class="n">height_matrix</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">min_by_site</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">max_by_site</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">xticklabels</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">xticks</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">lastx</span> <span class="o">=</span> <span class="kc">None</span>
@@ -370,12 +393,16 @@
         <span class="k">if</span> <span class="n">addbreaks</span> <span class="ow">and</span> <span class="p">(</span><span class="n">lastx</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">x</span> <span class="o">!=</span> <span class="n">lastx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
             <span class="n">breaks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">height_matrix</span><span class="p">))</span>
             <span class="n">height_matrix</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
+            <span class="n">min_by_site</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">max_by_site</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
             <span class="n">xtick</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="n">lastx</span> <span class="o">=</span> <span class="n">x</span>
 
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">xdata</span><span class="p">[</span><span class="n">letter_col</span><span class="p">])</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">xdata</span><span class="p">[</span><span class="n">letter_col</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">xdata</span><span class="p">[</span><span class="n">letter_col</span><span class="p">])</span> <span class="o">!=</span> <span class="n">xdata</span><span class="p">[</span><span class="n">letter_col</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">():</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;duplicate letters for `x_col` </span><span class="si">{x}</span><span class="s2">&quot;</span><span class="p">)</span>
 
+        <span class="n">min_by_site</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xdata</span><span class="p">[</span><span class="n">letter_height_col</span><span class="p">]</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+        <span class="n">max_by_site</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xdata</span><span class="p">[</span><span class="n">letter_height_col</span><span class="p">]</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
         <span class="n">row</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">tup</span> <span class="ow">in</span> <span class="n">xdata</span><span class="o">.</span><span class="n">itertuples</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
             <span class="n">letter</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">tup</span><span class="p">,</span> <span class="n">letter_col</span><span class="p">)</span>
@@ -392,7 +419,10 @@
                         <span class="n">color</span> <span class="o">=</span> <span class="n">missing_color</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;no color for </span><span class="si">{letter}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">letter</span><span class="p">,</span> <span class="n">letter_height</span><span class="p">,</span> <span class="n">color</span><span class="p">))</span>
+            <span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">letter</span><span class="p">,</span>
+                        <span class="nb">abs</span><span class="p">(</span><span class="n">letter_height</span><span class="p">),</span>
+                        <span class="n">color</span><span class="p">,</span>
+                        <span class="s1">&#39;pad_below&#39;</span> <span class="k">if</span> <span class="n">letter_height</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;pad_above&#39;</span><span class="p">))</span>
         <span class="n">height_matrix</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
 
         <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">xdata</span><span class="p">[</span><span class="n">xtick_col</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span> <span class="o">==</span> <span class="mi">1</span>
@@ -404,6 +434,18 @@
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">xticklabels</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">xticks</span><span class="p">)</span>
     <span class="n">max_stack_height</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">tup</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">tup</span> <span class="ow">in</span> <span class="n">row</span><span class="p">)</span> <span class="k">for</span>
                            <span class="n">row</span> <span class="ow">in</span> <span class="n">height_matrix</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">draw_line_at_zero</span> <span class="o">==</span> <span class="s1">&#39;always&#39;</span><span class="p">:</span>
+        <span class="n">line_at_zero</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">elif</span> <span class="n">draw_line_at_zero</span> <span class="o">==</span> <span class="s1">&#39;never&#39;</span><span class="p">:</span>
+        <span class="n">line_at_zero</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">elif</span> <span class="n">draw_line_at_zero</span> <span class="o">==</span> <span class="s1">&#39;if_negative&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">min</span><span class="p">(</span><span class="n">min_by_site</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">line_at_zero</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">line_at_zero</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;invalid `draw_line_at_zero` </span><span class="si">{draw_line_at_zero}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="c1"># setup axis for plotting</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">ax</span><span class="p">:</span>
@@ -424,11 +466,11 @@
     <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="n">xpad</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">height_matrix</span><span class="p">)</span> <span class="o">+</span> <span class="n">xpad</span><span class="p">)</span>
     <span class="n">ylimpad</span> <span class="o">=</span> <span class="mf">0.05</span> <span class="o">*</span> <span class="n">max_stack_height</span>
     <span class="k">if</span> <span class="n">fixed_ymin</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">ymin</span> <span class="o">=</span> <span class="o">-</span><span class="n">ylimpad</span>
+        <span class="n">ymin</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">min_by_site</span><span class="p">)</span> <span class="o">-</span> <span class="n">ylimpad</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">ymin</span> <span class="o">=</span> <span class="n">fixed_ymin</span>
     <span class="k">if</span> <span class="n">fixed_ymax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">ymax</span> <span class="o">=</span> <span class="n">max_stack_height</span> <span class="o">+</span> <span class="n">ylimpad</span>
+        <span class="n">ymax</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_by_site</span><span class="p">)</span> <span class="o">+</span> <span class="n">ylimpad</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">ymax</span> <span class="o">=</span> <span class="n">fixed_ymax</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span><span class="p">)</span>
@@ -450,14 +492,18 @@
         <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
 
     <span class="c1"># draw the letters</span>
-    <span class="n">_draw_text_data_coord</span><span class="p">(</span><span class="n">height_matrix</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">fontfamily</span><span class="p">,</span> <span class="n">fontaspect</span><span class="p">,</span>
-                          <span class="n">letterpad</span><span class="p">,</span> <span class="n">letterheightscale</span><span class="p">,</span> <span class="n">xpad</span><span class="p">)</span>
+    <span class="n">_draw_text_data_coord</span><span class="p">(</span><span class="n">height_matrix</span><span class="p">,</span> <span class="n">min_by_site</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">fontfamily</span><span class="p">,</span>
+                          <span class="n">fontaspect</span><span class="p">,</span> <span class="n">letterpad</span><span class="p">,</span> <span class="n">letterheightscale</span><span class="p">,</span> <span class="n">xpad</span><span class="p">)</span>
 
     <span class="c1"># draw the breaks</span>
     <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">breaks</span><span class="p">:</span>
         <span class="c1"># loosely dotted line:</span>
         <span class="c1"># https://matplotlib.org/gallery/lines_bars_and_markers/linestyles.html</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">)),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># draw line at zero</span>
+    <span class="k">if</span> <span class="n">line_at_zero</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span></div>
 
@@ -468,6 +514,7 @@
 </pre></div>
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -500,7 +547,7 @@
     
 
 <p>
-<a href="https://travis-ci.org/jbloomlab/dmslogo">
+<a class="badge" href="https://travis-ci.org/jbloomlab/dmslogo">
     <img
         alt="https://secure.travis-ci.org/jbloomlab/dmslogo.svg?branch=master"
         src="https://secure.travis-ci.org/jbloomlab/dmslogo.svg?branch=master"
@@ -528,15 +575,23 @@
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
     </form>
     </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
         </div>
       </div>
       <div class="clearer"></div>
@@ -545,8 +600,8 @@
       &copy;2019--2019, Bloom lab.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
 

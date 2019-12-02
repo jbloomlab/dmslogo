@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>utils &#8212; dmslogo 0.2.3 documentation</title>
+    <title>utils &#8212; dmslogo 0.3.0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -28,6 +28,8 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <span class="target" id="module-dmslogo.utils"></span><div class="section" id="utils">
@@ -35,7 +37,7 @@
 <p>Utility functions for plotting.</p>
 <dl class="function">
 <dt id="dmslogo.utils.breaksAndLabels">
-<code class="descclassname">dmslogo.utils.</code><code class="descname">breaksAndLabels</code><span class="sig-paren">(</span><em>xi</em>, <em>x</em>, <em>n</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/utils.html#breaksAndLabels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.utils.breaksAndLabels" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">dmslogo.utils.</code><code class="sig-name descname">breaksAndLabels</code><span class="sig-paren">(</span><em class="sig-param">xi</em>, <em class="sig-param">x</em>, <em class="sig-param">n</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/utils.html#breaksAndLabels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.utils.breaksAndLabels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get breaks and labels for an axis.</p>
 <p>Useful when you would like to re-label a numeric x-axis
 with string labels.</p>
@@ -68,7 +70,7 @@ the label for each break.</p>
 
 <dl class="function">
 <dt id="dmslogo.utils.despine">
-<code class="descclassname">dmslogo.utils.</code><code class="descname">despine</code><span class="sig-paren">(</span><em>fig=None</em>, <em>ax=None</em>, <em>top=True</em>, <em>right=True</em>, <em>left=False</em>, <em>bottom=False</em>, <em>offset=None</em>, <em>trim=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/utils.html#despine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.utils.despine" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">dmslogo.utils.</code><code class="sig-name descname">despine</code><span class="sig-paren">(</span><em class="sig-param">fig=None</em>, <em class="sig-param">ax=None</em>, <em class="sig-param">top=True</em>, <em class="sig-param">right=True</em>, <em class="sig-param">left=False</em>, <em class="sig-param">bottom=False</em>, <em class="sig-param">offset=None</em>, <em class="sig-param">trim=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/utils.html#despine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.utils.despine" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove the top and right spines from plot(s).</p>
 <dl class="simple">
 <dt>Args:</dt><dd><dl class="simple">
@@ -95,6 +97,7 @@ on each non-despined axis.</p>
 
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -127,7 +130,7 @@ on each non-despined axis.</p>
     
 
 <p>
-<a href="https://travis-ci.org/jbloomlab/dmslogo">
+<a class="badge" href="https://travis-ci.org/jbloomlab/dmslogo">
     <img
         alt="https://secure.travis-ci.org/jbloomlab/dmslogo.svg?branch=master"
         src="https://secure.travis-ci.org/jbloomlab/dmslogo.svg?branch=master"
@@ -157,15 +160,23 @@ on each non-despined axis.</p>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
     </form>
     </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
         </div>
       </div>
       <div class="clearer"></div>
@@ -174,8 +185,8 @@ on each non-despined axis.</p>
       &copy;2019--2019, Bloom lab.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
       <a href="_sources/dmslogo.utils.rst.txt"

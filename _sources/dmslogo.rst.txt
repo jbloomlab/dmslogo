@@ -2,9 +2,9 @@ dmslogo package
 ===============
 
 .. automodule:: dmslogo
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 Submodules
 ----------
@@ -16,4 +16,3 @@ Submodules
    dmslogo.line
    dmslogo.logo
    dmslogo.utils
-

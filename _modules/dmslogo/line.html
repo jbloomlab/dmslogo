@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>dmslogo.line &#8212; dmslogo 0.2.3 documentation</title>
+    <title>dmslogo.line &#8212; dmslogo 0.3.0 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -26,6 +26,8 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <h1>Source code for dmslogo.line</h1><div class="highlight"><pre>
@@ -86,12 +88,14 @@
               <span class="o">*</span><span class="p">,</span>
               <span class="n">x_col</span><span class="p">,</span>
               <span class="n">height_col</span><span class="p">,</span>
+              <span class="n">height_col2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
               <span class="n">xtick_col</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
               <span class="n">show_col</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
               <span class="n">xlabel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
               <span class="n">ylabel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
               <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
               <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span>
+              <span class="n">color2</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span>
               <span class="n">show_color</span><span class="o">=</span><span class="n">dmslogo</span><span class="o">.</span><span class="n">colorschemes</span><span class="o">.</span><span class="n">CBPALETTE</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
               <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
               <span class="n">widthscale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
@@ -109,6 +113,10 @@
 <span class="sd">            the columns of interest, removes duplicates.</span>
 <span class="sd">        `height_col` (str)</span>
 <span class="sd">            Column in `data` with line height.</span>
+<span class="sd">        `height_col2` (str or `None`)</span>
+<span class="sd">            Optional second column in `data` giving second line height. This is</span>
+<span class="sd">            typically useful when `height_col` has positive values and you also</span>
+<span class="sd">            want to plot negative values: those can be in `height_col2`.</span>
 <span class="sd">        `x_col` (str)</span>
 <span class="sd">            Column in `data` with integer site numbers. Must be full</span>
 <span class="sd">            set of sequential numbers, gaps in numbering not allowed.</span>
@@ -124,7 +132,9 @@
 <span class="sd">        `title` (`None` or str)</span>
 <span class="sd">            Title to place above plot.</span>
 <span class="sd">        `color` (str)</span>
-<span class="sd">            Color of line.</span>
+<span class="sd">            Color of line plotting data in `height_col`.</span>
+<span class="sd">        `color2` (str)</span>
+<span class="sd">            Color of line plotting any data in `height_col2`.</span>
 <span class="sd">        `show_color` (str)</span>
 <span class="sd">            Color of underlines specified by `show_col`.</span>
 <span class="sd">        `linewidth` (float)</span>
@@ -157,6 +167,8 @@
         <span class="n">ylabel</span> <span class="o">=</span> <span class="n">height_col</span>
 
     <span class="n">cols</span> <span class="o">=</span> <span class="nb">list</span><span class="p">({</span><span class="n">x_col</span><span class="p">,</span> <span class="n">xtick_col</span><span class="p">,</span> <span class="n">height_col</span><span class="p">})</span>
+    <span class="k">if</span> <span class="n">height_col2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">height_col2</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">show_col</span><span class="p">:</span>
         <span class="n">cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">show_col</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">[</span><span class="n">show_col</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="nb">bool</span><span class="p">:</span>
@@ -181,20 +193,25 @@
 
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="n">xlen</span>
 
-    <span class="n">ylimpad</span> <span class="o">=</span> <span class="mf">0.05</span> <span class="o">*</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">height_col</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">data</span><span class="p">[</span><span class="n">height_col</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+    <span class="n">ydata_min</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">height_col</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+    <span class="n">ydata_max</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">height_col</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">height_col2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ydata_min</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">ydata_min</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="n">height_col2</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+        <span class="n">ydata_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">ydata_max</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="n">height_col2</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+    <span class="n">ylimpad</span> <span class="o">=</span> <span class="mf">0.05</span> <span class="o">*</span> <span class="p">(</span><span class="n">ydata_max</span> <span class="o">-</span> <span class="n">ydata_min</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">fixed_ymax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">ymax</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">height_col</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="n">ylimpad</span>
+        <span class="n">ymax</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ydata_max</span><span class="p">)</span> <span class="o">+</span> <span class="n">ylimpad</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">fixed_ymax</span> <span class="o">&lt;</span> <span class="n">data</span><span class="p">[</span><span class="n">height_col</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">fixed_ymax</span> <span class="o">&lt;</span> <span class="n">ydata_max</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;`fixed_ymax` less then max of data&#39;</span><span class="p">)</span>
         <span class="n">ymax</span> <span class="o">=</span> <span class="n">fixed_ymax</span>
-    <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="n">height_col</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;cannot handle negatives in `height_col`&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">fixed_ymin</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">ymin</span> <span class="o">=</span> <span class="o">-</span><span class="n">ylimpad</span>
+        <span class="n">ymin</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ydata_min</span><span class="p">)</span> <span class="o">-</span> <span class="n">ylimpad</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">fixed_ymin</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;`fixed_ymin` greater than 0&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">fixed_ymin</span> <span class="o">&gt;</span> <span class="n">ydata_min</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;`fixed_ymin` greater then min of data&#39;</span><span class="p">)</span>
         <span class="n">ymin</span> <span class="o">=</span> <span class="n">fixed_ymin</span>
 
     <span class="c1"># setup axis for plotting</span>
@@ -248,6 +265,14 @@
             <span class="n">where</span><span class="o">=</span><span class="s1">&#39;mid&#39;</span><span class="p">,</span>
             <span class="n">linewidth</span><span class="o">=</span><span class="n">linewidth</span><span class="p">)</span>
 
+    <span class="k">if</span> <span class="n">height_col2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ydata2</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">height_col2</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">step</span><span class="p">([</span><span class="n">xmin</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">]</span> <span class="o">+</span> <span class="n">xdata</span> <span class="o">+</span> <span class="p">[</span><span class="n">xmax</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">],</span>
+                <span class="p">[</span><span class="n">ydata2</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">+</span> <span class="n">ydata2</span> <span class="o">+</span> <span class="p">[</span><span class="n">ydata2</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span>
+                <span class="n">color</span><span class="o">=</span><span class="n">color2</span><span class="p">,</span>
+                <span class="n">where</span><span class="o">=</span><span class="s1">&#39;mid&#39;</span><span class="p">,</span>
+                <span class="n">linewidth</span><span class="o">=</span><span class="n">linewidth</span><span class="p">)</span>
+
     <span class="k">if</span> <span class="n">show_col</span><span class="p">:</span>
         <span class="n">lw_to_xdata</span> <span class="o">=</span> <span class="n">data_units_from_linewidth</span><span class="p">(</span><span class="n">linewidth</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">)</span>
         <span class="n">lw_to_ydata</span> <span class="o">=</span> <span class="n">data_units_from_linewidth</span><span class="p">(</span><span class="n">linewidth</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">)</span>
@@ -255,7 +280,7 @@
             <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">(</span>
                             <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">-</span> <span class="n">lw_to_xdata</span><span class="p">,</span> <span class="n">ymin</span><span class="p">),</span>
                             <span class="n">width</span><span class="o">=</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">*</span> <span class="n">lw_to_xdata</span><span class="p">,</span>
-                            <span class="n">height</span><span class="o">=-</span><span class="n">ymin</span> <span class="o">-</span> <span class="n">lw_to_ydata</span><span class="p">,</span>
+                            <span class="n">height</span><span class="o">=</span><span class="n">ylimpad</span> <span class="o">-</span> <span class="n">lw_to_ydata</span><span class="p">,</span>
                             <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span>
                             <span class="n">facecolor</span><span class="o">=</span><span class="n">show_color</span><span class="p">,</span>
                             <span class="p">))</span>
@@ -269,6 +294,7 @@
 </pre></div>
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -301,7 +327,7 @@
     
 
 <p>
-<a href="https://travis-ci.org/jbloomlab/dmslogo">
+<a class="badge" href="https://travis-ci.org/jbloomlab/dmslogo">
     <img
         alt="https://secure.travis-ci.org/jbloomlab/dmslogo.svg?branch=master"
         src="https://secure.travis-ci.org/jbloomlab/dmslogo.svg?branch=master"
@@ -329,15 +355,23 @@
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
     </form>
     </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
         </div>
       </div>
       <div class="clearer"></div>
@@ -346,8 +380,8 @@
       &copy;2019--2019, Bloom lab.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
 
