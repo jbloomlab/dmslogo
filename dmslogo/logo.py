@@ -122,7 +122,7 @@ def _frac_above_baseline(font):
     return frac
 
 
-def _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect,
+def _draw_text_data_coord(height_matrix, ystarts, ax, fontfamily, fontaspect,
                           letterpad, letterheightscale, xpad):
     """Draws logo letters.
 
@@ -130,7 +130,10 @@ def _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect,
         `height_matrix` (list of lists)
             Gives letter heights. In the main list, there is a list
             for each site, with the entries being 3-tuples giving
-            the letter, its height, and its color.
+            the letter, its height, its color, and 'pad_below' or
+            'pad_above' indicating where vertical padding is added.
+        `ystarts` (list)
+            Gives y position of bottom of first letter for each site.
         `ax` (matplotlib Axes)
             Axis on which we draw logo letters.
         `fontfamily` (str)
@@ -153,15 +156,21 @@ def _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect,
             2 * xpad + len(height_matrix))
     height = bbox.height
 
-    max_stack_height = max(sum(tup[1] for tup in row) for
+    max_stack_height = max(sum(abs(tup[1]) for tup in row) for
                            row in height_matrix)
 
+    if len(ystarts) != len(height_matrix):
+        raise ValueError('`ystarts` and `height_matrix` different lengths\n'
+                         f"ystarts={ystarts}\nheight_matrix={height_matrix}")
+
     ymin, ymax = ax.get_ylim()
-    if max_stack_height > ymax:
-        raise ValueError('`max_stack_height` exceeds `ymax`')
+    yextent = ymax - ymin
+    if max_stack_height > yextent:
+        raise ValueError('`max_stack_height` exceeds `yextent`')
     if ymin > 0:
         raise ValueError('`ymin` > 0')
-    yextent = ymax - ymin
+    if min(ystarts) < ymin:
+        raise ValueError('`ymin` exceeds smallest `ystarts`')
 
     letterpadheight = yextent * letterpad
     fontsize = 72
@@ -170,18 +179,23 @@ def _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect,
 
     fontwidthscale = width / (fontaspect * len(height_matrix))
 
-    for xindex, xcol in enumerate(height_matrix):
+    for xindex, (xcol, ystart) in enumerate(zip(height_matrix, ystarts)):
 
-        ypos = 0
-        for letter, letterheight, lettercolor in xcol:
+        ypos = ystart
+        for letter, letterheight, lettercolor, pad_loc in xcol:
 
             adj_letterheight = letterheightscale * letterheight
             padding = min(letterheight / 2, letterpadheight)
+            if pad_loc == 'pad_below':
+                ypad = padding + letterheight - adj_letterheight
+            elif pad_loc == 'pad_above':
+                ypad = 0
+            else:
+                raise ValueError(f"invalid `pad_loc` {pad_loc}")
 
             txt = ax.text(
                 xindex,
-                # all padding goes **below** letter
-                ypos + letterheight - adj_letterheight + padding,
+                ypos + ypad,
                 letter,
                 fontsize=fontsize,
                 color=lettercolor,
@@ -226,7 +240,9 @@ def draw_logo(data,
               fixed_ymin=None,
               fixed_ymax=None,
               clip_negative_heights=False,
-              drop_na_letter_heights=True):
+              drop_na_letter_heights=True,
+              draw_line_at_zero='if_negative',
+              ):
     """Draw sequence logo from specified letter heights.
 
     Args:
@@ -286,6 +302,11 @@ def draw_logo(data,
             Set to 0 any value in `letter_height_col` that is < 0.
         `drop_na_letter_heights` (bool)
             Drop any rows in `data` where `letter_height_col` is NaN.
+        `draw_line_at_zero` (str)
+            Draw a horizontal line at the value of zero? Can have following
+            values: 'if_negative' to only draw line if there are negative
+            letter heights, 'always' to always draw line, and 'never' to
+            never draw line.
 
     Returns:
         The 2-tuple `(fig, ax)` giving the figure and axis.
@@ -317,16 +338,15 @@ def draw_logo(data,
     if clip_negative_heights:
         data = data.assign(**{letter_height_col: lambda x: numpy.clip(
                            x[letter_height_col], 0, None)})
-    if any(data[letter_height_col] < 0):
-        raise ValueError('`letter_height_col` has negative heights.\n'
-                         'Consider setting `clip_negative_heights`.')
     if any(data[x_col] != data[x_col].astype(int)):
         raise ValueError('`x_col` does not have integer values')
     if any(len(set(g[xtick_col])) != 1 for _, g in data.groupby(x_col)):
         raise ValueError('not unique mapping of `x_col` to `xtick_col`')
 
-    # construct height_matrix: list of lists of (letter, heigth, color)
+    # construct height_matrix: list of lists of (letter, height, color)
     height_matrix = []
+    min_by_site = []
+    max_by_site = []
     xticklabels = []
     xticks = []
     lastx = None
@@ -340,12 +360,16 @@ def draw_logo(data,
         if addbreaks and (lastx is not None) and (x != lastx + 1):
             breaks.append(len(height_matrix))
             height_matrix.append([])
+            min_by_site.append(0)
+            max_by_site.append(0)
             xtick += 1
         lastx = x
 
-        if len(xdata[letter_col]) != len(xdata[letter_col].unique()):
+        if len(xdata[letter_col]) != xdata[letter_col].nunique():
             raise ValueError(f"duplicate letters for `x_col` {x}")
 
+        min_by_site.append(xdata[letter_height_col].clip(None, 0).sum())
+        max_by_site.append(xdata[letter_height_col].clip(0, None).sum())
         row = []
         for tup in xdata.itertuples(index=False):
             letter = getattr(tup, letter_col)
@@ -362,7 +386,10 @@ def draw_logo(data,
                         color = missing_color
                     else:
                         raise ValueError(f"no color for {letter}")
-            row.append((letter, letter_height, color))
+            row.append((letter,
+                        abs(letter_height),
+                        color,
+                        'pad_below' if letter_height >= 0 else 'pad_above'))
         height_matrix.append(row)
 
         assert len(xdata[xtick_col].unique()) == 1
@@ -374,6 +401,18 @@ def draw_logo(data,
     assert len(xticklabels) == len(xticks)
     max_stack_height = max(sum(tup[1] for tup in row) for
                            row in height_matrix)
+
+    if draw_line_at_zero == 'always':
+        line_at_zero = True
+    elif draw_line_at_zero == 'never':
+        line_at_zero = False
+    elif draw_line_at_zero == 'if_negative':
+        if min(min_by_site) < 0:
+            line_at_zero = True
+        else:
+            line_at_zero = False
+    else:
+        raise ValueError(f"invalid `draw_line_at_zero` {draw_line_at_zero}")
 
     # setup axis for plotting
     if not ax:
@@ -394,11 +433,11 @@ def draw_logo(data,
     ax.set_xlim(-xpad, len(height_matrix) + xpad)
     ylimpad = 0.05 * max_stack_height
     if fixed_ymin is None:
-        ymin = -ylimpad
+        ymin = min(min_by_site) - ylimpad
     else:
         ymin = fixed_ymin
     if fixed_ymax is None:
-        ymax = max_stack_height + ylimpad
+        ymax = max(max_by_site) + ylimpad
     else:
         ymax = fixed_ymax
     ax.set_ylim(ymin, ymax)
@@ -420,14 +459,18 @@ def draw_logo(data,
         ax.axis('off')
 
     # draw the letters
-    _draw_text_data_coord(height_matrix, ax, fontfamily, fontaspect,
-                          letterpad, letterheightscale, xpad)
+    _draw_text_data_coord(height_matrix, min_by_site, ax, fontfamily,
+                          fontaspect, letterpad, letterheightscale, xpad)
 
     # draw the breaks
     for x in breaks:
         # loosely dotted line:
         # https://matplotlib.org/gallery/lines_bars_and_markers/linestyles.html
         ax.axvline(x=x + 0.5, ls=(0, (2, 5)), color='black', lw=1)
+
+    # draw line at zero
+    if line_at_zero:
+        ax.axhline(y=0, ls='-', color='black', lw=1)
 
     return fig, ax
 
