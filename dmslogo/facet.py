@@ -134,7 +134,8 @@ def facet_plot(
         assert len(group), f"empty group {groupname}"
         group = group.reset_index(drop=True)
         for col in cols[2:]:
-            if any(firstgroup[col] != group[col]):
+            if (len(firstgroup[col]) != len(group[col])) or any(firstgroup[col]
+                                                                != group[col]):
                 raise ValueError(
                       f"different entries for {col} "
                       f"in `data`, differs between {firstgroupname} "
