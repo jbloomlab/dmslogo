@@ -34,10 +34,16 @@ _FONT_PATH = pkg_resources.resource_filename('dmslogo', 'ttf_fonts/')
 if not os.path.isdir(_FONT_PATH):
     raise RuntimeError(f"Cannot find font directory {_FONT_PATH}")
 
-matplotlib.font_manager.fontManager.ttflist.extend(
-    matplotlib.font_manager.createFontList(
-        matplotlib.font_manager.findSystemFonts(None) +
-        matplotlib.font_manager.findSystemFonts(_FONT_PATH)))
+for _fontfile in matplotlib.font_manager.findSystemFonts(_FONT_PATH):
+    matplotlib.font_manager.fontManager.addfont(_fontfile)
+for _fontfile in matplotlib.font_manager.findSystemFonts(None):
+    try:
+        matplotlib.font_manager.fontManager.addfont(_fontfile)
+    except RuntimeError:
+        # problem with loading emoji fonts; solution here is just to
+        # skip any fonts that cause problems
+        pass
+del _fontfile
 
 _fontlist = {f.name for f in matplotlib.font_manager.fontManager.ttflist}
 if _DEFAULT_FONT not in _fontlist:

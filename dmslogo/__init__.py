@@ -15,7 +15,7 @@ into the package namespace:
 
 __author__ = 'Jesse Bloom'
 __email__ = 'jbloom@fredhutch.org'
-__version__ = '0.3.2'
+__version__ = '0.4.0'
 __url__ = 'https://github.com/jbloomlab/dmslogo'
 
 from dmslogo.facet import facet_plot  # noqa: F401
