@@ -39,10 +39,10 @@ def data_units_from_linewidth(linewidth, ax, reference):
     fig = ax.get_figure()
     if reference == 'x':
         length = fig.bbox_inches.width * ax.get_position().width
-        value_range = numpy.diff(ax.get_xlim())
+        value_range = numpy.diff(ax.get_xlim())[0]
     elif reference == 'y':
         length = fig.bbox_inches.height * ax.get_position().height
-        value_range = numpy.diff(ax.get_ylim())
+        value_range = numpy.diff(ax.get_ylim())[0]
     else:
         raise ValueError(f"invalid `ax` of {ax}")
     # Convert length to points
