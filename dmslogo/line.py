@@ -174,6 +174,9 @@ def draw_line(data,
     ymin, ymax = ylim_setter.get_lims(data[height_col])
     ydata_min = data[height_col].min()
     ydata_max = data[height_col].max()
+    if ylim_setter.include_zero:
+        ydata_min = min(0, ydata_min)
+        ydata_max = max(0, ydata_max)
     if height_col2 is not None:
         ymin2, ymax2 = ylim_setter.get_lims(data[height_col2])
         ymin = min(ymin, ymin2)

@@ -21,5 +21,6 @@ Below are examples that illustrate usage of this functionality and other aspects
 
    basic_example
    negative_values
+   set_ylims
 
 The above examples can be run as interactive Jupyter notebooks on `mybinder <https://mybinder.readthedocs.io>`_ by going to the `following link <https://mybinder.org/v2/gh/jbloomlab/dmslogo/master?filepath=notebooks>`_ (it may take a minute to load) and then opening the notebook you want to run.

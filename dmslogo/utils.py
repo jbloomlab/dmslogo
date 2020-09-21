@@ -82,7 +82,7 @@ class AxLimSetter:
         """See main class docstring."""
         if not isinstance(include_zero, bool):
             raise ValueError(f"`include_zero` not bool: {include_zero}")
-        self._include_zero = include_zero
+        self.include_zero = include_zero
 
         if datalim_pad < 0:
             raise ValueError(f"`datalim_pad` must be > 0: {datalim_pad}")
@@ -126,7 +126,7 @@ class AxLimSetter:
         datamin = min(data)
         datamax = max(data)
 
-        if self._include_zero:
+        if self.include_zero:
             datamax = max(0, datamax)
             datamin = min(0, datamin)
 
