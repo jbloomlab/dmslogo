@@ -10,7 +10,7 @@ Utility functions for plotting.
 import matplotlib.pyplot as plt
 import matplotlib.ticker
 
-import numpy as np
+import numpy
 
 
 def breaksAndLabels(xi, x, n):
@@ -45,7 +45,7 @@ def breaksAndLabels(xi, x, n):
     """
     if len(xi) != len(x):
         raise ValueError('`xi` and `x` differ in length.')
-    if not all(isinstance(i, (int, np.integer)) for i in xi):
+    if not all(isinstance(i, (int, numpy.integer)) for i in xi):
         raise ValueError('xi not integer values')
     xi = list(xi)
     if sorted(set(xi)) != xi:
@@ -137,10 +137,10 @@ def despine(fig=None,
             # clip off the parts of the spines that extend past major ticks
             xticks = ax_i.get_xticks()
             if xticks.size:
-                firsttick = np.compress(xticks >= min(ax_i.get_xlim()),
-                                        xticks)[0]
-                lasttick = np.compress(xticks <= max(ax_i.get_xlim()),
-                                       xticks)[-1]
+                firsttick = numpy.compress(xticks >= min(ax_i.get_xlim()),
+                                           xticks)[0]
+                lasttick = numpy.compress(xticks <= max(ax_i.get_xlim()),
+                                          xticks)[-1]
                 ax_i.spines['bottom'].set_bounds(firsttick, lasttick)
                 ax_i.spines['top'].set_bounds(firsttick, lasttick)
                 newticks = xticks.compress(xticks <= lasttick)
@@ -149,10 +149,10 @@ def despine(fig=None,
 
             yticks = ax_i.get_yticks()
             if yticks.size:
-                firsttick = np.compress(yticks >= min(ax_i.get_ylim()),
-                                        yticks)[0]
-                lasttick = np.compress(yticks <= max(ax_i.get_ylim()),
-                                       yticks)[-1]
+                firsttick = numpy.compress(yticks >= min(ax_i.get_ylim()),
+                                           yticks)[0]
+                lasttick = numpy.compress(yticks <= max(ax_i.get_ylim()),
+                                          yticks)[-1]
                 ax_i.spines['left'].set_bounds(firsttick, lasttick)
                 ax_i.spines['right'].set_bounds(firsttick, lasttick)
                 newticks = yticks.compress(yticks <= lasttick)
