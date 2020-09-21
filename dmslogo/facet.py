@@ -64,9 +64,8 @@ def facet_plot(
             Column in data to facet over for columns of plot.
         `draw_line_kwargs` (dict)
             All arguments to be passed to
-            :py:mod:`dmslogo.line.draw_line`
-            **except** `x_col`, `show_col`, and `title`. These
-            are passed separately, or (in case of title) come
+            :py:mod:`dmslogo.line.draw_line` **except** `x_col`, `show_col`,
+            and `title`. These are passed separately or come
             from faceting variables.
         `draw_logo_kwargs`
             Like `draw_line_kwargs` but for
@@ -93,8 +92,11 @@ def facet_plot(
             Share the y-labels across the line and logo plots.
         `share_ylim_across_rows` (bool)
             Do we share y-limits across rows?
-        `set_ylims` (`False` or 2-tuple)
+        `set_ylims` (`False` or 2-tuple or dict)
             To set y-limits for all axes, specify the 2-tuple `(ymin, ymax)`.
+            To set y-limits differently for each row, specify a dict keyed
+            by the possible values of `gridrow_col` with the values being
+            2-tuples `(ymin, ymax)`.
 
     Returns:
         The 2-tuple `fig, axes` where `fig` is the matplotlib
@@ -227,14 +229,23 @@ def facet_plot(
                 fixed_ylims[ltype][row] = lim
 
     if set_ylims:
+        if isinstance(set_ylims, tuple):
+            rows = set(fixed_ylims['min'].keys())
+            set_ylims = ({row: set_ylims[0] for row in rows},
+                         {row: set_ylims[1] for row in rows})
+        elif isinstance(set_ylims, dict):
+            set_ylims = ({row: ymin for row, (ymin, _) in set_ylims.items()},
+                         {row: ymax for row, (_, ymax) in set_ylims.items()})
+        else:
+            raise ValueError(f"invalid `set_ylims`: {set_ylims}")
         for ltype, op, setlim in [('min', operator.lt, set_ylims[0]),
                                   ('max', operator.gt, set_ylims[1])]:
             for row, lim in list(fixed_ylims[ltype].items()):
-                if op(lim, setlim):
+                if op(lim, setlim[row]):
                     raise ValueError(f"invalid y{ltype} in `set_ylims`, must "
                                      f"be at least {lim}.")
                 else:
-                    fixed_ylims[ltype][row] = setlim
+                    fixed_ylims[ltype][row] = setlim[row]
 
     # make figure
     fig, axes = plt.subplots(

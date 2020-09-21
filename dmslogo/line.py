@@ -70,6 +70,7 @@ def draw_line(data,
               axisfontscale=1,
               hide_axis=False,
               ax=None,
+              ylim_setter=None,
               fixed_ymin=None,
               fixed_ymax=None):
     """Draw line plot.
@@ -102,8 +103,9 @@ def draw_line(data,
             Color of line plotting data in `height_col`.
         `color2` (str)
             Color of line plotting any data in `height_col2`.
-        `show_color` (str)
-            Color of underlines specified by `show_col`.
+        `show_color` (str or `None`)
+            Color of underlines specified by `show_col`, or `None` if
+            you don't want to show underlines.
         `linewidth` (float)
             Width of line.
         `widthscale` (float)
@@ -116,6 +118,11 @@ def draw_line(data,
             Do we hide the axis and tick labels?
         `ax` (`None` or matplotlib axes.Axes object)
             Use to plot on an existing axis.
+        `ylim_setter` (`None` or :class:`dmslogo.utils.AxLimSetter`)
+            Object used to set y-limits. If `None`, a
+            :class:`dmslogo.utils.AxLimSetter` is created using
+            default parameters). If `fixed_ymin` and/or `fixed_ymax`
+            are set, they override the limits from this setter.
         `fixed_ymin` (`None` or float)
             If not `None`, then fixed y-axis minimum.
         `fixed_ymax` (`None` or float)
@@ -161,23 +168,26 @@ def draw_line(data,
 
     assert len(data) == xlen
 
+    # set y-limits
+    if ylim_setter is None:
+        ylim_setter = dmslogo.utils.AxLimSetter()
+    ymin, ymax = ylim_setter.get_lims(data[height_col])
     ydata_min = data[height_col].min()
     ydata_max = data[height_col].max()
+    if ylim_setter.include_zero:
+        ydata_min = min(0, ydata_min)
+        ydata_max = max(0, ydata_max)
     if height_col2 is not None:
+        ymin2, ymax2 = ylim_setter.get_lims(data[height_col2])
+        ymin = min(ymin, ymin2)
+        ymax = max(ymax, ymax2)
         ydata_min = min(ydata_min, data[height_col2].min())
         ydata_max = max(ydata_max, data[height_col2].max())
-    ylimpad = 0.05 * (ydata_max - ydata_min)
-    if fixed_ymax is None:
-        ymax = max(0, ydata_max) + ylimpad
-    else:
+    if fixed_ymax is not None:
         if fixed_ymax < ydata_max:
             raise ValueError('`fixed_ymax` less then max of data')
         ymax = fixed_ymax
-    if fixed_ymin is None:
-        ymin = min(0, ydata_min) - ylimpad
-    else:
-        if fixed_ymin > 0:
-            raise ValueError('`fixed_ymin` greater than 0')
+    if fixed_ymin is not None:
         if fixed_ymin > ydata_min:
             raise ValueError('`fixed_ymin` greater then min of data')
         ymin = fixed_ymin
@@ -241,14 +251,14 @@ def draw_line(data,
                 where='mid',
                 linewidth=linewidth)
 
-    if show_col:
+    if show_col and show_color is not None:
         lw_to_xdata = data_units_from_linewidth(linewidth, ax, 'x')
         lw_to_ydata = data_units_from_linewidth(linewidth, ax, 'y')
         for x in data.query(f"{show_col}")[x_col].tolist():
             ax.add_patch(plt.Rectangle(
                             xy=(x - 0.5 - lw_to_xdata, ymin),
                             width=2 + 1 * lw_to_xdata,
-                            height=ylimpad - lw_to_ydata,
+                            height=(ydata_min - ymin) - lw_to_ydata,
                             edgecolor='none',
                             facecolor=show_color,
                             ))

@@ -243,6 +243,7 @@ def draw_logo(data,
               letterpad=0.0105,
               letterheightscale=0.96,
               ax=None,
+              ylim_setter=None,
               fixed_ymin=None,
               fixed_ymax=None,
               clip_negative_heights=False,
@@ -300,6 +301,11 @@ def draw_logo(data,
             Scale height of all letters by this much.
         `ax` (`None` or matplotlib axes.Axes object)
             Use to plot on an existing axis.
+        `ylim_setter` (`None` or :class:`dmslogo.utils.AxLimSetter`)
+            Object used to set y-limits. If `None`, a
+            :class:`dmslogo.utils.AxLimSetter` is created using
+            default parameters). If `fixed_ymin` and/or `fixed_ymax`
+            are set, they override the limits from this setter.
         `fixed_ymin` (`None` or float)
             If not `None`, then fixed y-axis minimum.
         `fixed_ymax` (`None` or float)
@@ -353,6 +359,8 @@ def draw_logo(data,
     height_matrix = []
     min_by_site = []
     max_by_site = []
+    min_by_site_nonempty = []
+    max_by_site_nonempty = []
     xticklabels = []
     xticks = []
     lastx = None
@@ -376,6 +384,8 @@ def draw_logo(data,
 
         min_by_site.append(xdata[letter_height_col].clip(None, 0).sum())
         max_by_site.append(xdata[letter_height_col].clip(0, None).sum())
+        min_by_site_nonempty.append(min_by_site[-1])
+        max_by_site_nonempty.append(max_by_site[-1])
         row = []
         for tup in xdata.itertuples(index=False):
             letter = getattr(tup, letter_col)
@@ -405,8 +415,6 @@ def draw_logo(data,
         xtick += 1
 
     assert len(xticklabels) == len(xticks)
-    max_stack_height = max(sum(tup[1] for tup in row) for
-                           row in height_matrix)
 
     if draw_line_at_zero == 'always':
         line_at_zero = True
@@ -437,14 +445,17 @@ def draw_logo(data,
 
     xpad = 0.2
     ax.set_xlim(-xpad, len(height_matrix) + xpad)
-    ylimpad = 0.05 * max_stack_height
-    if fixed_ymin is None:
-        ymin = min(min_by_site) - ylimpad
-    else:
+
+    # set y-limits
+    if ylim_setter is None:
+        ylim_setter = dmslogo.utils.AxLimSetter()
+    ymin1, ymax1 = ylim_setter.get_lims(min_by_site_nonempty)
+    ymin2, ymax2 = ylim_setter.get_lims(max_by_site_nonempty)
+    ymin = min(ymin1, ymin2)
+    ymax = max(ymax1, ymax2)
+    if fixed_ymin is not None:
         ymin = fixed_ymin
-    if fixed_ymax is None:
-        ymax = max(max_by_site) + ylimpad
-    else:
+    if fixed_ymax is not None:
         ymax = fixed_ymax
     ax.set_ylim(ymin, ymax)
 
