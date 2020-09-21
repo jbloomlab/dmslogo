@@ -103,8 +103,9 @@ def draw_line(data,
             Color of line plotting data in `height_col`.
         `color2` (str)
             Color of line plotting any data in `height_col2`.
-        `show_color` (str)
-            Color of underlines specified by `show_col`.
+        `show_color` (str or `None`)
+            Color of underlines specified by `show_col`, or `None` if
+            you don't want to show underlines.
         `linewidth` (float)
             Width of line.
         `widthscale` (float)
@@ -247,7 +248,7 @@ def draw_line(data,
                 where='mid',
                 linewidth=linewidth)
 
-    if show_col:
+    if show_col and show_color is not None:
         lw_to_xdata = data_units_from_linewidth(linewidth, ax, 'x')
         lw_to_ydata = data_units_from_linewidth(linewidth, ax, 'y')
         for x in data.query(f"{show_col}")[x_col].tolist():
