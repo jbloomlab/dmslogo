@@ -38,6 +38,7 @@ def facet_plot(
             share_xlabel=False,
             share_ylabel=False,
             share_ylim_across_rows=True,
+            ylim_setter=None,
             set_ylims=False,
             ):
     """Facet together plots of different types on same figure.
@@ -64,9 +65,8 @@ def facet_plot(
             Column in data to facet over for columns of plot.
         `draw_line_kwargs` (dict)
             All arguments to be passed to
-            :py:mod:`dmslogo.line.draw_line`
-            **except** `x_col`, `show_col`, and `title`. These
-            are passed separately, or (in case of title) come
+            :py:mod:`dmslogo.line.draw_line` **except** `x_col`, `show_col`,
+            `title`, and `ylim_setter`. These are passed separately or come
             from faceting variables.
         `draw_logo_kwargs`
             Like `draw_line_kwargs` but for
@@ -93,6 +93,10 @@ def facet_plot(
             Share the y-labels across the line and logo plots.
         `share_ylim_across_rows` (bool)
             Do we share y-limits across rows?
+        `ylim_setter` (`None` or :class:`dmslogo.utils.AxLimSetter`)
+            Object used to set y-limits. If `None`, a
+            :class:`dmslogo.utils.AxLimSetter` is created using
+            default parameters). If `ylims` is set, it overrides this setter.
         `set_ylims` (`False` or 2-tuple)
             To set y-limits for all axes, specify the 2-tuple `(ymin, ymax)`.
 
@@ -143,17 +147,20 @@ def facet_plot(
                       f"{firstgroup[col]}\n{group[col]}")
 
     # determine which draw_funcs are being used
+    if ylim_setter is None:
+        ylim_setter = dmslogo.utils.AxLimSetter()
     draw_funcs = collections.OrderedDict()
     possible_funcs = [('draw_line', draw_line_kwargs, line_titlesuffix),
                       ('draw_logo', draw_logo_kwargs, logo_titlesuffix)]
     for name, kwargs, titlesuffix in possible_funcs:
         if kwargs is not None:
-            for col in ['ax', 'title']:
+            for col in ['ax', 'title', 'ylim_setter']:
                 if col in kwargs:
                     raise ValueError(f"{name}_kwargs can't have {col}")
             if 'heightscale' in kwargs:
                 raise ValueError(f"do not set `heightscale` in "
                                  f"{name}_kwargs; use `height_per_ax`")
+            kwargs['ylim_setter'] = ylim_setter
             draw_funcs[name] = {'kwargs': kwargs,
                                 'func': getattr(dmslogo, name),
                                 'data': data,

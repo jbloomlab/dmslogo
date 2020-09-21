@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com).
 ## 0.4.0
 
 ### Added
-- Additional ways set y-axis limits. This involves adding `utils.AxLimSetter`, and adding the `ylim_setter` param to `draw_logo` / `draw_line`
+- Additional ways set y-axis limits. This involves adding `utils.AxLimSetter`, and adding the `ylim_setter` param to `draw_logo` / `draw_line` / `facet_plot`.
 - Allow `show_color` for `draw_line` to be `None`.
 
 ### Fixed
