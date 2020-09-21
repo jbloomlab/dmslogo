@@ -17,3 +17,7 @@ Created as follows:
  - Downloaded *DejaVu Fonts* from [here](https://sourceforge.net/projects/dejavu/files/dejavu/2.37/dejavu-fonts-ttf-2.37.zip/download).
 
  - Used [FontForge](https://fontforge.github.io) to open the `DejaVuSansMona-Bold.ttf` font, and adjusted the heights of all **capital** letters as well as the asterisk to be the full height.
+
+### Comic Sans MS
+Downloaded from [here](https://www.wfonts.com/font/comic-sans-ms).
+This is just for example of goofy comic sans logo: it isn't a font where all letters have the same height and no descenders.
