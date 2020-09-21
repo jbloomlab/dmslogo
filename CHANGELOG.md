@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com).
 ## 0.4.0
 
 ### Added
-- Additional ways set y-axis limits. This involves adding `utils.AxLimSetter`
+- Additional ways set y-axis limits. This involves adding `utils.AxLimSetter`, adding the `ylim_setter` param to `draw_logo`
 
 ### Fixed
 - Updated how fontlist is built to fix [this matplotlib warning](https://github.com/matplotlib/matplotlib/issues/17568).
