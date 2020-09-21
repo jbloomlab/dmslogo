@@ -1,17 +1,19 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
-    <title>utils &#8212; dmslogo 0.3.1 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>utils &#8212; dmslogo 0.4.0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="package index" href="package_index.html" />
@@ -35,9 +37,76 @@
   <span class="target" id="module-dmslogo.utils"></span><div class="section" id="utils">
 <h1>utils<a class="headerlink" href="#utils" title="Permalink to this headline">¶</a></h1>
 <p>Utility functions for plotting.</p>
-<dl class="function">
+<dl class="py class">
+<dt id="dmslogo.utils.AxLimSetter">
+<em class="property">class </em><code class="sig-prename descclassname">dmslogo.utils.</code><code class="sig-name descname">AxLimSetter</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">datalim_pad</span><span class="o">=</span><span class="default_value">0.05</span></em>, <em class="sig-param"><span class="n">include_zero</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">max_from_quantile</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">min_from_quantile</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">all_equal_data</span><span class="o">=</span><span class="default_value">- 0.001, 0.001</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/utils.html#AxLimSetter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.utils.AxLimSetter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Object to determine axis limits from data.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>datalim_pad (float &gt;= 0)</dt><dd><p>Padding of data limits.</p>
+</dd>
+<dt>include_zero (bool)</dt><dd><p>Extend upper and lower data limits to ensure they include zero?</p>
+</dd>
+<dt>max_from_quantile (<cite>None</cite> or 2-tuple <cite>(quantile, frac)</cite>)</dt><dd><p>Used to set limits based on quantiles of data as described below.</p>
+</dd>
+<dt>min_from_quantile (<cite>None</cite> or 2-tuple <cite>(quantile, frac)</cite>)</dt><dd><p>Used to set limits based on quantiles of data as described below.</p>
+</dd>
+<dt>all_equal_data (‘raise’ or 2-tuple <cite>(minus_min, plus_max)</cite>)</dt><dd><p>If all the data are equal, it will not be possible to set
+limits using algorithm below. In this case, raise an error
+or add the indicated amounts to the data limits.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>The axis limits may just be simple padding of the data limits, but
+the <cite>max_from_quantile</cite> and <cite>min_from_quantile</cite> arguments allow the
+option to set limits in a meaningful way so data that are just “noise”
+of very similar values are plotted far inside the axis limits.
+Specifically, axis limits are determined by <a class="reference internal" href="#dmslogo.utils.AxLimSetter.get_lims" title="dmslogo.utils.AxLimSetter.get_lims"><code class="xref py py-meth docutils literal notranslate"><span class="pre">AxLimSetter.get_lims()</span></code></a>
+as follows:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>The user passes the data, and the upper and lower data limits are
+determined as the simple min and max of the data.</p></li>
+<li><p>If <cite>include_zero</cite>, these data limits are adjusted to ensure the lower
+data limit is &lt;= 0 and the upper data limit is &gt;= 0.</p></li>
+<li><p>If <cite>max_from_quantile</cite> is not <cite>None</cite>, the upper axis limit is
+set so that the indicated quantile of the data is <cite>frac</cite> of the
+way from the lower data limit to the upper axis limit. However,
+if the data max exceeds the upper axis limit this way, then
+the upper axis limit is set to the data max.</p></li>
+<li><p>If <cite>min_from_quantile</cite> is not <cite>None</cite>, similar setting of the
+lower axis limit is done.</p></li>
+<li><p>The limits from above are padded by <cite>datalim_pad</cite> to the total
+extent of the axis on both sides.</p></li>
+</ol>
+</div></blockquote>
+<p>Example that just adds simple padding to data:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">setter_default</span> <span class="o">=</span> <span class="n">AxLimSetter</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">setter_default</span><span class="o">.</span><span class="n">get_lims</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="go">(-0.03, 0.63)</span>
+</pre></div>
+</div>
+<p>Now use the <cite>max_from_quantile</cite> option to set an upper limit
+that substantially exceeds the “noise” of the all-similar values:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">setter_max_quantile</span> <span class="o">=</span> <span class="n">AxLimSetter</span><span class="p">(</span><span class="n">max_from_quantile</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">setter_max_quantile</span><span class="o">.</span><span class="n">get_lims</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="go">(-0.45, 9.45)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="dmslogo.utils.AxLimSetter.get_lims">
+<code class="sig-name descname">get_lims</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/utils.html#AxLimSetter.get_lims"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.utils.AxLimSetter.get_lims" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get 2-tuple <cite>(ax_min, ax_max)</cite> given list or array of data.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
 <dt id="dmslogo.utils.breaksAndLabels">
-<code class="sig-prename descclassname">dmslogo.utils.</code><code class="sig-name descname">breaksAndLabels</code><span class="sig-paren">(</span><em class="sig-param">xi</em>, <em class="sig-param">x</em>, <em class="sig-param">n</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/utils.html#breaksAndLabels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.utils.breaksAndLabels" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">dmslogo.utils.</code><code class="sig-name descname">breaksAndLabels</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xi</span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">n</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/utils.html#breaksAndLabels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.utils.breaksAndLabels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get breaks and labels for an axis.</p>
 <p>Useful when you would like to re-label a numeric x-axis
 with string labels.</p>
@@ -57,7 +126,7 @@ locations of breaks taken from <cite>xi</cite>, and <cite>labels</cite> is
 the label for each break.</p>
 </dd>
 </dl>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">xi</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">213</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">xi</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">213</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">xi</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">breaks</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span> <span class="o">=</span> <span class="n">breaksAndLabels</span><span class="p">(</span><span class="n">xi</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">breaks</span>
@@ -68,9 +137,9 @@ the label for each break.</p>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="dmslogo.utils.despine">
-<code class="sig-prename descclassname">dmslogo.utils.</code><code class="sig-name descname">despine</code><span class="sig-paren">(</span><em class="sig-param">fig=None</em>, <em class="sig-param">ax=None</em>, <em class="sig-param">top=True</em>, <em class="sig-param">right=True</em>, <em class="sig-param">left=False</em>, <em class="sig-param">bottom=False</em>, <em class="sig-param">offset=None</em>, <em class="sig-param">trim=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/utils.html#despine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.utils.despine" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">dmslogo.utils.</code><code class="sig-name descname">despine</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fig</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ax</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">top</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">right</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">left</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">bottom</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">offset</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">trim</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/utils.html#despine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.utils.despine" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove the top and right spines from plot(s).</p>
 <dl class="simple">
 <dt>Args:</dt><dd><dl class="simple">
@@ -168,7 +237,7 @@ on each non-despined axis.</p>
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -182,10 +251,10 @@ on each non-despined axis.</p>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2019--2019, Bloom lab.
+      &copy;2019--2020, Bloom lab.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

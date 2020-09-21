@@ -1,17 +1,19 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
-    <title>logo &#8212; dmslogo 0.3.1 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>logo &#8212; dmslogo 0.4.0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="utils" href="dmslogo.utils.html" />
@@ -37,30 +39,30 @@
 <p>Core logo-drawing functions of <cite>dmslogo</cite>.</p>
 <p>Some of this code is borrowed and modified from
 <a class="reference external" href="https://github.com/saketkc/pyseqlogo">pyseqlogo</a>.</p>
-<dl class="class">
+<dl class="py class">
 <dt id="dmslogo.logo.Memoize">
-<em class="property">class </em><code class="sig-prename descclassname">dmslogo.logo.</code><code class="sig-name descname">Memoize</code><span class="sig-paren">(</span><em class="sig-param">f</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/logo.html#Memoize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.logo.Memoize" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dmslogo.logo.</code><code class="sig-name descname">Memoize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">f</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/logo.html#Memoize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.logo.Memoize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Memoize function from <a class="reference external" href="https://stackoverflow.com/a/1988826">https://stackoverflow.com/a/1988826</a></p>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="dmslogo.logo.Scale">
-<em class="property">class </em><code class="sig-prename descclassname">dmslogo.logo.</code><code class="sig-name descname">Scale</code><span class="sig-paren">(</span><em class="sig-param">sx</em>, <em class="sig-param">sy=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/logo.html#Scale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.logo.Scale" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dmslogo.logo.</code><code class="sig-name descname">Scale</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sx</span></em>, <em class="sig-param"><span class="n">sy</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/logo.html#Scale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.logo.Scale" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.backend_bases.RendererBase</span></code></p>
 <p>Scale letters using affine transformation.</p>
 <p>From here: <a class="reference external" href="https://www.python-forum.de/viewtopic.php?t=30856">https://www.python-forum.de/viewtopic.php?t=30856</a></p>
-<dl class="method">
+<dl class="py method">
 <dt id="dmslogo.logo.Scale.draw_path">
-<code class="sig-name descname">draw_path</code><span class="sig-paren">(</span><em class="sig-param">renderer</em>, <em class="sig-param">gc</em>, <em class="sig-param">tpath</em>, <em class="sig-param">affine</em>, <em class="sig-param">rgbFace</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/logo.html#Scale.draw_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.logo.Scale.draw_path" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">draw_path</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">renderer</span></em>, <em class="sig-param"><span class="n">gc</span></em>, <em class="sig-param"><span class="n">tpath</span></em>, <em class="sig-param"><span class="n">affine</span></em>, <em class="sig-param"><span class="n">rgbFace</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/logo.html#Scale.draw_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.logo.Scale.draw_path" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draw the letters.</p>
 </dd></dl>
 
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="dmslogo.logo.draw_logo">
-<code class="sig-prename descclassname">dmslogo.logo.</code><code class="sig-name descname">draw_logo</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">*</em>, <em class="sig-param">x_col</em>, <em class="sig-param">letter_col</em>, <em class="sig-param">letter_height_col</em>, <em class="sig-param">xtick_col=None</em>, <em class="sig-param">color_col=None</em>, <em class="sig-param">xlabel=None</em>, <em class="sig-param">ylabel=None</em>, <em class="sig-param">title=None</em>, <em class="sig-param">colorscheme={'A': '#f76ab4'</em>, <em class="sig-param">'C': '#ff7f00'</em>, <em class="sig-param">'D': '#e41a1c'</em>, <em class="sig-param">'E': '#e41a1c'</em>, <em class="sig-param">'F': '#84380b'</em>, <em class="sig-param">'G': '#f76ab4'</em>, <em class="sig-param">'H': '#3c58e5'</em>, <em class="sig-param">'I': '#12ab0d'</em>, <em class="sig-param">'K': '#3c58e5'</em>, <em class="sig-param">'L': '#12ab0d'</em>, <em class="sig-param">'M': '#12ab0d'</em>, <em class="sig-param">'N': '#972aa8'</em>, <em class="sig-param">'P': '#12ab0d'</em>, <em class="sig-param">'Q': '#972aa8'</em>, <em class="sig-param">'R': '#3c58e5'</em>, <em class="sig-param">'S': '#ff7f00'</em>, <em class="sig-param">'T': '#ff7f00'</em>, <em class="sig-param">'V': '#12ab0d'</em>, <em class="sig-param">'W': '#84380b'</em>, <em class="sig-param">'Y': '#84380b'}</em>, <em class="sig-param">missing_color='gray'</em>, <em class="sig-param">addbreaks=True</em>, <em class="sig-param">widthscale=1</em>, <em class="sig-param">heightscale=1</em>, <em class="sig-param">axisfontscale=1</em>, <em class="sig-param">hide_axis=False</em>, <em class="sig-param">fontfamily='DejaVuSansMonoBold_SeqLogo'</em>, <em class="sig-param">fontaspect=0.58</em>, <em class="sig-param">letterpad=0.0105</em>, <em class="sig-param">letterheightscale=0.96</em>, <em class="sig-param">ax=None</em>, <em class="sig-param">fixed_ymin=None</em>, <em class="sig-param">fixed_ymax=None</em>, <em class="sig-param">clip_negative_heights=False</em>, <em class="sig-param">drop_na_letter_heights=True</em>, <em class="sig-param">draw_line_at_zero='if_negative'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/logo.html#draw_logo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.logo.draw_logo" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">dmslogo.logo.</code><code class="sig-name descname">draw_logo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">x_col</span></em>, <em class="sig-param"><span class="n">letter_col</span></em>, <em class="sig-param"><span class="n">letter_height_col</span></em>, <em class="sig-param"><span class="n">xtick_col</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">color_col</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">xlabel</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ylabel</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">title</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">colorscheme</span><span class="o">=</span><span class="default_value">{'A': '#f76ab4', 'C': '#ff7f00', 'D': '#e41a1c', 'E': '#e41a1c', 'F': '#84380b', 'G': '#f76ab4', 'H': '#3c58e5', 'I': '#12ab0d', 'K': '#3c58e5', 'L': '#12ab0d', 'M': '#12ab0d', 'N': '#972aa8', 'P': '#12ab0d', 'Q': '#972aa8', 'R': '#3c58e5', 'S': '#ff7f00', 'T': '#ff7f00', 'V': '#12ab0d', 'W': '#84380b', 'Y': '#84380b'}</span></em>, <em class="sig-param"><span class="n">missing_color</span><span class="o">=</span><span class="default_value">'gray'</span></em>, <em class="sig-param"><span class="n">addbreaks</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">widthscale</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">heightscale</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">axisfontscale</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">hide_axis</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">fontfamily</span><span class="o">=</span><span class="default_value">'DejaVuSansMonoBold_SeqLogo'</span></em>, <em class="sig-param"><span class="n">fontaspect</span><span class="o">=</span><span class="default_value">0.58</span></em>, <em class="sig-param"><span class="n">letterpad</span><span class="o">=</span><span class="default_value">0.0105</span></em>, <em class="sig-param"><span class="n">letterheightscale</span><span class="o">=</span><span class="default_value">0.96</span></em>, <em class="sig-param"><span class="n">ax</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ylim_setter</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">fixed_ymin</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">fixed_ymax</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">clip_negative_heights</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">drop_na_letter_heights</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">draw_line_at_zero</span><span class="o">=</span><span class="default_value">'if_negative'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/logo.html#draw_logo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.logo.draw_logo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draw sequence logo from specified letter heights.</p>
 <dl class="simple">
 <dt>Args:</dt><dd><dl class="simple">
@@ -111,6 +113,11 @@ as fraction of total stack height.</p>
 <dt><cite>letterheightscale</cite> (float)</dt><dd><p>Scale height of all letters by this much.</p>
 </dd>
 <dt><cite>ax</cite> (<cite>None</cite> or matplotlib axes.Axes object)</dt><dd><p>Use to plot on an existing axis.</p>
+</dd>
+<dt><cite>ylim_setter</cite> (<cite>None</cite> or <a class="reference internal" href="dmslogo.utils.html#dmslogo.utils.AxLimSetter" title="dmslogo.utils.AxLimSetter"><code class="xref py py-class docutils literal notranslate"><span class="pre">dmslogo.utils.AxLimSetter</span></code></a>)</dt><dd><p>Object used to set y-limits. If <cite>None</cite>, a
+<a class="reference internal" href="dmslogo.utils.html#dmslogo.utils.AxLimSetter" title="dmslogo.utils.AxLimSetter"><code class="xref py py-class docutils literal notranslate"><span class="pre">dmslogo.utils.AxLimSetter</span></code></a> is created using
+default parameters). If <cite>fixed_ymin</cite> and/or <cite>fixed_ymax</cite>
+are set, they override the limits from this setter.</p>
 </dd>
 <dt><cite>fixed_ymin</cite> (<cite>None</cite> or float)</dt><dd><p>If not <cite>None</cite>, then fixed y-axis minimum.</p>
 </dd>
@@ -207,7 +214,7 @@ never draw line.</p>
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -221,10 +228,10 @@ never draw line.</p>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2019--2019, Bloom lab.
+      &copy;2019--2020, Bloom lab.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

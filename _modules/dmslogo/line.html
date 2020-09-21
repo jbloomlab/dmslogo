@@ -1,17 +1,19 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
-    <title>dmslogo.line &#8212; dmslogo 0.3.1 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>dmslogo.line &#8212; dmslogo 0.4.0 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
    
@@ -72,12 +74,12 @@
     <span class="n">fig</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_figure</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">reference</span> <span class="o">==</span> <span class="s1">&#39;x&#39;</span><span class="p">:</span>
         <span class="n">length</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">bbox_inches</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_position</span><span class="p">()</span><span class="o">.</span><span class="n">width</span>
-        <span class="n">value_range</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">())</span>
+        <span class="n">value_range</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">elif</span> <span class="n">reference</span> <span class="o">==</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span>
         <span class="n">length</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">bbox_inches</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_position</span><span class="p">()</span><span class="o">.</span><span class="n">height</span>
-        <span class="n">value_range</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">())</span>
+        <span class="n">value_range</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;invalid `ax` of </span><span class="si">{ax}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;invalid `ax` of </span><span class="si">{</span><span class="n">ax</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="c1"># Convert length to points</span>
     <span class="n">length</span> <span class="o">*=</span> <span class="mi">72</span>
     <span class="c1"># Scale linewidth to value range</span>
@@ -103,6 +105,7 @@
               <span class="n">axisfontscale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
               <span class="n">hide_axis</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
               <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">ylim_setter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
               <span class="n">fixed_ymin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
               <span class="n">fixed_ymax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Draw line plot.</span>
@@ -135,8 +138,9 @@
 <span class="sd">            Color of line plotting data in `height_col`.</span>
 <span class="sd">        `color2` (str)</span>
 <span class="sd">            Color of line plotting any data in `height_col2`.</span>
-<span class="sd">        `show_color` (str)</span>
-<span class="sd">            Color of underlines specified by `show_col`.</span>
+<span class="sd">        `show_color` (str or `None`)</span>
+<span class="sd">            Color of underlines specified by `show_col`, or `None` if</span>
+<span class="sd">            you don&#39;t want to show underlines.</span>
 <span class="sd">        `linewidth` (float)</span>
 <span class="sd">            Width of line.</span>
 <span class="sd">        `widthscale` (float)</span>
@@ -149,6 +153,11 @@
 <span class="sd">            Do we hide the axis and tick labels?</span>
 <span class="sd">        `ax` (`None` or matplotlib axes.Axes object)</span>
 <span class="sd">            Use to plot on an existing axis.</span>
+<span class="sd">        `ylim_setter` (`None` or :class:`dmslogo.utils.AxLimSetter`)</span>
+<span class="sd">            Object used to set y-limits. If `None`, a</span>
+<span class="sd">            :class:`dmslogo.utils.AxLimSetter` is created using</span>
+<span class="sd">            default parameters). If `fixed_ymin` and/or `fixed_ymax`</span>
+<span class="sd">            are set, they override the limits from this setter.</span>
 <span class="sd">        `fixed_ymin` (`None` or float)</span>
 <span class="sd">            If not `None`, then fixed y-axis minimum.</span>
 <span class="sd">        `fixed_ymax` (`None` or float)</span>
@@ -175,7 +184,7 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;`show_col` is not bool&#39;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;`data` lacks column </span><span class="si">{col}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;`data` lacks column </span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">x_col</span><span class="p">)</span>
 
@@ -185,31 +194,35 @@
     <span class="n">xmin</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">x_col</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
     <span class="n">xmax</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">x_col</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
     <span class="n">xlen</span> <span class="o">=</span> <span class="n">xmax</span> <span class="o">-</span> <span class="n">xmin</span> <span class="o">+</span> <span class="mi">1</span>
-    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">!=</span> <span class="n">data</span><span class="p">[</span><span class="n">x_col</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()):</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">xlen</span> <span class="o">!=</span> <span class="n">data</span><span class="p">[</span><span class="n">x_col</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">())</span> <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">!=</span>
+                                              <span class="n">data</span><span class="p">[</span><span class="n">x_col</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;`x_col` not sequential unbroken integers&#39;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">x_col</span><span class="p">])</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">x_col</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;not unique mapping of `x_col` to other cols </span><span class="si">{cols}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;not unique mapping of `x_col` to other cols </span><span class="si">{</span><span class="n">cols</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="n">xlen</span>
 
+    <span class="c1"># set y-limits</span>
+    <span class="k">if</span> <span class="n">ylim_setter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ylim_setter</span> <span class="o">=</span> <span class="n">dmslogo</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">AxLimSetter</span><span class="p">()</span>
+    <span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">=</span> <span class="n">ylim_setter</span><span class="o">.</span><span class="n">get_lims</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">height_col</span><span class="p">])</span>
     <span class="n">ydata_min</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">height_col</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
     <span class="n">ydata_max</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">height_col</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">ylim_setter</span><span class="o">.</span><span class="n">include_zero</span><span class="p">:</span>
+        <span class="n">ydata_min</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ydata_min</span><span class="p">)</span>
+        <span class="n">ydata_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ydata_max</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">height_col2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ymin2</span><span class="p">,</span> <span class="n">ymax2</span> <span class="o">=</span> <span class="n">ylim_setter</span><span class="o">.</span><span class="n">get_lims</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">height_col2</span><span class="p">])</span>
+        <span class="n">ymin</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">ymin</span><span class="p">,</span> <span class="n">ymin2</span><span class="p">)</span>
+        <span class="n">ymax</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">ymax</span><span class="p">,</span> <span class="n">ymax2</span><span class="p">)</span>
         <span class="n">ydata_min</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">ydata_min</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="n">height_col2</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
         <span class="n">ydata_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">ydata_max</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="n">height_col2</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
-    <span class="n">ylimpad</span> <span class="o">=</span> <span class="mf">0.05</span> <span class="o">*</span> <span class="p">(</span><span class="n">ydata_max</span> <span class="o">-</span> <span class="n">ydata_min</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">fixed_ymax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">ymax</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ydata_max</span><span class="p">)</span> <span class="o">+</span> <span class="n">ylimpad</span>
-    <span class="k">else</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">fixed_ymax</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">fixed_ymax</span> <span class="o">&lt;</span> <span class="n">ydata_max</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;`fixed_ymax` less then max of data&#39;</span><span class="p">)</span>
         <span class="n">ymax</span> <span class="o">=</span> <span class="n">fixed_ymax</span>
-    <span class="k">if</span> <span class="n">fixed_ymin</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">ymin</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ydata_min</span><span class="p">)</span> <span class="o">-</span> <span class="n">ylimpad</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">fixed_ymin</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;`fixed_ymin` greater than 0&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">fixed_ymin</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">fixed_ymin</span> <span class="o">&gt;</span> <span class="n">ydata_min</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;`fixed_ymin` greater then min of data&#39;</span><span class="p">)</span>
         <span class="n">ymin</span> <span class="o">=</span> <span class="n">fixed_ymin</span>
@@ -273,14 +286,14 @@
                 <span class="n">where</span><span class="o">=</span><span class="s1">&#39;mid&#39;</span><span class="p">,</span>
                 <span class="n">linewidth</span><span class="o">=</span><span class="n">linewidth</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">show_col</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">show_col</span> <span class="ow">and</span> <span class="n">show_color</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">lw_to_xdata</span> <span class="o">=</span> <span class="n">data_units_from_linewidth</span><span class="p">(</span><span class="n">linewidth</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">)</span>
         <span class="n">lw_to_ydata</span> <span class="o">=</span> <span class="n">data_units_from_linewidth</span><span class="p">(</span><span class="n">linewidth</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;</span><span class="si">{show_col}</span><span class="s2">&quot;</span><span class="p">)[</span><span class="n">x_col</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">show_col</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)[</span><span class="n">x_col</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">():</span>
             <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">(</span>
                             <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">-</span> <span class="n">lw_to_xdata</span><span class="p">,</span> <span class="n">ymin</span><span class="p">),</span>
                             <span class="n">width</span><span class="o">=</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">*</span> <span class="n">lw_to_xdata</span><span class="p">,</span>
-                            <span class="n">height</span><span class="o">=</span><span class="n">ylimpad</span> <span class="o">-</span> <span class="n">lw_to_ydata</span><span class="p">,</span>
+                            <span class="n">height</span><span class="o">=</span><span class="p">(</span><span class="n">ydata_min</span> <span class="o">-</span> <span class="n">ymin</span><span class="p">)</span> <span class="o">-</span> <span class="n">lw_to_ydata</span><span class="p">,</span>
                             <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span>
                             <span class="n">facecolor</span><span class="o">=</span><span class="n">show_color</span><span class="p">,</span>
                             <span class="p">))</span>
@@ -363,7 +376,7 @@
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -377,10 +390,10 @@
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2019--2019, Bloom lab.
+      &copy;2019--2020, Bloom lab.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

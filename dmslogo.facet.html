@@ -1,17 +1,19 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
-    <title>facet &#8212; dmslogo 0.3.1 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>facet &#8212; dmslogo 0.4.0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="line" href="dmslogo.line.html" />
@@ -35,9 +37,9 @@
   <span class="target" id="module-dmslogo.facet"></span><div class="section" id="facet">
 <h1>facet<a class="headerlink" href="#facet" title="Permalink to this headline">¶</a></h1>
 <p>Facet multiple plots on the same figure.</p>
-<dl class="function">
+<dl class="py function">
 <dt id="dmslogo.facet.facet_plot">
-<code class="sig-prename descclassname">dmslogo.facet.</code><code class="sig-name descname">facet_plot</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">*</em>, <em class="sig-param">x_col</em>, <em class="sig-param">show_col</em>, <em class="sig-param">height_per_ax=2.5</em>, <em class="sig-param">gridrow_col=None</em>, <em class="sig-param">gridcol_col=None</em>, <em class="sig-param">draw_line_kwargs=None</em>, <em class="sig-param">draw_logo_kwargs=None</em>, <em class="sig-param">line_titlesuffix=''</em>, <em class="sig-param">logo_titlesuffix=''</em>, <em class="sig-param">hspace=0.8</em>, <em class="sig-param">wspace=1.1</em>, <em class="sig-param">lmargin=1</em>, <em class="sig-param">rmargin=0.2</em>, <em class="sig-param">tmargin=0.4</em>, <em class="sig-param">bmargin=1.3</em>, <em class="sig-param">share_xlabel=False</em>, <em class="sig-param">share_ylabel=False</em>, <em class="sig-param">share_ylim_across_rows=True</em>, <em class="sig-param">set_ylims=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/facet.html#facet_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.facet.facet_plot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">dmslogo.facet.</code><code class="sig-name descname">facet_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">x_col</span></em>, <em class="sig-param"><span class="n">show_col</span></em>, <em class="sig-param"><span class="n">height_per_ax</span><span class="o">=</span><span class="default_value">2.5</span></em>, <em class="sig-param"><span class="n">gridrow_col</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">gridcol_col</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">draw_line_kwargs</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">draw_logo_kwargs</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">line_titlesuffix</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">logo_titlesuffix</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">hspace</span><span class="o">=</span><span class="default_value">0.8</span></em>, <em class="sig-param"><span class="n">wspace</span><span class="o">=</span><span class="default_value">1.1</span></em>, <em class="sig-param"><span class="n">lmargin</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">rmargin</span><span class="o">=</span><span class="default_value">0.2</span></em>, <em class="sig-param"><span class="n">tmargin</span><span class="o">=</span><span class="default_value">0.4</span></em>, <em class="sig-param"><span class="n">bmargin</span><span class="o">=</span><span class="default_value">1.3</span></em>, <em class="sig-param"><span class="n">share_xlabel</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">share_ylabel</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">share_ylim_across_rows</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">set_ylims</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/facet.html#facet_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.facet.facet_plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Facet together plots of different types on same figure.</p>
 <p>Useful for combining multiple instances of the plots you
 could create with <a class="reference internal" href="dmslogo.logo.html#dmslogo.logo.draw_logo" title="dmslogo.logo.draw_logo"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dmslogo.logo.draw_logo</span></code></a> and
@@ -60,9 +62,8 @@ plots and to show in logo plots.</p>
 <dt><cite>gridcol_col</cite> (str or <cite>None</cite>)</dt><dd><p>Column in data to facet over for columns of plot.</p>
 </dd>
 <dt><cite>draw_line_kwargs</cite> (dict)</dt><dd><p>All arguments to be passed to
-<a class="reference internal" href="dmslogo.line.html#dmslogo.line.draw_line" title="dmslogo.line.draw_line"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dmslogo.line.draw_line</span></code></a>
-<strong>except</strong> <cite>x_col</cite>, <cite>show_col</cite>, and <cite>title</cite>. These
-are passed separately, or (in case of title) come
+<a class="reference internal" href="dmslogo.line.html#dmslogo.line.draw_line" title="dmslogo.line.draw_line"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dmslogo.line.draw_line</span></code></a> <strong>except</strong> <cite>x_col</cite>, <cite>show_col</cite>,
+and <cite>title</cite>. These are passed separately or come
 from faceting variables.</p>
 </dd>
 <dt><cite>draw_logo_kwargs</cite></dt><dd><p>Like <cite>draw_line_kwargs</cite> but for
@@ -90,7 +91,10 @@ from faceting variables.</p>
 </dd>
 <dt><cite>share_ylim_across_rows</cite> (bool)</dt><dd><p>Do we share y-limits across rows?</p>
 </dd>
-<dt><cite>set_ylims</cite> (<cite>False</cite> or 2-tuple)</dt><dd><p>To set y-limits for all axes, specify the 2-tuple <cite>(ymin, ymax)</cite>.</p>
+<dt><cite>set_ylims</cite> (<cite>False</cite> or 2-tuple or dict)</dt><dd><p>To set y-limits for all axes, specify the 2-tuple <cite>(ymin, ymax)</cite>.
+To set y-limits differently for each row, specify a dict keyed
+by the possible values of <cite>gridrow_col</cite> with the values being
+2-tuples <cite>(ymin, ymax)</cite>.</p>
 </dd>
 </dl>
 </dd>
@@ -102,9 +106,9 @@ Figure and <cite>axes</cite> is a numpy ndarray of the figure axes.</p>
 for all groups in being faceted over.</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="dmslogo.facet.height_params">
-<code class="sig-prename descclassname">dmslogo.facet.</code><code class="sig-name descname">height_params</code><span class="sig-paren">(</span><em class="sig-param">nrows</em>, <em class="sig-param">height_per_ax</em>, <em class="sig-param">hspace</em>, <em class="sig-param">tmargin</em>, <em class="sig-param">bmargin</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/facet.html#height_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.facet.height_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">dmslogo.facet.</code><code class="sig-name descname">height_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nrows</span></em>, <em class="sig-param"><span class="n">height_per_ax</span></em>, <em class="sig-param"><span class="n">hspace</span></em>, <em class="sig-param"><span class="n">tmargin</span></em>, <em class="sig-param"><span class="n">bmargin</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/facet.html#height_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.facet.height_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Values to set vertical figure subplots parameters.</p>
 <dl class="simple">
 <dt>Args:</dt><dd><dl class="simple">
@@ -200,7 +204,7 @@ for all groups in being faceted over.</p>
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -214,10 +218,10 @@ for all groups in being faceted over.</p>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2019--2019, Bloom lab.
+      &copy;2019--2020, Bloom lab.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

@@ -1,17 +1,19 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
-    <title>dmslogo.facet &#8212; dmslogo 0.3.1 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>dmslogo.facet &#8212; dmslogo 0.4.0 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
    
@@ -97,9 +99,8 @@
 <span class="sd">            Column in data to facet over for columns of plot.</span>
 <span class="sd">        `draw_line_kwargs` (dict)</span>
 <span class="sd">            All arguments to be passed to</span>
-<span class="sd">            :py:mod:`dmslogo.line.draw_line`</span>
-<span class="sd">            **except** `x_col`, `show_col`, and `title`. These</span>
-<span class="sd">            are passed separately, or (in case of title) come</span>
+<span class="sd">            :py:mod:`dmslogo.line.draw_line` **except** `x_col`, `show_col`,</span>
+<span class="sd">            and `title`. These are passed separately or come</span>
 <span class="sd">            from faceting variables.</span>
 <span class="sd">        `draw_logo_kwargs`</span>
 <span class="sd">            Like `draw_line_kwargs` but for</span>
@@ -126,8 +127,11 @@
 <span class="sd">            Share the y-labels across the line and logo plots.</span>
 <span class="sd">        `share_ylim_across_rows` (bool)</span>
 <span class="sd">            Do we share y-limits across rows?</span>
-<span class="sd">        `set_ylims` (`False` or 2-tuple)</span>
+<span class="sd">        `set_ylims` (`False` or 2-tuple or dict)</span>
 <span class="sd">            To set y-limits for all axes, specify the 2-tuple `(ymin, ymax)`.</span>
+<span class="sd">            To set y-limits differently for each row, specify a dict keyed</span>
+<span class="sd">            by the possible values of `gridrow_col` with the values being</span>
+<span class="sd">            2-tuples `(ymin, ymax)`.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        The 2-tuple `fig, axes` where `fig` is the matplotlib</span>
@@ -140,19 +144,19 @@
     <span class="k">if</span> <span class="n">gridrow_col</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">gridrow_col</span> <span class="o">=</span> <span class="s1">&#39;_gridrow_col_&#39;</span>
         <span class="k">if</span> <span class="n">gridrow_col</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;`data` already has column </span><span class="si">{gridrow_col}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;`data` already has column </span><span class="si">{</span><span class="n">gridrow_col</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="n">gridrow_col</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">})</span>
     <span class="k">if</span> <span class="n">gridcol_col</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">gridcol_col</span> <span class="o">=</span> <span class="s1">&#39;_gridcol_col_&#39;</span>
         <span class="k">if</span> <span class="n">gridcol_col</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;`data` already has column </span><span class="si">{gridcol_col}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;`data` already has column </span><span class="si">{</span><span class="n">gridcol_col</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="n">gridcol_col</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">})</span>
     <span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">gridrow_col</span><span class="p">,</span> <span class="n">gridcol_col</span><span class="p">,</span> <span class="n">x_col</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">show_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">show_col</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;no </span><span class="si">{col}</span><span class="s2"> column in `data`&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;no </span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2"> column in `data`&quot;</span><span class="p">)</span>
 
     <span class="c1"># make sure all groups have same x_col and show_col</span>
     <span class="n">groups</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span>
@@ -164,15 +168,16 @@
     <span class="n">firstgroupname</span><span class="p">,</span> <span class="n">firstgroup</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">groups</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">firstgroup</span> <span class="o">=</span> <span class="n">firstgroup</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">groupname</span><span class="p">,</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">:</span>
-        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">group</span><span class="p">),</span> <span class="n">f</span><span class="s2">&quot;empty group </span><span class="si">{groupname}</span><span class="s2">&quot;</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">group</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;empty group </span><span class="si">{</span><span class="n">groupname</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="n">group</span> <span class="o">=</span> <span class="n">group</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">[</span><span class="mi">2</span><span class="p">:]:</span>
-            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">firstgroup</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">!=</span> <span class="n">group</span><span class="p">[</span><span class="n">col</span><span class="p">]):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">firstgroup</span><span class="p">[</span><span class="n">col</span><span class="p">])</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">group</span><span class="p">[</span><span class="n">col</span><span class="p">]))</span> <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span><span class="n">firstgroup</span><span class="p">[</span><span class="n">col</span><span class="p">]</span>
+                                                                <span class="o">!=</span> <span class="n">group</span><span class="p">[</span><span class="n">col</span><span class="p">]):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                      <span class="n">f</span><span class="s2">&quot;different entries for </span><span class="si">{col}</span><span class="s2"> &quot;</span>
-                      <span class="n">f</span><span class="s2">&quot;in `data`, differs between </span><span class="si">{firstgroupname}</span><span class="s2"> &quot;</span>
-                      <span class="n">f</span><span class="s2">&quot;and </span><span class="si">{groupname}</span><span class="s2">:</span><span class="se">\n</span><span class="s2">&quot;</span>
-                      <span class="n">f</span><span class="s2">&quot;</span><span class="si">{firstgroup[col]}</span><span class="se">\n</span><span class="si">{group[col]}</span><span class="s2">&quot;</span><span class="p">)</span>
+                      <span class="sa">f</span><span class="s2">&quot;different entries for </span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2"> &quot;</span>
+                      <span class="sa">f</span><span class="s2">&quot;in `data`, differs between </span><span class="si">{</span><span class="n">firstgroupname</span><span class="si">}</span><span class="s2"> &quot;</span>
+                      <span class="sa">f</span><span class="s2">&quot;and </span><span class="si">{</span><span class="n">groupname</span><span class="si">}</span><span class="s2">:</span><span class="se">\n</span><span class="s2">&quot;</span>
+                      <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">firstgroup</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">group</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="c1"># determine which draw_funcs are being used</span>
     <span class="n">draw_funcs</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
@@ -182,10 +187,10 @@
         <span class="k">if</span> <span class="n">kwargs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;ax&#39;</span><span class="p">,</span> <span class="s1">&#39;title&#39;</span><span class="p">]:</span>
                 <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;</span><span class="si">{name}</span><span class="s2">_kwargs can&#39;t have </span><span class="si">{col}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_kwargs can&#39;t have </span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="s1">&#39;heightscale&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;do not set `heightscale` in &quot;</span>
-                                 <span class="n">f</span><span class="s2">&quot;</span><span class="si">{name}</span><span class="s2">_kwargs; use `height_per_ax`&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;do not set `heightscale` in &quot;</span>
+                                 <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_kwargs; use `height_per_ax`&quot;</span><span class="p">)</span>
             <span class="n">draw_funcs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;kwargs&#39;</span><span class="p">:</span> <span class="n">kwargs</span><span class="p">,</span>
                                 <span class="s1">&#39;func&#39;</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">dmslogo</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span>
                                 <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">,</span>
@@ -195,8 +200,8 @@
                 <span class="n">draw_funcs</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s1">&#39;data&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">show_col</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">draw_funcs</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s1">&#39;data&#39;</span><span class="p">]):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                        <span class="n">f</span><span class="s2">&quot;no data for </span><span class="si">{name}</span><span class="s2">. You passed empty `data` &quot;</span>
-                        <span class="n">f</span><span class="s2">&quot;or `show_col` (</span><span class="si">{show_col}</span><span class="s2">) is all False.&quot;</span><span class="p">)</span>
+                        <span class="sa">f</span><span class="s2">&quot;no data for </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">. You passed empty `data` &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;or `show_col` (</span><span class="si">{</span><span class="n">show_col</span><span class="si">}</span><span class="s2">) is all False.&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">draw_funcs</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;set at least one of: &#39;</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tup</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span>
                          <span class="s1">&#39;_kwargs&#39;</span> <span class="k">for</span> <span class="n">tup</span> <span class="ow">in</span> <span class="n">possible_funcs</span><span class="p">))</span>
@@ -206,9 +211,9 @@
         <span class="k">for</span> <span class="n">colname</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="p">[(</span><span class="s1">&#39;x_col&#39;</span><span class="p">,</span> <span class="n">x_col</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;show_col&#39;</span><span class="p">,</span> <span class="n">show_col</span><span class="p">)]:</span>
             <span class="k">if</span> <span class="p">(</span><span class="n">colname</span> <span class="ow">in</span> <span class="n">name_d</span><span class="p">[</span><span class="s1">&#39;kwargs&#39;</span><span class="p">])</span> <span class="ow">and</span> <span class="p">(</span>
                     <span class="n">name_d</span><span class="p">[</span><span class="s1">&#39;kwargs&#39;</span><span class="p">][</span><span class="n">colname</span><span class="p">]</span> <span class="o">!=</span> <span class="n">col</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;</span><span class="si">{colname}</span><span class="s2"> is in </span><span class="si">{name}</span><span class="s2">_kwargs; &quot;</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">colname</span><span class="si">}</span><span class="s2"> is in </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_kwargs; &quot;</span>
                                  <span class="s1">&#39;should only be specified via the top &#39;</span>
-                                 <span class="n">f</span><span class="s2">&quot;function-level argument </span><span class="si">{colname}</span><span class="s2">&quot;</span><span class="p">)</span>
+                                 <span class="sa">f</span><span class="s2">&quot;function-level argument </span><span class="si">{</span><span class="n">colname</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="p">(</span><span class="n">colname</span> <span class="o">!=</span> <span class="s1">&#39;show_col&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;draw_line&quot;</span><span class="p">):</span>
                 <span class="n">name_d</span><span class="p">[</span><span class="s1">&#39;kwargs&#39;</span><span class="p">][</span><span class="n">colname</span><span class="p">]</span> <span class="o">=</span> <span class="n">col</span>
 
@@ -235,8 +240,8 @@
                 <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">name_d</span><span class="p">:</span>
                     <span class="n">name_d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
                 <span class="k">elif</span> <span class="n">name_d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">!=</span> <span class="n">val</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;inconsistent </span><span class="si">{key}</span><span class="s2"> for </span><span class="si">{name}</span><span class="s2">: &quot;</span>
-                                     <span class="n">f</span><span class="s2">&quot;</span><span class="si">{val}</span><span class="s2"> </span><span class="si">{name_d[key]}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;inconsistent </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> for </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">: &quot;</span>
+                                     <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">name_d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="s1">&#39;ymin&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">name_d</span><span class="p">:</span>
                 <span class="n">name_d</span><span class="p">[</span><span class="s1">&#39;ymin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ymin</span>
             <span class="n">name_d</span><span class="p">[</span><span class="s1">&#39;ymin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">name_d</span><span class="p">[</span><span class="s1">&#39;ymin&#39;</span><span class="p">],</span> <span class="n">ymin</span><span class="p">)</span>
@@ -259,14 +264,23 @@
                 <span class="n">fixed_ylims</span><span class="p">[</span><span class="n">ltype</span><span class="p">][</span><span class="n">row</span><span class="p">]</span> <span class="o">=</span> <span class="n">lim</span>
 
     <span class="k">if</span> <span class="n">set_ylims</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">set_ylims</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="n">rows</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">fixed_ylims</span><span class="p">[</span><span class="s1">&#39;min&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="n">set_ylims</span> <span class="o">=</span> <span class="p">({</span><span class="n">row</span><span class="p">:</span> <span class="n">set_ylims</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">},</span>
+                         <span class="p">{</span><span class="n">row</span><span class="p">:</span> <span class="n">set_ylims</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">})</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">set_ylims</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">set_ylims</span> <span class="o">=</span> <span class="p">({</span><span class="n">row</span><span class="p">:</span> <span class="n">ymin</span> <span class="k">for</span> <span class="n">row</span><span class="p">,</span> <span class="p">(</span><span class="n">ymin</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="ow">in</span> <span class="n">set_ylims</span><span class="o">.</span><span class="n">items</span><span class="p">()},</span>
+                         <span class="p">{</span><span class="n">row</span><span class="p">:</span> <span class="n">ymax</span> <span class="k">for</span> <span class="n">row</span><span class="p">,</span> <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">ymax</span><span class="p">)</span> <span class="ow">in</span> <span class="n">set_ylims</span><span class="o">.</span><span class="n">items</span><span class="p">()})</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;invalid `set_ylims`: </span><span class="si">{</span><span class="n">set_ylims</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">ltype</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">setlim</span> <span class="ow">in</span> <span class="p">[(</span><span class="s1">&#39;min&#39;</span><span class="p">,</span> <span class="n">operator</span><span class="o">.</span><span class="n">lt</span><span class="p">,</span> <span class="n">set_ylims</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
                                   <span class="p">(</span><span class="s1">&#39;max&#39;</span><span class="p">,</span> <span class="n">operator</span><span class="o">.</span><span class="n">gt</span><span class="p">,</span> <span class="n">set_ylims</span><span class="p">[</span><span class="mi">1</span><span class="p">])]:</span>
             <span class="k">for</span> <span class="n">row</span><span class="p">,</span> <span class="n">lim</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">fixed_ylims</span><span class="p">[</span><span class="n">ltype</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
-                <span class="k">if</span> <span class="n">op</span><span class="p">(</span><span class="n">lim</span><span class="p">,</span> <span class="n">setlim</span><span class="p">):</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;invalid y</span><span class="si">{ltype}</span><span class="s2"> in `set_ylims`, must &quot;</span>
-                                     <span class="n">f</span><span class="s2">&quot;be at least </span><span class="si">{lim}</span><span class="s2">.&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">op</span><span class="p">(</span><span class="n">lim</span><span class="p">,</span> <span class="n">setlim</span><span class="p">[</span><span class="n">row</span><span class="p">]):</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;invalid y</span><span class="si">{</span><span class="n">ltype</span><span class="si">}</span><span class="s2"> in `set_ylims`, must &quot;</span>
+                                     <span class="sa">f</span><span class="s2">&quot;be at least </span><span class="si">{</span><span class="n">lim</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">fixed_ylims</span><span class="p">[</span><span class="n">ltype</span><span class="p">][</span><span class="n">row</span><span class="p">]</span> <span class="o">=</span> <span class="n">setlim</span>
+                    <span class="n">fixed_ylims</span><span class="p">[</span><span class="n">ltype</span><span class="p">][</span><span class="n">row</span><span class="p">]</span> <span class="o">=</span> <span class="n">setlim</span><span class="p">[</span><span class="n">row</span><span class="p">]</span>
 
     <span class="c1"># make figure</span>
     <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
@@ -372,7 +386,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">axistype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;invalid `axistype` of </span><span class="si">{axistype}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;invalid `axistype` of </span><span class="si">{</span><span class="n">axistype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">axlist</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;empty `axlist`&#39;</span><span class="p">)</span>
 
@@ -392,8 +406,8 @@
 
     <span class="k">for</span> <span class="n">propname</span><span class="p">,</span> <span class="n">propset</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">label_props</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">propset</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;multiple </span><span class="si">{propname}</span><span class="s2"> among axes: &quot;</span>
-                             <span class="n">f</span><span class="s2">&quot;</span><span class="si">{propset}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;multiple </span><span class="si">{</span><span class="n">propname</span><span class="si">}</span><span class="s2"> among axes: &quot;</span>
+                             <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">propset</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">label_props</span><span class="p">[</span><span class="n">propname</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">propset</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="k">if</span> <span class="n">axistype</span> <span class="o">==</span> <span class="s1">&#39;x&#39;</span><span class="p">:</span>
@@ -429,15 +443,15 @@
         <span class="k">for</span> <span class="n">irow</span><span class="p">,</span> <span class="p">(</span><span class="n">row_name</span><span class="p">,</span> <span class="n">row_data</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">groups</span><span class="p">):</span>
 
             <span class="k">assert</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">irow</span> <span class="o">&lt;</span> <span class="n">nrows</span><span class="p">),</span> <span class="p">(</span>
-                    <span class="n">f</span><span class="s2">&quot;irow out of bound</span><span class="se">\n</span><span class="s2">irow: </span><span class="si">{irow}</span><span class="se">\n</span><span class="s2">nrows: </span><span class="si">{nrows}</span><span class="se">\n</span><span class="s2">&quot;</span>
-                    <span class="n">f</span><span class="s2">&quot;row_name: </span><span class="si">{row_name}</span><span class="se">\n</span><span class="s2">ngroups: {len(groups)}&quot;</span><span class="p">)</span>
+                    <span class="sa">f</span><span class="s2">&quot;irow out of bound</span><span class="se">\n</span><span class="s2">irow: </span><span class="si">{</span><span class="n">irow</span><span class="si">}</span><span class="se">\n</span><span class="s2">nrows: </span><span class="si">{</span><span class="n">nrows</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;row_name: </span><span class="si">{</span><span class="n">row_name</span><span class="si">}</span><span class="se">\n</span><span class="s2">ngroups: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">groups</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
             <span class="n">row_groups</span> <span class="o">=</span> <span class="p">[(</span><span class="n">col_name</span><span class="p">,</span> <span class="n">col_data</span><span class="p">)</span> <span class="k">for</span> <span class="n">col_name</span><span class="p">,</span> <span class="n">col_data</span> <span class="ow">in</span>
                           <span class="n">row_data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">gridcol_col</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">col_data</span><span class="p">)]</span>
 
             <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">row_groups</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">ncols_per_func</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">row_groups</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;no data for row </span><span class="si">{row_name}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;no data for row </span><span class="si">{</span><span class="n">row_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
             <span class="k">for</span> <span class="n">icol</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncols_per_func</span><span class="p">):</span>
 
@@ -550,7 +564,7 @@
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -564,10 +578,10 @@
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2019--2019, Bloom lab.
+      &copy;2019--2020, Bloom lab.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
