@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Basic example &#8212; dmslogo 0.4.0 documentation</title>
+    <title>Basic example &#8212; dmslogo 0.5.0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -736,12 +736,148 @@ Here is a rendering of the saved figure:
 </div>
 </div>
 </div>
+<div class="section" id="Shading-some-sites">
+<h3>Shading some sites<a class="headerlink" href="#Shading-some-sites" title="Permalink to this headline">¶</a></h3>
+<p>Sometimes we may want to shade certain sites. To do this, we specify the shade color and transparency (alpha) for all sites we want to shade (must be the same for all letters at a site):</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;shade_color&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;brown&#39;</span><span class="p">,</span> <span class="s1">&#39;brown&#39;</span><span class="p">]</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;shade_alpha&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">]</span>
+<span class="n">data</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>site</th>
+      <th>letter</th>
+      <th>height</th>
+      <th>color</th>
+      <th>site_label</th>
+      <th>shade_color</th>
+      <th>shade_alpha</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>A</td>
+      <td>1.0</td>
+      <td>red</td>
+      <td>D1</td>
+      <td>yellow</td>
+      <td>0.15</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>C</td>
+      <td>0.7</td>
+      <td>gray</td>
+      <td>D1</td>
+      <td>yellow</td>
+      <td>0.15</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>C</td>
+      <td>0.1</td>
+      <td>gray</td>
+      <td>A2</td>
+      <td>None</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2</td>
+      <td>D</td>
+      <td>1.2</td>
+      <td>gray</td>
+      <td>A2</td>
+      <td>None</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>A</td>
+      <td>0.4</td>
+      <td>red</td>
+      <td>F5</td>
+      <td>brown</td>
+      <td>0.30</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>5</td>
+      <td>K</td>
+      <td>0.4</td>
+      <td>gray</td>
+      <td>F5</td>
+      <td>brown</td>
+      <td>0.30</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Now use <code class="docutils literal notranslate"><span class="pre">shade_color_col</span></code> and <code class="docutils literal notranslate"><span class="pre">shade_alpha_col</span></code> to draw the logo with the shaded sites:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">dmslogo</span><span class="o">.</span><span class="n">draw_logo</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+                            <span class="n">x_col</span><span class="o">=</span><span class="s1">&#39;site&#39;</span><span class="p">,</span>
+                            <span class="n">letter_col</span><span class="o">=</span><span class="s1">&#39;letter&#39;</span><span class="p">,</span>
+                            <span class="n">letter_height_col</span><span class="o">=</span><span class="s1">&#39;height&#39;</span><span class="p">,</span>
+                            <span class="n">color_col</span><span class="o">=</span><span class="s1">&#39;color&#39;</span><span class="p">,</span>
+                            <span class="n">xtick_col</span><span class="o">=</span><span class="s1">&#39;site_label&#39;</span><span class="p">,</span>
+                            <span class="n">shade_color_col</span><span class="o">=</span><span class="s1">&#39;shade_color&#39;</span><span class="p">,</span>
+                            <span class="n">shade_alpha_col</span><span class="o">=</span><span class="s1">&#39;shade_alpha&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/basic_example_25_0.png" src="_images/basic_example_25_0.png" />
+</div>
+</div>
+</div>
 <div class="section" id="Adjusting-size,-axis-labels,-axes">
 <h3>Adjusting size, axis labels, axes<a class="headerlink" href="#Adjusting-size,-axis-labels,-axes" title="Permalink to this headline">¶</a></h3>
 <p>We can do additional formatting by scaling the width (<code class="docutils literal notranslate"><span class="pre">widthscale</span></code>), the height (<code class="docutils literal notranslate"><span class="pre">heightscale</span></code>), the axis font (<code class="docutils literal notranslate"><span class="pre">axisfontscale</span></code>), the x-axis (<code class="docutils literal notranslate"><span class="pre">xlabel</span></code>) and y-axis (<code class="docutils literal notranslate"><span class="pre">ylabel</span></code>) labels, and removing the axes altogether (<code class="docutils literal notranslate"><span class="pre">hide_axis</span></code>).</p>
 <p>First, we make a plot where we adjust the size, change the y-axis label, and get rid of the x-axis label:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -763,12 +899,12 @@ Here is a rendering of the saved figure:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="_images/basic_example_23_0.png" src="_images/basic_example_23_0.png" />
+<img alt="_images/basic_example_27_0.png" src="_images/basic_example_27_0.png" />
 </div>
 </div>
 <p>Now we make a plot where we hide the axes and their labels altogether:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -787,7 +923,7 @@ Here is a rendering of the saved figure:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="_images/basic_example_25_0.png" src="_images/basic_example_25_0.png" />
+<img alt="_images/basic_example_29_0.png" src="_images/basic_example_29_0.png" />
 </div>
 </div>
 </div>
@@ -796,7 +932,7 @@ Here is a rendering of the saved figure:
 <p>So far we have made individual plots on newly generate figures created by <a class="reference external" href="https://jbloomlab.github.io/dmslogo/dmslogo.logo.html#dmslogo.logo.draw_logo">dmslogo.logo.draw_logo</a>.</p>
 <p>But we can also create a multi-axis figure, and then draw several logos onto that. The easiest way to do this is with the <a class="reference external" href="https://jbloomlab.github.io/dmslogo/dmslogo.facet.html#dmslogo.facet.facet_plot">dmslogo.facet.facet_plot</a> command described below. But we can also do it using <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> subplots as here:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -832,7 +968,7 @@ Here is a rendering of the saved figure:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="_images/basic_example_27_0.png" src="_images/basic_example_27_0.png" />
+<img alt="_images/basic_example_31_0.png" src="_images/basic_example_31_0.png" />
 </div>
 </div>
 </div>
@@ -845,7 +981,7 @@ Here is a rendering of the saved figure:
 <h3>Get data to plot<a class="headerlink" href="#Get-data-to-plot" title="Permalink to this headline">¶</a></h3>
 <p>We have already downloaded CSV files with the data from the paper’s <a class="reference external" href="https://github.com/jbloomlab/EnvsAntigenicAtlas/">GitHub repo</a> giving the immune selection (as <a class="reference external" href="https://jbloomlab.github.io/dms_tools2/fracsurvive.html">fraction surviving above average</a>) for these two antibodies We read the data into a pandas data frame:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -872,7 +1008,7 @@ Reading data for PGT145 from input_files/summary_PGT145-medianmutfracsurvive.csv
 </div>
 <p>Here are the first few lines of the data frame. For each mutation it gives the immune selection (<em>mutfracsurvive</em>):</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -881,7 +1017,7 @@ Reading data for PGT145 from input_files/summary_PGT145-medianmutfracsurvive.csv
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -958,7 +1094,7 @@ Reading data for PGT145 from input_files/summary_PGT145-medianmutfracsurvive.csv
 <p>The sites in this data frame are in the <a class="reference external" href="https://www.hiv.lanl.gov/content/sequence/HIV/REVIEWS/HXB2.html">HXB2 numbering scheme</a>, which is <strong>not</strong> the same as sequential integer numbering of the actual BG505 Env for which the immune selection was measured. So for our plotting, we also need to create a column (which we will call <code class="docutils literal notranslate"><span class="pre">isite</span></code>) that numbers the sites a sequential numbering. A file that converts between HXB2 and and BG505 numbering is part of the paper’s <a class="reference external" href="https://github.com/jbloomlab/EnvsAntigenicAtlas/">GitHub
 repo</a>; here we use a downloaded copy of that file to make the <code class="docutils literal notranslate"><span class="pre">isite</span></code> column:</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -974,7 +1110,7 @@ repo</a>; here we use a downloaded copy of that file to make the <code class="do
 </div>
 <p>Now see how this data frame also has the <code class="docutils literal notranslate"><span class="pre">isite</span></code> column which has sequential integer numbering of the sequence:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -983,7 +1119,7 @@ repo</a>; here we use a downloaded copy of that file to make the <code class="do
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1065,7 +1201,7 @@ repo</a>; here we use a downloaded copy of that file to make the <code class="do
 </div>
 <p>We add a column (<code class="docutils literal notranslate"><span class="pre">site_label</span></code>) that gives the site labeled with the wildtype identity that we can use for axis ticks. We also indicate which sites to show (column <code class="docutils literal notranslate"><span class="pre">show_site</span></code>) in our logoplot snippet (these are just the same ones in Figure 3 of the <a class="reference external" href="https://doi.org/10.1016/j.immuni.2018.12.017">Dingens et al (2019)</a> paper):</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1088,7 +1224,7 @@ repo</a>; here we use a downloaded copy of that file to make the <code class="do
 </div>
 <p>See how the data frame now has the <code class="docutils literal notranslate"><span class="pre">site_label</span></code> and <code class="docutils literal notranslate"><span class="pre">show_site</span></code> columns:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1097,7 +1233,7 @@ repo</a>; here we use a downloaded copy of that file to make the <code class="do
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1194,7 +1330,7 @@ repo</a>; here we use a downloaded copy of that file to make the <code class="do
 <h3>Draw a logo plot<a class="headerlink" href="#Draw-a-logo-plot" title="Permalink to this headline">¶</a></h3>
 <p>Now we make logo plots of the sites that we have selected to show, here just for the <em>PG9</em> antibody. Note how we query <code class="docutils literal notranslate"><span class="pre">data_hiv</span></code> for only the antibody (<em>PG9</em>) and the sites of interest (<code class="docutils literal notranslate"><span class="pre">show_site</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>):</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1211,7 +1347,7 @@ repo</a>; here we use a downloaded copy of that file to make the <code class="do
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="_images/basic_example_41_0.png" src="_images/basic_example_41_0.png" />
+<img alt="_images/basic_example_45_0.png" src="_images/basic_example_45_0.png" />
 </div>
 </div>
 </div>
@@ -1220,7 +1356,7 @@ repo</a>; here we use a downloaded copy of that file to make the <code class="do
 <p>The logo plot above shows selection at a subset of sites. But we might also want to summarize the selection across all sites (as is done in Figure 2 of <a class="reference external" href="https://doi.org/10.1016/j.immuni.2018.12.017">Dingens et al (2019)</a>).</p>
 <p>An easy way to do this is to create a summary statistic at each site. Here we compute the total <a class="reference external" href="https://jbloomlab.github.io/dms_tools2/dms_tools2.fracsurvive.html">fracsurvive</a> at each site across all mutations, and add that to our data frame:</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1237,7 +1373,7 @@ repo</a>; here we use a downloaded copy of that file to make the <code class="do
 </div>
 <p>Now the data frame has a column (<code class="docutils literal notranslate"><span class="pre">totfracsurvive</span></code>) giving the average fraction surviving at each site:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1246,7 +1382,7 @@ repo</a>; here we use a downloaded copy of that file to make the <code class="do
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1346,7 +1482,7 @@ repo</a>; here we use a downloaded copy of that file to make the <code class="do
 </div>
 <p>Now we use the <a class="reference external" href="https://jbloomlab.github.io/dmslogo/dmslogo.line.html#dmslogo.line.draw_line">dmslogo.line.draw_line</a> function to draw the line plot for antibody <em>PG9</em>. Note how we provide our new <code class="docutils literal notranslate"><span class="pre">totfracsurvive</span></code> column as <code class="docutils literal notranslate"><span class="pre">height_col</span></code>. We also provide our previously defined <code class="docutils literal notranslate"><span class="pre">show_site</span></code> column (which indicates which sites were shown in the logo plot) as the <code class="docutils literal notranslate"><span class="pre">show_col</span></code>, so that the line plot has the sites shown in the above logo plot underlined in orange:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1364,7 +1500,7 @@ repo</a>; here we use a downloaded copy of that file to make the <code class="do
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="_images/basic_example_47_0.png" src="_images/basic_example_47_0.png" />
+<img alt="_images/basic_example_51_0.png" src="_images/basic_example_51_0.png" />
 </div>
 </div>
 </div>
@@ -1373,7 +1509,7 @@ repo</a>; here we use a downloaded copy of that file to make the <code class="do
 <p>Of course, a line plot isn’t that hard to make, but the advantage of doing this using the approach above is that we can combine <a class="reference external" href="https://jbloomlab.github.io/dmslogo/dmslogo.line.html#dmslogo.line.draw_line">dmslogo.line.draw_line</a> and <a class="reference external" href="https://jbloomlab.github.io/dmslogo/dmslogo.logo.html#dmslogo.logo.draw_logo">dmslogo.logo.draw_logo</a> to create a single figure that shows the site-selection in a line plot and the selected sites as logo plots.</p>
 <p>The easiest way to do this using the <a class="reference external" href="https://jbloomlab.github.io/dmslogo/dmslogo.facet.html#dmslogo.facet.facet_plot">dmslogo.facet.facet_plot</a> command described below. But first here we do it using <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> subplots. Note how the resulting plot combines the line and logo plots, with the line plot using the orange underline to indicate which sites are zoomed in the logo plot:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1402,7 +1538,7 @@ repo</a>; here we use a downloaded copy of that file to make the <code class="do
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="_images/basic_example_49_0.png" src="_images/basic_example_49_0.png" />
+<img alt="_images/basic_example_53_0.png" src="_images/basic_example_53_0.png" />
 </div>
 </div>
 </div>
@@ -1412,7 +1548,7 @@ repo</a>; here we use a downloaded copy of that file to make the <code class="do
 <p>The easiest way to facet line and logo plots together is using <a class="reference external" href="https://jbloomlab.github.io/dmslogo/dmslogo.facet.html#dmslogo.facet.facet_plot">dmslogo.facet.facet_plot</a>.</p>
 <p>The cell below shows how this is done. You pass the data to this function, as well any columns and rows we would like to facet, the <code class="docutils literal notranslate"><span class="pre">x_col</span></code> and <code class="docutils literal notranslate"><span class="pre">show_col</span></code> arguments shared between the line and logo plots, and additional keyword arguments for <a class="reference external" href="https://jbloomlab.github.io/dmslogo/dmslogo.logo.html#dmslogo.logo.draw_logo">dmslogo.logo.draw_logo</a> and <a class="reference external" href="https://jbloomlab.github.io/dmslogo/dmslogo.line.html#dmslogo.line.draw_line">dmslogo.line.draw_line</a>:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1437,7 +1573,7 @@ repo</a>; here we use a downloaded copy of that file to make the <code class="do
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="_images/basic_example_51_0.png" src="_images/basic_example_51_0.png" />
+<img alt="_images/basic_example_55_0.png" src="_images/basic_example_55_0.png" />
 </div>
 </div>
 <p>There are various options to tweak the formatting of the faceted plot. Here we demonstrate a few of them:</p>
@@ -1447,7 +1583,7 @@ repo</a>; here we use a downloaded copy of that file to make the <code class="do
 <li><p>We use the <code class="docutils literal notranslate"><span class="pre">share_xlabel</span></code> and <code class="docutils literal notranslate"><span class="pre">share_ylabel</span></code> options to share the x- and y-labels across the line and logo plots.</p></li>
 </ul>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1477,7 +1613,47 @@ repo</a>; here we use a downloaded copy of that file to make the <code class="do
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="_images/basic_example_53_0.png" src="_images/basic_example_53_0.png" />
+<img alt="_images/basic_example_57_0.png" src="_images/basic_example_57_0.png" />
+</div>
+</div>
+<p>Finally, here is the same plot where we have shaded the N-linked glycan at 160:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">data_hiv</span><span class="p">[</span><span class="s1">&#39;shade_color&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">data_hiv</span><span class="p">[</span><span class="s1">&#39;site&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">&#39;160&#39;</span><span class="p">,</span> <span class="s1">&#39;161&#39;</span><span class="p">,</span> <span class="s1">&#39;162&#39;</span><span class="p">]),</span> <span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="n">data_hiv</span><span class="p">[</span><span class="s1">&#39;shade_alpha&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">data_hiv</span><span class="p">[</span><span class="s1">&#39;site&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">&#39;160&#39;</span><span class="p">,</span> <span class="s1">&#39;161&#39;</span><span class="p">,</span> <span class="s1">&#39;162&#39;</span><span class="p">]),</span> <span class="mf">0.15</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">dmslogo</span><span class="o">.</span><span class="n">facet_plot</span><span class="p">(</span>
+                    <span class="n">data_hiv</span><span class="p">,</span>
+                    <span class="n">gridrow_col</span><span class="o">=</span><span class="s1">&#39;antibody&#39;</span><span class="p">,</span>
+                    <span class="n">x_col</span><span class="o">=</span><span class="s1">&#39;isite&#39;</span><span class="p">,</span>
+                    <span class="n">show_col</span><span class="o">=</span><span class="s1">&#39;show_site&#39;</span><span class="p">,</span>
+                    <span class="n">draw_line_kwargs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">height_col</span><span class="o">=</span><span class="s1">&#39;totfracsurvive&#39;</span><span class="p">,</span>
+                                          <span class="n">xtick_col</span><span class="o">=</span><span class="s1">&#39;site&#39;</span><span class="p">,</span>
+                                          <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;immune selection&#39;</span><span class="p">),</span>
+                    <span class="n">draw_logo_kwargs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">letter_col</span><span class="o">=</span><span class="s1">&#39;mutation&#39;</span><span class="p">,</span>
+                                          <span class="n">letter_height_col</span><span class="o">=</span><span class="s1">&#39;mutfracsurvive&#39;</span><span class="p">,</span>
+                                          <span class="n">xtick_col</span><span class="o">=</span><span class="s1">&#39;site_label&#39;</span><span class="p">,</span>
+                                          <span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;site&#39;</span><span class="p">,</span>
+                                          <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;immune selection&#39;</span><span class="p">,</span>
+                                          <span class="n">shade_color_col</span><span class="o">=</span><span class="s1">&#39;shade_color&#39;</span><span class="p">,</span>
+                                          <span class="n">shade_alpha_col</span><span class="o">=</span><span class="s1">&#39;shade_alpha&#39;</span><span class="p">),</span>
+                    <span class="n">line_titlesuffix</span><span class="o">=</span><span class="s1">&#39;site-level selection&#39;</span><span class="p">,</span>
+                    <span class="n">logo_titlesuffix</span><span class="o">=</span><span class="s1">&#39;mutation-level selection&#39;</span><span class="p">,</span>
+                    <span class="n">share_ylim_across_rows</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="n">share_xlabel</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">share_ylabel</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/basic_example_59_0.png" src="_images/basic_example_59_0.png" />
 </div>
 </div>
 </div>
@@ -1487,7 +1663,7 @@ repo</a>; here we use a downloaded copy of that file to make the <code class="do
 <h3>Write <em>DMSLOGO</em> in Comic Sans font<a class="headerlink" href="#Write-DMSLOGO-in-Comic-Sans-font" title="Permalink to this headline">¶</a></h3>
 <p>Generate data to plot by creating the pandas DataFrame <code class="docutils literal notranslate"><span class="pre">word_data</span></code>. In this data frame, we choose large heights and bright colors for the letters in our word (<em>DMSLOGO</em>), and smaller letters and gray for other letters.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1513,7 +1689,7 @@ repo</a>; here we use a downloaded copy of that file to make the <code class="do
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1588,9 +1764,9 @@ repo</a>; here we use a downloaded copy of that file to make the <code class="do
 </table>
 </div></div>
 </div>
-<p>Now draw the logo. We use the <code class="docutils literal notranslate"><span class="pre">fontfamily</span></code> argument to set a Comic Sans font This also requires us to increase <code class="docutils literal notranslate"><span class="pre">fontaspect</span></code> since this font is wider, and increase <code class="docutils literal notranslate"><span class="pre">letterpad</span></code> as the font height sometimes sticks out beyond its baseline:</p>
+<p>Now draw the logo. We use the <code class="docutils literal notranslate"><span class="pre">fontfamily</span></code> argument to set a Comic Sans font. This also requires us to increase <code class="docutils literal notranslate"><span class="pre">fontaspect</span></code> since this font is wider, and increase <code class="docutils literal notranslate"><span class="pre">letterpad</span></code> as the font height sometimes sticks out beyond its baseline:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1613,7 +1789,7 @@ repo</a>; here we use a downloaded copy of that file to make the <code class="do
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="_images/basic_example_57_0.png" src="_images/basic_example_57_0.png" />
+<img alt="_images/basic_example_63_0.png" src="_images/basic_example_63_0.png" />
 </div>
 </div>
 </div>
