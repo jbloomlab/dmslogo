@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com).
 
+## 0.5.0
+
+### Added
+- Ability to shade stacks in `draw_logo`.
+
 ## 0.4.0
 
 ### Added
