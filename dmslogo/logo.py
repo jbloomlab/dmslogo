@@ -20,6 +20,8 @@ import matplotlib.ticker
 
 import numpy
 
+import pandas as pd
+
 import pkg_resources
 
 import dmslogo.colorschemes
@@ -228,6 +230,8 @@ def draw_logo(data,
               letter_height_col,
               xtick_col=None,
               color_col=None,
+              shade_color_col=None,
+              shade_alpha_col=None,
               xlabel=None,
               ylabel=None,
               title=None,
@@ -266,6 +270,13 @@ def draw_logo(data,
         `color_col` (`None` or str)
             Column in data with colors for each letter; set to `None`
             to define colors via `colorscheme` and `missing_color`.
+        `shade_color_col` (`None` or str)
+            Column in `data` indicating color to shade each site.
+            Must be same color for all letters at site. If a site
+            should not be shaded, set to something that evaluates
+            to `False` or `NaN`.
+        `shade_alpha_col` (`None` or str)
+            Column in `data` giving transparency of shading at each site.
         `xlabel` (`None` or str)
             Label for x-axis if not using `xtick_col` or `x_col`.
         `ylabel` (`None` or str)
@@ -365,6 +376,7 @@ def draw_logo(data,
     xticks = []
     lastx = None
     breaks = []
+    x_to_xtick = {}
     xtick = 0.5
     for x, xdata in (data
                      .sort_values([x_col, letter_height_col])
@@ -412,6 +424,7 @@ def draw_logo(data,
         xticklabels.append(str(xdata[xtick_col].values[0]))
 
         xticks.append(xtick)
+        x_to_xtick[x] = xtick
         xtick += 1
 
     assert len(xticklabels) == len(xticks)
@@ -488,6 +501,36 @@ def draw_logo(data,
     # draw line at zero
     if line_at_zero:
         ax.axhline(y=0, ls='-', color='black', lw=1, zorder=4)
+
+    # draw the shading
+    if shade_color_col is not None:
+        if shade_alpha_col is None:
+            raise ValueError('`shade_color_col` without `shade_alpha_col`')
+        if shade_color_col not in data.columns:
+            raise ValueError(f"data lacks `shade_color_col` {shade_color_col}")
+        if shade_alpha_col not in data.columns:
+            raise ValueError(f"data lacks `shade_alpha_col` {shade_alpha_col}")
+        for x, xdata in data.groupby(x_col):
+            shade_color = xdata[shade_color_col].unique()
+            if len(shade_color) != 1:
+                raise ValueError(f"not exactly one shade color for {x}")
+            else:
+                shade_color = shade_color[0]
+            shade_alpha = xdata[shade_alpha_col].unique()
+            if len(shade_alpha) != 1:
+                raise ValueError(f"not exactly one shade alpha for {x}")
+            else:
+                shade_alpha = shade_alpha[0]
+            if pd.isnull(shade_color) or not shade_color:
+                continue
+            elif not (0 <= shade_alpha <= 1):
+                raise ValueError(f"shade alpha not between 0 and 1 for {x}")
+            xtick = x_to_xtick[x]
+            ax.axvspan(xmin=xtick - 0.5, xmax=xtick + 0.5,
+                       edgecolor=None, facecolor=shade_color,
+                       alpha=shade_alpha)
+    elif shade_alpha_col is not None:
+        raise ValueError('`shade_alpha_col` without `shade_color_col`')
 
     return fig, ax
 
