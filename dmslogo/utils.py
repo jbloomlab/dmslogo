@@ -29,6 +29,10 @@ class AxLimSetter:
             If all the data are equal, it will not be possible to set
             limits using algorithm below. In this case, raise an error
             or add the indicated amounts to the data limits.
+        min_upperlim (`None` or float)
+            Ensure upper limit always at least this large.
+        max_lowerlim (`None` or float)
+            Ensure lower limit always at least this small.
 
     The axis limits may just be simple padding of the data limits, but
     the `max_from_quantile` and `min_from_quantile` arguments allow the
@@ -55,6 +59,9 @@ class AxLimSetter:
       5. The limits from above are padded by `datalim_pad` to the total
          extent of the axis on both sides.
 
+      6. The limits are adjusted if needed to satisfy `min_upperlim` and
+         `max_lowerlim`.
+
     Example that just adds simple padding to data:
 
     >>> data = [0.5, 0.6, 0.4, 0.4, 0.3, 0.5]
@@ -69,6 +76,13 @@ class AxLimSetter:
     >>> setter_max_quantile.get_lims(data)
     (-0.45, 9.45)
 
+    Demonstrate `min_upperlim`:
+
+    >>> setter_min_upperlim = AxLimSetter(max_from_quantile=(0.5, 0.05),
+    ...                                   min_upperlim=10)
+    >>> setter_min_upperlim.get_lims(data)
+    (-0.45, 10.0)
+
     """
 
     def __init__(self,
@@ -78,6 +92,8 @@ class AxLimSetter:
                  max_from_quantile=None,
                  min_from_quantile=None,
                  all_equal_data=(-0.001, 0.001),
+                 min_upperlim=None,
+                 max_lowerlim=None,
                  ):
         """See main class docstring."""
         if not isinstance(include_zero, bool):
@@ -121,6 +137,13 @@ class AxLimSetter:
         else:
             raise ValueError(f"invalid `all_equal_data`: {all_equal_data}")
 
+        for lim, val in [('min_upperlim', min_upperlim),
+                         ('max_lowerlim', max_lowerlim)]:
+            if val is None:
+                setattr(self, lim, None)
+            else:
+                setattr(self, lim, float(val))
+
     def get_lims(self, data):
         """Get 2-tuple `(ax_min, ax_max)` given list or array of data."""
         datamin = min(data)
@@ -152,6 +175,11 @@ class AxLimSetter:
         assert extent > 0
         datamin -= self._datalim_pad * extent
         datamax += self._datalim_pad * extent
+
+        if self.min_upperlim:
+            datamax = max(datamax, self.min_upperlim)
+        if self.max_lowerlim:
+            datamax = min(datamax, self.max_lowerlim)
 
         return (datamin, datamax)
 
