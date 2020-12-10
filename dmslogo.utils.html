@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>utils &#8212; dmslogo 0.5.0 documentation</title>
+    <title>utils &#8212; dmslogo 0.5.1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -39,7 +39,7 @@
 <p>Utility functions for plotting.</p>
 <dl class="py class">
 <dt id="dmslogo.utils.AxLimSetter">
-<em class="property">class </em><code class="sig-prename descclassname">dmslogo.utils.</code><code class="sig-name descname">AxLimSetter</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">datalim_pad</span><span class="o">=</span><span class="default_value">0.05</span></em>, <em class="sig-param"><span class="n">include_zero</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">max_from_quantile</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">min_from_quantile</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">all_equal_data</span><span class="o">=</span><span class="default_value">- 0.001, 0.001</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/utils.html#AxLimSetter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.utils.AxLimSetter" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dmslogo.utils.</code><code class="sig-name descname">AxLimSetter</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">datalim_pad</span><span class="o">=</span><span class="default_value">0.05</span></em>, <em class="sig-param"><span class="n">include_zero</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">max_from_quantile</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">min_from_quantile</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">all_equal_data</span><span class="o">=</span><span class="default_value">- 0.001, 0.001</span></em>, <em class="sig-param"><span class="n">min_upperlim</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">max_lowerlim</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/utils.html#AxLimSetter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.utils.AxLimSetter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Object to determine axis limits from data.</p>
 <dl class="simple">
@@ -55,6 +55,10 @@
 <dt>all_equal_data (‘raise’ or 2-tuple <cite>(minus_min, plus_max)</cite>)</dt><dd><p>If all the data are equal, it will not be possible to set
 limits using algorithm below. In this case, raise an error
 or add the indicated amounts to the data limits.</p>
+</dd>
+<dt>min_upperlim (<cite>None</cite> or float)</dt><dd><p>Ensure upper limit always at least this large.</p>
+</dd>
+<dt>max_lowerlim (<cite>None</cite> or float)</dt><dd><p>Ensure lower limit always at least this small.</p>
 </dd>
 </dl>
 </dd>
@@ -80,6 +84,8 @@ the upper axis limit is set to the data max.</p></li>
 lower axis limit is done.</p></li>
 <li><p>The limits from above are padded by <cite>datalim_pad</cite> to the total
 extent of the axis on both sides.</p></li>
+<li><p>The limits are adjusted if needed to satisfy <cite>min_upperlim</cite> and
+<cite>max_lowerlim</cite>.</p></li>
 </ol>
 </div></blockquote>
 <p>Example that just adds simple padding to data:</p>
@@ -94,6 +100,13 @@ that substantially exceeds the “noise” of the all-similar values:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">setter_max_quantile</span> <span class="o">=</span> <span class="n">AxLimSetter</span><span class="p">(</span><span class="n">max_from_quantile</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">setter_max_quantile</span><span class="o">.</span><span class="n">get_lims</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 <span class="go">(-0.45, 9.45)</span>
+</pre></div>
+</div>
+<p>Demonstrate <cite>min_upperlim</cite>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">setter_min_upperlim</span> <span class="o">=</span> <span class="n">AxLimSetter</span><span class="p">(</span><span class="n">max_from_quantile</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">),</span>
+<span class="gp">... </span>                                  <span class="n">min_upperlim</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">setter_min_upperlim</span><span class="o">.</span><span class="n">get_lims</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="go">(-0.45, 10.0)</span>
 </pre></div>
 </div>
 <dl class="py method">

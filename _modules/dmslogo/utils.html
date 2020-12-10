@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>dmslogo.utils &#8212; dmslogo 0.5.0 documentation</title>
+    <title>dmslogo.utils &#8212; dmslogo 0.5.1 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -64,6 +64,10 @@
 <span class="sd">            If all the data are equal, it will not be possible to set</span>
 <span class="sd">            limits using algorithm below. In this case, raise an error</span>
 <span class="sd">            or add the indicated amounts to the data limits.</span>
+<span class="sd">        min_upperlim (`None` or float)</span>
+<span class="sd">            Ensure upper limit always at least this large.</span>
+<span class="sd">        max_lowerlim (`None` or float)</span>
+<span class="sd">            Ensure lower limit always at least this small.</span>
 
 <span class="sd">    The axis limits may just be simple padding of the data limits, but</span>
 <span class="sd">    the `max_from_quantile` and `min_from_quantile` arguments allow the</span>
@@ -90,6 +94,9 @@
 <span class="sd">      5. The limits from above are padded by `datalim_pad` to the total</span>
 <span class="sd">         extent of the axis on both sides.</span>
 
+<span class="sd">      6. The limits are adjusted if needed to satisfy `min_upperlim` and</span>
+<span class="sd">         `max_lowerlim`.</span>
+
 <span class="sd">    Example that just adds simple padding to data:</span>
 
 <span class="sd">    &gt;&gt;&gt; data = [0.5, 0.6, 0.4, 0.4, 0.3, 0.5]</span>
@@ -104,6 +111,13 @@
 <span class="sd">    &gt;&gt;&gt; setter_max_quantile.get_lims(data)</span>
 <span class="sd">    (-0.45, 9.45)</span>
 
+<span class="sd">    Demonstrate `min_upperlim`:</span>
+
+<span class="sd">    &gt;&gt;&gt; setter_min_upperlim = AxLimSetter(max_from_quantile=(0.5, 0.05),</span>
+<span class="sd">    ...                                   min_upperlim=10)</span>
+<span class="sd">    &gt;&gt;&gt; setter_min_upperlim.get_lims(data)</span>
+<span class="sd">    (-0.45, 10.0)</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
@@ -113,6 +127,8 @@
                  <span class="n">max_from_quantile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">min_from_quantile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">all_equal_data</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">),</span>
+                 <span class="n">min_upperlim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">max_lowerlim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;See main class docstring.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">include_zero</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
@@ -156,6 +172,13 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;invalid `all_equal_data`: </span><span class="si">{</span><span class="n">all_equal_data</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
+        <span class="k">for</span> <span class="n">lim</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="p">[(</span><span class="s1">&#39;min_upperlim&#39;</span><span class="p">,</span> <span class="n">min_upperlim</span><span class="p">),</span>
+                         <span class="p">(</span><span class="s1">&#39;max_lowerlim&#39;</span><span class="p">,</span> <span class="n">max_lowerlim</span><span class="p">)]:</span>
+            <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lim</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lim</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
+
 <div class="viewcode-block" id="AxLimSetter.get_lims"><a class="viewcode-back" href="../../dmslogo.utils.html#dmslogo.utils.AxLimSetter.get_lims">[docs]</a>    <span class="k">def</span> <span class="nf">get_lims</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get 2-tuple `(ax_min, ax_max)` given list or array of data.&quot;&quot;&quot;</span>
         <span class="n">datamin</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
@@ -187,6 +210,11 @@
         <span class="k">assert</span> <span class="n">extent</span> <span class="o">&gt;</span> <span class="mi">0</span>
         <span class="n">datamin</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datalim_pad</span> <span class="o">*</span> <span class="n">extent</span>
         <span class="n">datamax</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datalim_pad</span> <span class="o">*</span> <span class="n">extent</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_upperlim</span><span class="p">:</span>
+            <span class="n">datamax</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">datamax</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_upperlim</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_lowerlim</span><span class="p">:</span>
+            <span class="n">datamax</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">datamax</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_lowerlim</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="p">(</span><span class="n">datamin</span><span class="p">,</span> <span class="n">datamax</span><span class="p">)</span></div></div>
 
