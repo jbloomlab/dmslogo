@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com).
 
+## 0.5.1
+
+### Added
+- Added `min_upperlim` and `max_lowerlim` to `AxLimSetter`.
+
 ## 0.5.0
 
 ### Added
