@@ -1,4 +1,4 @@
 [flake8]
-exclude = build, dist
+exclude = build, dist, _build
 ignore = E121,E123,E126,E226,E24,E704,W503,W504,D205,D400,RST303,RST304
 application-import-names = dmslogo

@@ -3,6 +3,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com).
 
+## 0.6.0
+
+### Added
+- Added `colorschemes.ValueToColorMap`.
+- Ability to add overlay color bars to `draw_logo`.
+
 ## 0.5.1
 
 ### Added

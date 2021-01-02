@@ -52,6 +52,7 @@ setup(
         'numpy>=1.13',
         'pandas>=0.23',
         'matplotlib>=3.0.0',
+        'palettable',
         'setuptools',
         ],
     platforms='Linux and Mac OS X.',
