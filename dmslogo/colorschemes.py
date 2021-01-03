@@ -98,7 +98,7 @@ class ValueToColorMap:
        :context:
 
         >>> import pandas as pd
-        >>> from pdb_prot_align.colorschemes import ValueToColorMap
+        >>> from dmslogo.colorschemes import ValueToColorMap
         >>>
         >>> df = pd.DataFrame({'value': [0, 1, 2, 1, 3, 0]})
         >>> map1 = ValueToColorMap(df['value'].min(),
