@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com).
 
 ### Added
 - Added `colorschemes.ValueToColorMap`.
-- Ability to add overlay color bars to `draw_logo`.
+- Ability to add overlay color bars to `draw_logo` (`heatmap_overlays` arg).
 
 ## 0.5.1
 
