@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>colorschemes &#8212; dmslogo 0.6.0 documentation</title>
+    <title>colorschemes &#8212; dmslogo 0.6.1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -136,9 +136,18 @@ by providing <cite>palettable.cmocean.sequential.Dense_20.mpl_colormap</cite>.</
 <div class="figure align-default">
 <img alt="_images/dmslogo-colorschemes-4.png" src="_images/dmslogo-colorschemes-4.png" />
 </div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fig2</span><span class="p">,</span> <span class="n">ax2</span> <span class="o">=</span> <span class="n">map2</span><span class="o">.</span><span class="n">scale_bar</span><span class="p">(</span><span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;vertical&#39;</span><span class="p">,</span>
+<span class="gp">... </span>                         <span class="n">label</span><span class="o">=</span><span class="s1">&#39;cividis scale (alpha 0.3)&#39;</span><span class="p">,</span>
+<span class="gp">... </span>                         <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href=".//dmslogo-colorschemes-5.png">png</a>, <a class="reference external" href=".//dmslogo-colorschemes-5.hires.png">hires.png</a>, <a class="reference external" href=".//dmslogo-colorschemes-5.pdf">pdf</a>)</p>
+<div class="figure align-default">
+<img alt="_images/dmslogo-colorschemes-5.png" src="_images/dmslogo-colorschemes-5.png" />
+</div>
 <dl class="py method">
 <dt id="dmslogo.colorschemes.ValueToColorMap.scale_bar">
-<code class="sig-name descname">scale_bar</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">orientation</span><span class="o">=</span><span class="default_value">'vertical'</span></em>, <em class="sig-param"><span class="n">ax</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">label</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">axisfontscale</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">low_high_ticks_only</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/colorschemes.html#ValueToColorMap.scale_bar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.colorschemes.ValueToColorMap.scale_bar" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">scale_bar</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">orientation</span><span class="o">=</span><span class="default_value">'vertical'</span></em>, <em class="sig-param"><span class="n">ax</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">label</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">axisfontscale</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">low_high_ticks_only</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">alpha</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/colorschemes.html#ValueToColorMap.scale_bar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.colorschemes.ValueToColorMap.scale_bar" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draw a scale bar for the value-to-color map.</p>
 <dl class="simple">
 <dt>Args:</dt><dd><dl class="simple">
@@ -152,6 +161,8 @@ new axes.</p>
 <dt><cite>axisfontscale</cite> (float)</dt><dd><p>Scale font size by this much.</p>
 </dd>
 <dt><cite>low_high_ticks_only</cite> (bool)</dt><dd><p>Rather than showing numerical ticks, indicate low and high.</p>
+</dd>
+<dt><cite>alpha</cite> (float)</dt><dd><p>Transparency of scale bar colors.</p>
 </dd>
 </dl>
 </dd>
