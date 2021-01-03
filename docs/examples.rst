@@ -20,6 +20,7 @@ Below are examples that illustrate usage of this functionality and other aspects
    :maxdepth: 1
 
    basic_example
+   overlays
    negative_values
    set_ylims
 

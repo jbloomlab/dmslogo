@@ -49,9 +49,10 @@ setup(
     long_description=readme,
     license='GPLv3',
     install_requires=[
-        'numpy>=1.13',
+        'numpy>=1.17',
         'pandas>=0.23',
         'matplotlib>=3.0.0',
+        'palettable',
         'setuptools',
         ],
     platforms='Linux and Mac OS X.',

@@ -232,6 +232,7 @@ def draw_logo(data,
               color_col=None,
               shade_color_col=None,
               shade_alpha_col=None,
+              heatmap_overlays=None,
               xlabel=None,
               ylabel=None,
               title=None,
@@ -240,6 +241,7 @@ def draw_logo(data,
               addbreaks=True,
               widthscale=1,
               heightscale=1,
+              heatmap_overlay_height=0.15,
               axisfontscale=1,
               hide_axis=False,
               fontfamily=_DEFAULT_FONT,
@@ -277,6 +279,8 @@ def draw_logo(data,
             to `False` or `NaN`.
         `shade_alpha_col` (`None` or str)
             Column in `data` giving transparency of shading at each site.
+        `heatmap_overlays` (`None` or list)
+            List of columns in `data` giving colors for each overlay.
         `xlabel` (`None` or str)
             Label for x-axis if not using `xtick_col` or `x_col`.
         `ylabel` (`None` or str)
@@ -296,22 +300,25 @@ def draw_logo(data,
             Scale width by this much.
         `heightscale` (float)
             Scale height by this much.
+        `heatmap_overlay_height` (float)
+            Height of heatmap overlays relative to logo.
         `axisfontscale` (float)
             Scale size of font for axis ticks and labels by this much.
         `hide_axis` (bool)
             Do we hide the axis and tick labels?
         `fontfamily` (str)
-            Font to use.
+            Font to use (for logo letters).
         `fontaspect` (float)
-            Aspect ratio of font (height to width). If letters are
+            Aspect ratio of logo letter font (height to width). If letters are
             too crowded, increase this.
         `letterpad` (float)
             Add this much fixed vertical padding between letters
             as fraction of total stack height.
         `letterheightscale` (float)
             Scale height of all letters by this much.
-        `ax` (`None` or matplotlib axes.Axes object)
-            Use to plot on an existing axis.
+        `ax` (`None` or matplotlib axes.Axes object or list of Axes)
+            Use to plot on an existing axis. If using `heatmap_overlays`
+            then must be list of axes of correct length.
         `ylim_setter` (`None` or :class:`dmslogo.utils.AxLimSetter`)
             Object used to set y-limits. If `None`, a
             :class:`dmslogo.utils.AxLimSetter` is created using
@@ -332,7 +339,9 @@ def draw_logo(data,
             never draw line.
 
     Returns:
-        The 2-tuple `(fig, ax)` giving the figure and axis.
+        The 2-tuple `(fig, ax)` giving the figure and axis with the logo plots.
+        If using `heatmap_overlays`, then `ax` will be an array of all axes
+        (overlays and logo axes).
 
     """
     # set default values of arguments that can be None
@@ -441,20 +450,92 @@ def draw_logo(data,
     else:
         raise ValueError(f"invalid `draw_line_at_zero` {draw_line_at_zero}")
 
+    # do we have overlays?
+    if heatmap_overlays:
+        noverlays = len(heatmap_overlays)
+        for overlay in heatmap_overlays:
+            if overlay not in data.columns:
+                raise ValueError(f"`data` lacks `heatmap_overlay` {overlay}")
+            else:
+                overlay_data = (data
+                                [[x_col] + list(heatmap_overlays)]
+                                .drop_duplicates()
+                                )
+                if not all(overlay_data.values == (overlay_data
+                                                   .groupby(x_col,
+                                                            as_index=False)
+                                                   .first()
+                                                   )
+                           ):
+                    raise ValueError('Overlay not unique per site:\n' +
+                                     overlay_data)
+    else:
+        heatmap_overlays = []
+        noverlays = 0
+
     # setup axis for plotting
     if not ax:
-        fig, ax = plt.subplots()
+        fig, axes = plt.subplots(
+                nrows=1 + noverlays,
+                ncols=1,
+                sharex=True,
+                sharey=False,
+                squeeze=False,
+                gridspec_kw={'height_ratios':
+                             [heatmap_overlay_height] * noverlays + [1],
+                             }
+                )
+        axes = axes.ravel()
+        assert len(axes) == 1 + noverlays, axes
         fig.set_size_inches(
                 (widthscale * 0.35 * (len(height_matrix) +
                                       int(not hide_axis)),
                  heightscale * (2 + 0.5 * int(not hide_axis) +
-                                0.5 * int(bool(title)))
+                                2 * noverlays * heatmap_overlay_height +
+                                0.5 * int(bool(title))
+                                )
                  ))
+        ax = axes[-1]
     else:
+        if noverlays:
+            if len(ax) != noverlays + 1:
+                raise ValueError(f"`ax` not axes for {noverlays} overlays")
+                axes = ax
+                ax = axes[0]
+        else:
+            if not isinstance(ax, plt.Axes):
+                raise TypeError(f"`ax` is not an Axis: {ax}")
+            axes = [ax]
         fig = ax.get_figure()
 
+    # draw overlays
+    for overlay, overlay_ax in zip(heatmap_overlays, axes):
+        overlay_ax.set_yticks([0.5])
+        overlay_ax.set_yticklabels([overlay])
+        overlay_ax.tick_params('y', labelsize=14 * axisfontscale, length=0)
+        dmslogo.utils.despine(
+                ax=overlay_ax,
+                top=True,
+                right=True,
+                left=True,
+                bottom=True,
+                )
+        overlay_ax.get_xaxis().set_visible(False)
+        for x, color in overlay_data.set_index(x_col)[overlay].items():
+            xtick = x_to_xtick[x]
+            overlay_ax.add_patch(
+                    plt.Rectangle(xy=(xtick - 0.5, 0),
+                                  width=1,
+                                  height=1,
+                                  facecolor=color,
+                                  edgecolor='black',
+                                  linewidth=1,
+                                  clip_on=False,
+                                  )
+                    )
+
     if title:
-        ax.set_title(title, fontsize=17 * axisfontscale)
+        fig.suptitle(title, fontsize=17 * axisfontscale)
 
     xpad = 0.2
     ax.set_xlim(-xpad, len(height_matrix) + xpad)
@@ -532,7 +613,10 @@ def draw_logo(data,
     elif shade_alpha_col is not None:
         raise ValueError('`shade_alpha_col` without `shade_color_col`')
 
-    return fig, ax
+    if len(axes) == 1:
+        return fig, ax
+    else:
+        return fig, axes
 
 
 if __name__ == '__main__':
