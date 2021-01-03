@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>colorschemes &#8212; dmslogo 0.5.1 documentation</title>
+    <title>colorschemes &#8212; dmslogo 0.6.0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -61,6 +61,125 @@
 <code class="sig-prename descclassname">dmslogo.colorschemes.</code><code class="sig-name descname">CBPALETTE</code><em class="property"> = ['#999999', '#E69F00', '#56B4E9', '#009E73', '#F0E442', '#0072B2', '#D55E00', '#CC79A7']</em><a class="headerlink" href="#dmslogo.colorschemes.CBPALETTE" title="Permalink to this definition">¶</a></dt>
 <dd><p>color-blind safe palette with gray, from
 <a class="reference external" href="http://bconnelly.net/2013/10/creating-colorblind-friendly-figures">http://bconnelly.net/2013/10/creating-colorblind-friendly-figures</a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="dmslogo.colorschemes.ValueToColorMap">
+<em class="property">class </em><code class="sig-prename descclassname">dmslogo.colorschemes.</code><code class="sig-name descname">ValueToColorMap</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">minvalue</span></em>, <em class="sig-param"><span class="n">maxvalue</span></em>, <em class="sig-param"><span class="n">cmap</span><span class="o">=</span><span class="default_value">'viridis'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/colorschemes.html#ValueToColorMap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.colorschemes.ValueToColorMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Map numerical values to color gradient.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt><cite>minvalue</cite> (float)</dt><dd><p>Color map starts at this value.</p>
+</dd>
+<dt><cite>maxvalue</cite> (float)</dt><dd><p>Color map ends at this value.</p>
+</dd>
+<dt><cite>cmap</cite> (str or matplotlib.colors.Colormap)</dt><dd><p>Name of <a class="reference external" href="https://matplotlib.org/tutorials/colors/colormaps.html">matplotlib colormap</a>, or an actual <cite>Colormap</cite> object. You
+can also use the wider set of color maps from <a class="reference external" href="https://jiffyclub.github.io/palettable/">palettable</a>, such as
+by providing <cite>palettable.cmocean.sequential.Dense_20.mpl_colormap</cite>.</p>
+</dd>
+</dl>
+</dd>
+<dt>Attributes:</dt><dd><dl class="simple">
+<dt><cite>cmap</cite> (matplotlib.colors.Colormap)</dt><dd><p>Color map.</p>
+</dd>
+<dt><cite>minvalue</cite> (float)</dt><dd><p>Color map starts at this value.</p>
+</dd>
+<dt><cite>maxvalue</cite> (float)</dt><dd><p>Color map ends at this value.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>Make a data frame with some values, and two color maps (one with default
+‘viridis’ and another with ‘cividis’) covering value range in data frame:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dmslogo.colorschemes</span> <span class="kn">import</span> <span class="n">ValueToColorMap</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">map1</span> <span class="o">=</span> <span class="n">ValueToColorMap</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span>
+<span class="gp">... </span>                       <span class="n">df</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">map2</span> <span class="o">=</span> <span class="n">ValueToColorMap</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span>
+<span class="gp">... </span>                       <span class="n">df</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span>
+<span class="gp">... </span>                       <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;cividis&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Map values to colors using <a class="reference internal" href="#dmslogo.colorschemes.ValueToColorMap.val_to_color" title="dmslogo.colorschemes.ValueToColorMap.val_to_color"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ValueToColorMap.val_to_color()</span></code></a>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span>
+<span class="gp">... </span>      <span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">map1</span><span class="o">.</span><span class="n">val_to_color</span><span class="p">),</span>
+<span class="gp">... </span>              <span class="n">color2</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">map2</span><span class="o">.</span><span class="n">val_to_color</span><span class="p">),</span>
+<span class="gp">... </span>              <span class="p">)</span>
+<span class="gp">... </span>      <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span>
+<span class="go">   value    color   color2</span>
+<span class="go">0      0  #440154  #00224d</span>
+<span class="go">1      1  #30678d  #575d6d</span>
+<span class="go">2      2  #35b778  #a59b73</span>
+<span class="go">3      1  #30678d  #575d6d</span>
+<span class="go">4      3  #fde724  #fde737</span>
+<span class="go">5      0  #440154  #00224d</span>
+</pre></div>
+</div>
+<p>Draw scale bars:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fig1</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">map1</span><span class="o">.</span><span class="n">scale_bar</span><span class="p">(</span><span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;horizontal&#39;</span><span class="p">,</span>
+<span class="gp">... </span>                         <span class="n">label</span><span class="o">=</span><span class="s1">&#39;viridis scale&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href=".//dmslogo-colorschemes-3.png">png</a>, <a class="reference external" href=".//dmslogo-colorschemes-3.hires.png">hires.png</a>, <a class="reference external" href=".//dmslogo-colorschemes-3.pdf">pdf</a>)</p>
+<div class="figure align-default">
+<img alt="_images/dmslogo-colorschemes-3.png" src="_images/dmslogo-colorschemes-3.png" />
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fig2</span><span class="p">,</span> <span class="n">ax2</span> <span class="o">=</span> <span class="n">map2</span><span class="o">.</span><span class="n">scale_bar</span><span class="p">(</span><span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;vertical&#39;</span><span class="p">,</span>
+<span class="gp">... </span>                         <span class="n">label</span><span class="o">=</span><span class="s1">&#39;cividis scale&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href=".//dmslogo-colorschemes-4.png">png</a>, <a class="reference external" href=".//dmslogo-colorschemes-4.hires.png">hires.png</a>, <a class="reference external" href=".//dmslogo-colorschemes-4.pdf">pdf</a>)</p>
+<div class="figure align-default">
+<img alt="_images/dmslogo-colorschemes-4.png" src="_images/dmslogo-colorschemes-4.png" />
+</div>
+<dl class="py method">
+<dt id="dmslogo.colorschemes.ValueToColorMap.scale_bar">
+<code class="sig-name descname">scale_bar</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">orientation</span><span class="o">=</span><span class="default_value">'vertical'</span></em>, <em class="sig-param"><span class="n">ax</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">label</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">axisfontscale</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">low_high_ticks_only</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/colorschemes.html#ValueToColorMap.scale_bar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.colorschemes.ValueToColorMap.scale_bar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draw a scale bar for the value-to-color map.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt><cite>orientation</cite> ({‘horizontal’, ‘vertical’})</dt><dd><p>Direction that scale bar drawn is drawn.</p>
+</dd>
+<dt><cite>ax</cite> (None or matplotlib.axes.Axes)</dt><dd><p>If specified, draw scale bar on this axis. Otherwise create
+new axes.</p>
+</dd>
+<dt><cite>label</cite> (None or str)</dt><dd><p>Label for scale bar.</p>
+</dd>
+<dt><cite>axisfontscale</cite> (float)</dt><dd><p>Scale font size by this much.</p>
+</dd>
+<dt><cite>low_high_ticks_only</cite> (bool)</dt><dd><p>Rather than showing numerical ticks, indicate low and high.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p><cite>(matplotlib.figure.Figure, matplotlib.axes.Axes)</cite>,
+figure and axis on which the color bar is drawn.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dmslogo.colorschemes.ValueToColorMap.val_to_color">
+<code class="sig-name descname">val_to_color</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">values</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">return_color_as</span><span class="o">=</span><span class="default_value">'rgb_hex_code'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/colorschemes.html#ValueToColorMap.val_to_color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.colorschemes.ValueToColorMap.val_to_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Map numerical values between <cite>minvalue</cite> and <cite>maxvalue</cite> to colors.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt><cite>values</cite> (number or array-like of numbers)</dt><dd><p>Values to map to colors</p>
+</dd>
+<dt><cite>return_color_as</cite> ({‘rgb_hex_code’, ‘rgb_triple’})</dt><dd><p>Return color as RGB hex code (e.g., <cite>‘#FF0000’</cite>) or triple of
+numbers (e.g., <cite>[255, 0, 0]</cite>).</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>Either str or length-3 arrays depending on <cite>return_color_as</cite>.
+If <cite>values</cite> is single value, return single value; otherwise array.</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -152,7 +271,7 @@
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2019--2020, Bloom lab.
+      &copy;2019--2021, Bloom lab.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>

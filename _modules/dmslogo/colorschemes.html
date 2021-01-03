@@ -1,0 +1,451 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>dmslogo.colorschemes &#8212; dmslogo 0.6.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for dmslogo.colorschemes</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">============</span>
+<span class="sd">colorschemes</span>
+<span class="sd">============</span>
+
+<span class="sd">Color schemes.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="kn">import</span> <span class="nn">matplotlib.colors</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+
+<span class="c1">#: color-blind safe palette with gray, from</span>
+<span class="c1">#: http://bconnelly.net/2013/10/creating-colorblind-friendly-figures</span>
+<span class="n">CBPALETTE</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;#999999&#39;</span><span class="p">,</span> <span class="s1">&#39;#E69F00&#39;</span><span class="p">,</span> <span class="s1">&#39;#56B4E9&#39;</span><span class="p">,</span> <span class="s1">&#39;#009E73&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;#F0E442&#39;</span><span class="p">,</span> <span class="s1">&#39;#0072B2&#39;</span><span class="p">,</span> <span class="s1">&#39;#D55E00&#39;</span><span class="p">,</span> <span class="s1">&#39;#CC79A7&#39;</span><span class="p">]</span>
+
+<span class="c1">#:  color-blind safe palette with black, from</span>
+<span class="c1">#: http://bconnelly.net/2013/10/creating-colorblind-friendly-figures</span>
+<span class="n">CBBPALETTE</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;#000000&#39;</span><span class="p">,</span> <span class="s1">&#39;#E69F00&#39;</span><span class="p">,</span> <span class="s1">&#39;#56B4E9&#39;</span><span class="p">,</span> <span class="s1">&#39;#009E73&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;#F0E442&#39;</span><span class="p">,</span> <span class="s1">&#39;#0072B2&#39;</span><span class="p">,</span> <span class="s1">&#39;#D55E00&#39;</span><span class="p">,</span> <span class="s1">&#39;#CC79A7&#39;</span><span class="p">]</span>
+
+<span class="c1">#: color amino acids by functional group</span>
+<span class="n">AA_FUNCTIONAL_GROUP</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;G&#39;</span><span class="p">:</span> <span class="s1">&#39;#f76ab4&#39;</span><span class="p">,</span>
+                       <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="s1">&#39;#f76ab4&#39;</span><span class="p">,</span>
+                       <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="s1">&#39;#ff7f00&#39;</span><span class="p">,</span>
+                       <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="s1">&#39;#ff7f00&#39;</span><span class="p">,</span>
+                       <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="s1">&#39;#ff7f00&#39;</span><span class="p">,</span>
+                       <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="s1">&#39;#12ab0d&#39;</span><span class="p">,</span>
+                       <span class="s1">&#39;L&#39;</span><span class="p">:</span> <span class="s1">&#39;#12ab0d&#39;</span><span class="p">,</span>
+                       <span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="s1">&#39;#12ab0d&#39;</span><span class="p">,</span>
+                       <span class="s1">&#39;M&#39;</span><span class="p">:</span> <span class="s1">&#39;#12ab0d&#39;</span><span class="p">,</span>
+                       <span class="s1">&#39;P&#39;</span><span class="p">:</span> <span class="s1">&#39;#12ab0d&#39;</span><span class="p">,</span>
+                       <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="s1">&#39;#84380b&#39;</span><span class="p">,</span>
+                       <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="s1">&#39;#84380b&#39;</span><span class="p">,</span>
+                       <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="s1">&#39;#84380b&#39;</span><span class="p">,</span>
+                       <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="s1">&#39;#e41a1c&#39;</span><span class="p">,</span>
+                       <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="s1">&#39;#e41a1c&#39;</span><span class="p">,</span>
+                       <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="s1">&#39;#3c58e5&#39;</span><span class="p">,</span>
+                       <span class="s1">&#39;K&#39;</span><span class="p">:</span> <span class="s1">&#39;#3c58e5&#39;</span><span class="p">,</span>
+                       <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="s1">&#39;#3c58e5&#39;</span><span class="p">,</span>
+                       <span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="s1">&#39;#972aa8&#39;</span><span class="p">,</span>
+                       <span class="s1">&#39;Q&#39;</span><span class="p">:</span> <span class="s1">&#39;#972aa8&#39;</span>
+                       <span class="p">}</span>
+
+<span class="c1">#: color amino acids by charge</span>
+<span class="n">AA_CHARGE</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="s1">&#39;#000000&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="s1">&#39;#FF0000&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="s1">&#39;#000000&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="s1">&#39;#0000FF&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="s1">&#39;#000000&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;Q&#39;</span><span class="p">:</span> <span class="s1">&#39;#000000&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="s1">&#39;#0000FF&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;G&#39;</span><span class="p">:</span> <span class="s1">&#39;#000000&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="s1">&#39;#FF0000&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="s1">&#39;#000000&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;L&#39;</span><span class="p">:</span> <span class="s1">&#39;#000000&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;K&#39;</span><span class="p">:</span> <span class="s1">&#39;#FF0000&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;M&#39;</span><span class="p">:</span> <span class="s1">&#39;#000000&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="s1">&#39;#000000&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;P&#39;</span><span class="p">:</span> <span class="s1">&#39;#000000&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="s1">&#39;#000000&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="s1">&#39;#000000&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="s1">&#39;#000000&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="s1">&#39;#000000&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="s1">&#39;#000000&#39;</span>
+             <span class="p">}</span>
+
+
+<div class="viewcode-block" id="ValueToColorMap"><a class="viewcode-back" href="../../dmslogo.colorschemes.html#dmslogo.colorschemes.ValueToColorMap">[docs]</a><span class="k">class</span> <span class="nc">ValueToColorMap</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Map numerical values to color gradient.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        `minvalue` (float)</span>
+<span class="sd">            Color map starts at this value.</span>
+<span class="sd">        `maxvalue` (float)</span>
+<span class="sd">            Color map ends at this value.</span>
+<span class="sd">        `cmap` (str or matplotlib.colors.Colormap)</span>
+<span class="sd">            Name of `matplotlib colormap`_, or an actual `Colormap` object. You</span>
+<span class="sd">            can also use the wider set of color maps from palettable_, such as</span>
+<span class="sd">            by providing `palettable.cmocean.sequential.Dense_20.mpl_colormap`.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        `cmap` (matplotlib.colors.Colormap)</span>
+<span class="sd">            Color map.</span>
+<span class="sd">        `minvalue` (float)</span>
+<span class="sd">            Color map starts at this value.</span>
+<span class="sd">        `maxvalue` (float)</span>
+<span class="sd">            Color map ends at this value.</span>
+
+<span class="sd">    Make a data frame with some values, and two color maps (one with default</span>
+<span class="sd">    &#39;viridis&#39; and another with &#39;cividis&#39;) covering value range in data frame:</span>
+
+<span class="sd">    .. plot::</span>
+<span class="sd">       :context:</span>
+
+<span class="sd">        &gt;&gt;&gt; import pandas as pd</span>
+<span class="sd">        &gt;&gt;&gt; from dmslogo.colorschemes import ValueToColorMap</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; df = pd.DataFrame({&#39;value&#39;: [0, 1, 2, 1, 3, 0]})</span>
+<span class="sd">        &gt;&gt;&gt; map1 = ValueToColorMap(df[&#39;value&#39;].min(),</span>
+<span class="sd">        ...                        df[&#39;value&#39;].max())</span>
+<span class="sd">        &gt;&gt;&gt; map2 = ValueToColorMap(df[&#39;value&#39;].min(),</span>
+<span class="sd">        ...                        df[&#39;value&#39;].max(),</span>
+<span class="sd">        ...                        cmap=&#39;cividis&#39;)</span>
+
+<span class="sd">    Map values to colors using :meth:`ValueToColorMap.val_to_color`:</span>
+
+<span class="sd">    .. plot::</span>
+<span class="sd">       :context:</span>
+
+<span class="sd">        &gt;&gt;&gt; df = (df</span>
+<span class="sd">        ...       .assign(color=lambda x: x[&#39;value&#39;].map(map1.val_to_color),</span>
+<span class="sd">        ...               color2=lambda x: x[&#39;value&#39;].map(map2.val_to_color),</span>
+<span class="sd">        ...               )</span>
+<span class="sd">        ...       )</span>
+<span class="sd">        &gt;&gt;&gt; df</span>
+<span class="sd">           value    color   color2</span>
+<span class="sd">        0      0  #440154  #00224d</span>
+<span class="sd">        1      1  #30678d  #575d6d</span>
+<span class="sd">        2      2  #35b778  #a59b73</span>
+<span class="sd">        3      1  #30678d  #575d6d</span>
+<span class="sd">        4      3  #fde724  #fde737</span>
+<span class="sd">        5      0  #440154  #00224d</span>
+
+<span class="sd">    Draw scale bars:</span>
+
+<span class="sd">    .. plot::</span>
+<span class="sd">       :context: close-figs</span>
+
+<span class="sd">       &gt;&gt;&gt; fig1, ax1 = map1.scale_bar(orientation=&#39;horizontal&#39;,</span>
+<span class="sd">       ...                          label=&#39;viridis scale&#39;)</span>
+
+<span class="sd">    .. plot::</span>
+<span class="sd">       :context: close-figs</span>
+
+<span class="sd">       &gt;&gt;&gt; fig2, ax2 = map2.scale_bar(orientation=&#39;vertical&#39;,</span>
+<span class="sd">       ...                          label=&#39;cividis scale&#39;)</span>
+
+<span class="sd">    .. _matplotlib colormap:</span>
+<span class="sd">        https://matplotlib.org/tutorials/colors/colormaps.html</span>
+<span class="sd">    .. _palettable: https://jiffyclub.github.io/palettable/</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">minvalue</span><span class="p">,</span>
+                 <span class="n">maxvalue</span><span class="p">,</span>
+                 <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">,</span>
+                 <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;See main class docstring.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cmap</span><span class="p">,</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">Colormap</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cmap</span> <span class="o">=</span> <span class="n">cmap</span>
+        <span class="k">elif</span> <span class="n">cmap</span> <span class="ow">in</span> <span class="n">plt</span><span class="o">.</span><span class="n">colormaps</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cmap</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="n">cmap</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;`cmap` not `Colormap` or name of one: </span><span class="si">{</span><span class="n">cmap</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">minvalue</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">minvalue</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maxvalue</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">maxvalue</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxvalue</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">minvalue</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;`maxvalue` must exceed `minvalue`&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ValueToColorMap.val_to_color"><a class="viewcode-back" href="../../dmslogo.colorschemes.html#dmslogo.colorschemes.ValueToColorMap.val_to_color">[docs]</a>    <span class="k">def</span> <span class="nf">val_to_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">values</span><span class="p">,</span>
+                     <span class="o">*</span><span class="p">,</span>
+                     <span class="n">return_color_as</span><span class="o">=</span><span class="s1">&#39;rgb_hex_code&#39;</span><span class="p">,</span>
+                     <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Map numerical values between `minvalue` and `maxvalue` to colors.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            `values` (number or array-like of numbers)</span>
+<span class="sd">                Values to map to colors</span>
+<span class="sd">            `return_color_as` ({&#39;rgb_hex_code&#39;, &#39;rgb_triple&#39;})</span>
+<span class="sd">                Return color as RGB hex code (e.g., `&#39;#FF0000&#39;`) or triple of</span>
+<span class="sd">                numbers (e.g., `[255, 0, 0]`).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Either str or length-3 arrays depending on `return_color_as`.</span>
+<span class="sd">            If `values` is single value, return single value; otherwise array.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+            <span class="n">single_value</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">values</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;float&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">single_value</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;float&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">values</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">minvalue</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span><span class="n">values</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxvalue</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;`values` not between `minvalue` and `maxvalue`&#39;</span><span class="p">)</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="p">(</span><span class="n">values</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">minvalue</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maxvalue</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">minvalue</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="n">values</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="n">values</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">colors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmap</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="nb">bytes</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">colors</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">),</span> <span class="mi">4</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;unexpected shape for `colors`, &#39;</span>
+                             <span class="s1">&#39;is `values` multi-dimensional?&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">return_color_as</span> <span class="o">==</span> <span class="s1">&#39;rgb_triple&#39;</span><span class="p">:</span>
+            <span class="n">colors</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[:,</span> <span class="p">:</span> <span class="mi">3</span><span class="p">]</span>
+            <span class="k">assert</span> <span class="n">colors</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">),</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">return_color_as</span> <span class="o">==</span> <span class="s1">&#39;rgb_hex_code&#39;</span><span class="p">:</span>
+            <span class="n">color_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">_a</span> <span class="ow">in</span> <span class="n">colors</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">256</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span><span class="p">])</span>
+                <span class="n">color_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;#</span><span class="si">{</span><span class="n">r</span><span class="si">:</span><span class="s2">02x</span><span class="si">}{</span><span class="n">g</span><span class="si">:</span><span class="s2">02x</span><span class="si">}{</span><span class="n">b</span><span class="si">:</span><span class="s2">02x</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">colors</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">color_list</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;invalid `return_color_as` </span><span class="si">{</span><span class="n">return_color_as</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">single_value</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">colors</span></div>
+
+<div class="viewcode-block" id="ValueToColorMap.scale_bar"><a class="viewcode-back" href="../../dmslogo.colorschemes.html#dmslogo.colorschemes.ValueToColorMap.scale_bar">[docs]</a>    <span class="k">def</span> <span class="nf">scale_bar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                  <span class="o">*</span><span class="p">,</span>
+                  <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;vertical&#39;</span><span class="p">,</span>
+                  <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                  <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                  <span class="n">axisfontscale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                  <span class="n">low_high_ticks_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                  <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Draw a scale bar for the value-to-color map.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            `orientation` ({&#39;horizontal&#39;, &#39;vertical&#39;})</span>
+<span class="sd">                Direction that scale bar drawn is drawn.</span>
+<span class="sd">            `ax` (None or matplotlib.axes.Axes)</span>
+<span class="sd">                If specified, draw scale bar on this axis. Otherwise create</span>
+<span class="sd">                new axes.</span>
+<span class="sd">            `label` (None or str)</span>
+<span class="sd">                Label for scale bar.</span>
+<span class="sd">            `axisfontscale` (float)</span>
+<span class="sd">                Scale font size by this much.</span>
+<span class="sd">            `low_high_ticks_only` (bool)</span>
+<span class="sd">                Rather than showing numerical ticks, indicate low and high.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            `(matplotlib.figure.Figure, matplotlib.axes.Axes)`,</span>
+<span class="sd">            figure and axis on which the color bar is drawn.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">colors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_to_color</span><span class="p">(</span>
+                    <span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minvalue</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxvalue</span><span class="p">,</span> <span class="mi">256</span><span class="p">),</span>
+                    <span class="n">return_color_as</span><span class="o">=</span><span class="s1">&#39;rgb_triple&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">orientation</span> <span class="o">==</span> <span class="s1">&#39;vertical&#39;</span><span class="p">:</span>
+            <span class="n">colors</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">colors</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">extent</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">minvalue</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxvalue</span><span class="p">]</span>
+            <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">orientation</span> <span class="o">==</span> <span class="s1">&#39;horizontal&#39;</span><span class="p">:</span>
+            <span class="n">colors</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">colors</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">extent</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">minvalue</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxvalue</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mf">3.5</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;invalid `orientation` of </span><span class="si">{</span><span class="n">orientation</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">colors</span><span class="p">,</span>
+                  <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>
+                  <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">,</span>
+                  <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">label</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">orientation</span> <span class="o">==</span> <span class="s1">&#39;vertical&#39;</span><span class="p">:</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span> <span class="o">*</span> <span class="n">axisfontscale</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">orientation</span> <span class="o">==</span> <span class="s1">&#39;horizontal&#39;</span><span class="p">:</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span> <span class="o">*</span> <span class="n">axisfontscale</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">low_high_ticks_only</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="s1">&#39;both&#39;</span><span class="p">,</span>
+                           <span class="n">top</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                           <span class="n">bottom</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                           <span class="n">left</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                           <span class="n">right</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                           <span class="n">labelbottom</span><span class="o">=</span><span class="p">(</span><span class="n">orientation</span> <span class="o">==</span> <span class="s1">&#39;horizontal&#39;</span><span class="p">),</span>
+                           <span class="n">labelleft</span><span class="o">=</span><span class="p">(</span><span class="n">orientation</span> <span class="o">==</span> <span class="s1">&#39;vertical&#39;</span><span class="p">),</span>
+                           <span class="p">)</span>
+            <span class="n">axtype</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;vertical&#39;</span><span class="p">:</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;horizontal&#39;</span><span class="p">:</span> <span class="s1">&#39;x&#39;</span><span class="p">}[</span><span class="n">orientation</span><span class="p">]</span>
+            <span class="n">axis</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">axtype</span> <span class="o">+</span> <span class="s1">&#39;axis&#39;</span><span class="p">)</span>
+            <span class="n">dtick</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maxvalue</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">minvalue</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.1</span>
+            <span class="n">axis</span><span class="o">.</span><span class="n">set_ticks</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">minvalue</span> <span class="o">+</span> <span class="n">dtick</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxvalue</span> <span class="o">-</span> <span class="n">dtick</span><span class="p">])</span>
+            <span class="n">axis</span><span class="o">.</span><span class="n">set_ticklabels</span><span class="p">(</span>
+                    <span class="p">[</span><span class="s1">&#39;low&#39;</span><span class="p">,</span> <span class="s1">&#39;high&#39;</span><span class="p">],</span>
+                    <span class="n">rotation</span><span class="o">=</span><span class="n">orientation</span><span class="p">,</span>
+                    <span class="n">verticalalignment</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;vertical&#39;</span><span class="p">:</span> <span class="s1">&#39;center&#39;</span><span class="p">,</span>
+                                       <span class="s1">&#39;horizontal&#39;</span><span class="p">:</span> <span class="s1">&#39;top&#39;</span><span class="p">}[</span><span class="n">orientation</span><span class="p">],</span>
+                    <span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="n">axtype</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">12</span> <span class="o">*</span> <span class="n">axisfontscale</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">12</span> <span class="o">*</span> <span class="n">axisfontscale</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;vertical&#39;</span><span class="p">:</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span>
+                                 <span class="s1">&#39;horizontal&#39;</span><span class="p">:</span> <span class="s1">&#39;y&#39;</span><span class="p">}[</span><span class="n">orientation</span><span class="p">],</span>
+                           <span class="n">left</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                           <span class="n">right</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                           <span class="n">bottom</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                           <span class="n">top</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                           <span class="n">labelbottom</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                           <span class="n">labelleft</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                           <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_figure</span><span class="p">(),</span> <span class="n">ax</span></div></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">doctest</span>
+    <span class="n">doctest</span><span class="o">.</span><span class="n">testmod</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/BloomLogo.jpg" alt="Logo"/>
+    
+    <h1 class="logo logo-name">dmslogo</h1>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Sequence logos for deep mutational scanning</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=jbloomlab&repo=dmslogo&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a class="badge" href="https://travis-ci.org/jbloomlab/dmslogo">
+    <img
+        alt="https://secure.travis-ci.org/jbloomlab/dmslogo.svg?branch=master"
+        src="https://secure.travis-ci.org/jbloomlab/dmslogo.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dmslogo.html">dmslogo package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../package_index.html">package index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../acknowledgments.html">Acknowledgements</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019--2021, Bloom lab.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+    <a href="https://github.com/jbloomlab/dmslogo" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
