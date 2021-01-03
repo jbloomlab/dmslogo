@@ -140,6 +140,13 @@ class ValueToColorMap:
        >>> fig2, ax2 = map2.scale_bar(orientation='vertical',
        ...                          label='cividis scale')
 
+    .. plot::
+       :context: close-figs
+
+       >>> fig2, ax2 = map2.scale_bar(orientation='vertical',
+       ...                          label='cividis scale (alpha 0.3)',
+       ...                          alpha=0.3)
+
     .. _matplotlib colormap:
         https://matplotlib.org/tutorials/colors/colormaps.html
     .. _palettable: https://jiffyclub.github.io/palettable/
@@ -224,6 +231,7 @@ class ValueToColorMap:
                   label=None,
                   axisfontscale=1,
                   low_high_ticks_only=False,
+                  alpha=1,
                   ):
         """Draw a scale bar for the value-to-color map.
 
@@ -239,6 +247,8 @@ class ValueToColorMap:
                 Scale font size by this much.
             `low_high_ticks_only` (bool)
                 Rather than showing numerical ticks, indicate low and high.
+            `alpha` (float)
+                Transparency of scale bar colors.
 
         Returns:
             `(matplotlib.figure.Figure, matplotlib.axes.Axes)`,
@@ -265,7 +275,9 @@ class ValueToColorMap:
         ax.imshow(colors,
                   aspect='auto',
                   extent=extent,
-                  origin='lower')
+                  origin='lower',
+                  alpha=alpha,
+                  )
 
         if label:
             if orientation == 'vertical':
