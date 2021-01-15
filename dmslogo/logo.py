@@ -535,7 +535,7 @@ def draw_logo(data,
                     )
 
     if title:
-        fig.suptitle(title, fontsize=17 * axisfontscale)
+        axes[0].set_title(title, fontsize=17 * axisfontscale)
 
     xpad = 0.2
     ax.set_xlim(-xpad, len(height_matrix) + xpad)

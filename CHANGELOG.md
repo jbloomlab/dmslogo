@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com).
 
+## 0.6.2
+
+### Fixed
+- Problems with title placements introduced in 0.6.0.
+
 ## 0.6.1
 
 ### Added
