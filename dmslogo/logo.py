@@ -12,6 +12,7 @@ Some of this code is borrowed and modified from
 
 import glob
 import os
+import warnings
 
 import matplotlib.font_manager
 import matplotlib.patheffects
@@ -41,6 +42,8 @@ for _fontfile in matplotlib.font_manager.findSystemFonts(_FONT_PATH):
 for _fontfile in matplotlib.font_manager.findSystemFonts(None):
     try:
         matplotlib.font_manager.fontManager.addfont(_fontfile)
+    except TypeError:
+        warnings.warn(f"Cannot load font {_fontfile}", RuntimeWarning)
     except RuntimeError:
         # problem with loading emoji fonts; solution here is just to
         # skip any fonts that cause problems

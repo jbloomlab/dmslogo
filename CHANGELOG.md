@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com).
 
+## 0.6.3
+
+###
+- Bypass error associated with loading some font files on Mac OS X.
+
 ## 0.6.2
 
 ### Fixed
