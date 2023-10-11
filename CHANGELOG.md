@@ -3,12 +3,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com).
 
-## 0.6.4
+## 0.7.0
 
 ### Fixed
 - Updated minimum Python version to 3.9
 
-- Update tests to use Python 3.11 and run on GitHub pages rather than Travis CI
+- Update tests to use Python 3.11 and run on GitHub Actions rather than Travis CI
 
 - Require at least `matplotlib` version 3.8 and modify code to work with that version.
 
