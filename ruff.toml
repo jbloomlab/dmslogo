@@ -1,0 +1,23 @@
+select = [
+  "E",   # pycodestyle
+  "F",   # pyflakes
+  "UP",  # pyupgrade
+]
+line-length = 89
+extend-exclude = [
+    "build",
+    "dist",
+    "docs/_build",
+    "notebooks/.*",
+    "notebooks",
+    ".*",
+]
+ignore = [
+    "D203",
+    "D205",
+    "D212",
+    "D213",
+    "D400",
+    "D415",
+    "D416",
+]

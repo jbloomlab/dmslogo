@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # dmslogo documentation build configuration file.
 #
@@ -21,7 +20,7 @@ import os
 import re
 import sys
 
-sys.path.insert(0, "{0}/../dmslogo".format(os.path.abspath(".")))
+sys.path.insert(0, "{}/../dmslogo".format(os.path.abspath(".")))
 
 
 # -- General configuration ------------------------------------------------

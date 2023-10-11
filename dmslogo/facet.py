@@ -200,7 +200,7 @@ def facet_plot(
     # get sizes of fig, axis limits of plots for each func
     fixed_ylims = {"min": {}, "max": {}}  # keys 'min' / 'max', then row name
     for name, name_d in draw_funcs.items():
-        for (row, _), idata in name_d["data"].groupby(([gridrow_col, gridcol_col])):
+        for (row, _), idata in name_d["data"].groupby([gridrow_col, gridcol_col]):
             fig, ax = name_d["func"](idata, **name_d["kwargs"])
             fig.tight_layout()
             width = fig.get_size_inches()[0]
