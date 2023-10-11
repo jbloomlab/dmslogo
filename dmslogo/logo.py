@@ -31,10 +31,10 @@ import dmslogo.utils
 
 
 # default font
-_DEFAULT_FONT = 'DejaVuSansMonoBold_SeqLogo'
+_DEFAULT_FONT = "DejaVuSansMonoBold_SeqLogo"
 
 # add fonts to font manager
-_FONT_PATH = pkg_resources.resource_filename('dmslogo', 'ttf_fonts/')
+_FONT_PATH = pkg_resources.resource_filename("dmslogo", "ttf_fonts/")
 if not os.path.isdir(_FONT_PATH):
     raise RuntimeError(f"Cannot find font directory {_FONT_PATH}")
 
@@ -96,9 +96,9 @@ class Memoize:
 @Memoize
 def _setup_font(fontfamily, fontsize):
     """Get `FontProperties` for `fontfamily` and `fontsize`."""
-    font = matplotlib.font_manager.FontProperties(family=fontfamily,
-                                                  size=fontsize,
-                                                  weight='bold')
+    font = matplotlib.font_manager.FontProperties(
+        family=fontfamily, size=fontsize, weight="bold"
+    )
     return font
 
 
@@ -115,10 +115,10 @@ def _frac_above_baseline(font):
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 1)
 
-    txt_baseline = ax.text(0, 0, 'A', fontproperties=font,
-                           va='baseline', bbox={'pad': 0})
-    txt_bottom = ax.text(0, 0, 'A', fontproperties=font,
-                         va='bottom', bbox={'pad': 0})
+    txt_baseline = ax.text(
+        0, 0, "A", fontproperties=font, va="baseline", bbox={"pad": 0}
+    )
+    txt_bottom = ax.text(0, 0, "A", fontproperties=font, va="bottom", bbox={"pad": 0})
 
     fig.canvas.draw()
     bbox_baseline = txt_baseline.get_window_extent()
@@ -134,8 +134,16 @@ def _frac_above_baseline(font):
     return frac
 
 
-def _draw_text_data_coord(height_matrix, ystarts, ax, fontfamily, fontaspect,
-                          letterpad, letterheightscale, xpad):
+def _draw_text_data_coord(
+    height_matrix,
+    ystarts,
+    ax,
+    fontfamily,
+    fontaspect,
+    letterpad,
+    letterheightscale,
+    xpad,
+):
     """Draws logo letters.
 
     Args:
@@ -162,27 +170,26 @@ def _draw_text_data_coord(height_matrix, ystarts, ax, fontfamily, fontaspect,
     """
     fig = ax.get_figure()
     # get bbox in **inches**
-    bbox = ax.get_window_extent().transformed(
-            fig.dpi_scale_trans.inverted())
-    width = bbox.width * len(height_matrix) / (
-            2 * xpad + len(height_matrix))
+    bbox = ax.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
+    width = bbox.width * len(height_matrix) / (2 * xpad + len(height_matrix))
     height = bbox.height
 
-    max_stack_height = max(sum(abs(tup[1]) for tup in row) for
-                           row in height_matrix)
+    max_stack_height = max(sum(abs(tup[1]) for tup in row) for row in height_matrix)
 
     if len(ystarts) != len(height_matrix):
-        raise ValueError('`ystarts` and `height_matrix` different lengths\n'
-                         f"ystarts={ystarts}\nheight_matrix={height_matrix}")
+        raise ValueError(
+            "`ystarts` and `height_matrix` different lengths\n"
+            f"ystarts={ystarts}\nheight_matrix={height_matrix}"
+        )
 
     ymin, ymax = ax.get_ylim()
     yextent = ymax - ymin
     if max_stack_height > yextent:
-        raise ValueError('`max_stack_height` exceeds `yextent`')
+        raise ValueError("`max_stack_height` exceeds `yextent`")
     if ymin > 0:
-        raise ValueError('`ymin` > 0')
+        raise ValueError("`ymin` > 0")
     if min(ystarts) < ymin:
-        raise ValueError('`ymin` exceeds smallest `ystarts`')
+        raise ValueError("`ymin` exceeds smallest `ystarts`")
 
     letterpadheight = yextent * letterpad
     fontsize = 72
@@ -192,15 +199,13 @@ def _draw_text_data_coord(height_matrix, ystarts, ax, fontfamily, fontaspect,
     fontwidthscale = width / (fontaspect * len(height_matrix))
 
     for xindex, (xcol, ystart) in enumerate(zip(height_matrix, ystarts)):
-
         ypos = ystart
         for letter, letterheight, lettercolor, pad_loc in xcol:
-
             adj_letterheight = letterheightscale * letterheight
             padding = min(letterheight / 2, letterpadheight)
-            if pad_loc == 'pad_below':
+            if pad_loc == "pad_below":
                 ypad = padding + letterheight - adj_letterheight
-            elif pad_loc == 'pad_above':
+            elif pad_loc == "pad_above":
                 ypad = 0
             else:
                 raise ValueError(f"invalid `pad_loc` {pad_loc}")
@@ -211,55 +216,60 @@ def _draw_text_data_coord(height_matrix, ystarts, ax, fontfamily, fontaspect,
                 letter,
                 fontsize=fontsize,
                 color=lettercolor,
-                ha='left',
-                va='baseline',
+                ha="left",
+                va="baseline",
                 fontproperties=font,
-                bbox={'pad': 0, 'edgecolor': 'none', 'facecolor': 'none'}
-                )
+                bbox={"pad": 0, "edgecolor": "none", "facecolor": "none"},
+            )
 
             scaled_height = adj_letterheight / frac_above_baseline
             scaled_padding = padding / frac_above_baseline
-            txt.set_path_effects([Scale(fontwidthscale,
-                                        ((scaled_height - scaled_padding) *
-                                         height / yextent))
-                                  ])
+            txt.set_path_effects(
+                [
+                    Scale(
+                        fontwidthscale,
+                        ((scaled_height - scaled_padding) * height / yextent),
+                    )
+                ]
+            )
 
             ypos += letterheight
 
 
-def draw_logo(data,
-              *,
-              x_col,
-              letter_col,
-              letter_height_col,
-              xtick_col=None,
-              color_col=None,
-              shade_color_col=None,
-              shade_alpha_col=None,
-              heatmap_overlays=None,
-              xlabel=None,
-              ylabel=None,
-              title=None,
-              colorscheme=dmslogo.colorschemes.AA_FUNCTIONAL_GROUP,
-              missing_color='gray',
-              addbreaks=True,
-              widthscale=1,
-              heightscale=1,
-              heatmap_overlay_height=0.15,
-              axisfontscale=1,
-              hide_axis=False,
-              fontfamily=_DEFAULT_FONT,
-              fontaspect=0.58,
-              letterpad=0.0105,
-              letterheightscale=0.96,
-              ax=None,
-              ylim_setter=None,
-              fixed_ymin=None,
-              fixed_ymax=None,
-              clip_negative_heights=False,
-              drop_na_letter_heights=True,
-              draw_line_at_zero='if_negative',
-              ):
+def draw_logo(
+    data,
+    *,
+    x_col,
+    letter_col,
+    letter_height_col,
+    xtick_col=None,
+    color_col=None,
+    shade_color_col=None,
+    shade_alpha_col=None,
+    heatmap_overlays=None,
+    xlabel=None,
+    ylabel=None,
+    title=None,
+    colorscheme=dmslogo.colorschemes.AA_FUNCTIONAL_GROUP,
+    missing_color="gray",
+    addbreaks=True,
+    widthscale=1,
+    heightscale=1,
+    heatmap_overlay_height=0.15,
+    axisfontscale=1,
+    hide_axis=False,
+    fontfamily=_DEFAULT_FONT,
+    fontaspect=0.58,
+    letterpad=0.0105,
+    letterheightscale=0.96,
+    ax=None,
+    ylim_setter=None,
+    fixed_ymin=None,
+    fixed_ymax=None,
+    clip_negative_heights=False,
+    drop_na_letter_heights=True,
+    draw_line_at_zero="if_negative",
+):
     """Draw sequence logo from specified letter heights.
 
     Args:
@@ -359,7 +369,7 @@ def draw_logo(data,
     # check letters are all upper case
     letters = str(data[letter_col].unique())
     if letters.upper() != letters:
-        raise ValueError('letters in `letter_col` must be uppercase')
+        raise ValueError("letters in `letter_col` must be uppercase")
 
     # checks on input data
     for col in [letter_height_col, letter_col, x_col, xtick_col]:
@@ -370,14 +380,15 @@ def draw_logo(data,
     if drop_na_letter_heights:
         data = data[-data[letter_height_col].isna()]
         if len(data) == 0:
-            raise ValueError('no data after dropping nan heights')
+            raise ValueError("no data after dropping nan heights")
     if clip_negative_heights:
-        data = data.assign(**{letter_height_col: lambda x: numpy.clip(
-                           x[letter_height_col], 0, None)})
+        data = data.assign(
+            **{letter_height_col: lambda x: numpy.clip(x[letter_height_col], 0, None)}
+        )
     if any(data[x_col] != data[x_col].astype(int)):
-        raise ValueError('`x_col` does not have integer values')
+        raise ValueError("`x_col` does not have integer values")
     if any(len(set(g[xtick_col])) != 1 for _, g in data.groupby(x_col)):
-        raise ValueError('not unique mapping of `x_col` to `xtick_col`')
+        raise ValueError("not unique mapping of `x_col` to `xtick_col`")
 
     # construct height_matrix: list of lists of (letter, height, color)
     height_matrix = []
@@ -391,11 +402,7 @@ def draw_logo(data,
     breaks = []
     x_to_xtick = {}
     xtick = 0.5
-    for x, xdata in (data
-                     .sort_values([x_col, letter_height_col])
-                     .groupby(x_col)
-                     ):
-
+    for x, xdata in data.sort_values([x_col, letter_height_col]).groupby(x_col):
         if addbreaks and (lastx is not None) and (x != lastx + 1):
             breaks.append(len(height_matrix))
             height_matrix.append([])
@@ -427,10 +434,14 @@ def draw_logo(data,
                         color = missing_color
                     else:
                         raise ValueError(f"no color for {letter}")
-            row.append((letter,
-                        abs(letter_height),
-                        color,
-                        'pad_below' if letter_height >= 0 else 'pad_above'))
+            row.append(
+                (
+                    letter,
+                    abs(letter_height),
+                    color,
+                    "pad_below" if letter_height >= 0 else "pad_above",
+                )
+            )
         height_matrix.append(row)
 
         assert len(xdata[xtick_col].unique()) == 1
@@ -442,11 +453,11 @@ def draw_logo(data,
 
     assert len(xticklabels) == len(xticks)
 
-    if draw_line_at_zero == 'always':
+    if draw_line_at_zero == "always":
         line_at_zero = True
-    elif draw_line_at_zero == 'never':
+    elif draw_line_at_zero == "never":
         line_at_zero = False
-    elif draw_line_at_zero == 'if_negative':
+    elif draw_line_at_zero == "if_negative":
         if min(min_by_site) < 0:
             line_at_zero = True
         else:
@@ -461,18 +472,12 @@ def draw_logo(data,
             if overlay not in data.columns:
                 raise ValueError(f"`data` lacks `heatmap_overlay` {overlay}")
             else:
-                overlay_data = (data
-                                [[x_col] + list(heatmap_overlays)]
-                                .drop_duplicates()
-                                )
-                if not all(overlay_data.values == (overlay_data
-                                                   .groupby(x_col,
-                                                            as_index=False)
-                                                   .first()
-                                                   )
-                           ):
-                    raise ValueError('Overlay not unique per site:\n' +
-                                     overlay_data)
+                overlay_data = data[[x_col] + list(heatmap_overlays)].drop_duplicates()
+                if not all(
+                    overlay_data.values
+                    == (overlay_data.groupby(x_col, as_index=False).first())
+                ):
+                    raise ValueError("Overlay not unique per site:\n" + overlay_data)
     else:
         heatmap_overlays = []
         noverlays = 0
@@ -480,25 +485,29 @@ def draw_logo(data,
     # setup axis for plotting
     if not ax:
         fig, axes = plt.subplots(
-                nrows=1 + noverlays,
-                ncols=1,
-                sharex=True,
-                sharey=False,
-                squeeze=False,
-                gridspec_kw={'height_ratios':
-                             [heatmap_overlay_height] * noverlays + [1],
-                             }
-                )
+            nrows=1 + noverlays,
+            ncols=1,
+            sharex=True,
+            sharey=False,
+            squeeze=False,
+            gridspec_kw={
+                "height_ratios": [heatmap_overlay_height] * noverlays + [1],
+            },
+        )
         axes = axes.ravel()
         assert len(axes) == 1 + noverlays, axes
         fig.set_size_inches(
-                (widthscale * 0.35 * (len(height_matrix) +
-                                      int(not hide_axis)),
-                 heightscale * (2 + 0.5 * int(not hide_axis) +
-                                2 * noverlays * heatmap_overlay_height +
-                                0.5 * int(bool(title))
-                                )
-                 ))
+            (
+                widthscale * 0.35 * (len(height_matrix) + int(not hide_axis)),
+                heightscale
+                * (
+                    2
+                    + 0.5 * int(not hide_axis)
+                    + 2 * noverlays * heatmap_overlay_height
+                    + 0.5 * int(bool(title))
+                ),
+            )
+        )
         ax = axes[-1]
     else:
         if noverlays:
@@ -516,27 +525,28 @@ def draw_logo(data,
     for overlay, overlay_ax in zip(heatmap_overlays, axes):
         overlay_ax.set_yticks([0.5])
         overlay_ax.set_yticklabels([overlay])
-        overlay_ax.tick_params('y', labelsize=14 * axisfontscale, length=0)
+        overlay_ax.tick_params("y", labelsize=14 * axisfontscale, length=0)
         dmslogo.utils.despine(
-                ax=overlay_ax,
-                top=True,
-                right=True,
-                left=True,
-                bottom=True,
-                )
+            ax=overlay_ax,
+            top=True,
+            right=True,
+            left=True,
+            bottom=True,
+        )
         overlay_ax.get_xaxis().set_visible(False)
         for x, color in overlay_data.set_index(x_col)[overlay].items():
             xtick = x_to_xtick[x]
             overlay_ax.add_patch(
-                    plt.Rectangle(xy=(xtick - 0.5, 0),
-                                  width=1,
-                                  height=1,
-                                  facecolor=color,
-                                  edgecolor='black',
-                                  linewidth=1,
-                                  clip_on=False,
-                                  )
-                    )
+                plt.Rectangle(
+                    xy=(xtick - 0.5, 0),
+                    width=1,
+                    height=1,
+                    facecolor=color,
+                    edgecolor="black",
+                    linewidth=1,
+                    clip_on=False,
+                )
+            )
 
     if title:
         axes[0].set_title(title, fontsize=17 * axisfontscale)
@@ -560,37 +570,41 @@ def draw_logo(data,
     if not hide_axis:
         ax.set_xticks(xticks)
         ax.tick_params(length=5, width=1)
-        ax.set_xticklabels(xticklabels, rotation=90, ha='center', va='top')
+        ax.set_xticklabels(xticklabels, rotation=90, ha="center", va="top")
         ax.yaxis.set_major_locator(matplotlib.ticker.MaxNLocator(4))
-        ax.tick_params('both', labelsize=12 * axisfontscale)
+        ax.tick_params("both", labelsize=12 * axisfontscale)
         ax.set_xlabel(xlabel, fontsize=17 * axisfontscale)
         ax.set_ylabel(ylabel, fontsize=17 * axisfontscale)
-        dmslogo.utils.despine(
-                ax=ax,
-                trim=False,
-                top=True,
-                right=True)
+        dmslogo.utils.despine(ax=ax, trim=False, top=True, right=True)
     else:
-        ax.axis('off')
+        ax.axis("off")
 
     # draw the letters
-    _draw_text_data_coord(height_matrix, min_by_site, ax, fontfamily,
-                          fontaspect, letterpad, letterheightscale, xpad)
+    _draw_text_data_coord(
+        height_matrix,
+        min_by_site,
+        ax,
+        fontfamily,
+        fontaspect,
+        letterpad,
+        letterheightscale,
+        xpad,
+    )
 
     # draw the breaks
     for x in breaks:
         # loosely dotted line:
         # https://matplotlib.org/gallery/lines_bars_and_markers/linestyles.html
-        ax.axvline(x=x + 0.5, ls=(0, (2, 5)), color='black', lw=1)
+        ax.axvline(x=x + 0.5, ls=(0, (2, 5)), color="black", lw=1)
 
     # draw line at zero
     if line_at_zero:
-        ax.axhline(y=0, ls='-', color='black', lw=1, zorder=4)
+        ax.axhline(y=0, ls="-", color="black", lw=1, zorder=4)
 
     # draw the shading
     if shade_color_col is not None:
         if shade_alpha_col is None:
-            raise ValueError('`shade_color_col` without `shade_alpha_col`')
+            raise ValueError("`shade_color_col` without `shade_alpha_col`")
         if shade_color_col not in data.columns:
             raise ValueError(f"data lacks `shade_color_col` {shade_color_col}")
         if shade_alpha_col not in data.columns:
@@ -611,11 +625,15 @@ def draw_logo(data,
             elif not (0 <= shade_alpha <= 1):
                 raise ValueError(f"shade alpha not between 0 and 1 for {x}")
             xtick = x_to_xtick[x]
-            ax.axvspan(xmin=xtick - 0.5, xmax=xtick + 0.5,
-                       edgecolor=None, facecolor=shade_color,
-                       alpha=shade_alpha)
+            ax.axvspan(
+                xmin=xtick - 0.5,
+                xmax=xtick + 0.5,
+                edgecolor=None,
+                facecolor=shade_color,
+                alpha=shade_alpha,
+            )
     elif shade_alpha_col is not None:
-        raise ValueError('`shade_alpha_col` without `shade_color_col`')
+        raise ValueError("`shade_alpha_col` without `shade_color_col`")
 
     if len(axes) == 1:
         return fig, ax
@@ -623,6 +641,7 @@ def draw_logo(data,
         return fig, axes
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import doctest
+
     doctest.testmod()

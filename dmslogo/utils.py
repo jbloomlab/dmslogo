@@ -85,16 +85,17 @@ class AxLimSetter:
 
     """
 
-    def __init__(self,
-                 *,
-                 datalim_pad=0.05,
-                 include_zero=True,
-                 max_from_quantile=None,
-                 min_from_quantile=None,
-                 all_equal_data=(-0.001, 0.001),
-                 min_upperlim=None,
-                 max_lowerlim=None,
-                 ):
+    def __init__(
+        self,
+        *,
+        datalim_pad=0.05,
+        include_zero=True,
+        max_from_quantile=None,
+        min_from_quantile=None,
+        all_equal_data=(-0.001, 0.001),
+        min_upperlim=None,
+        max_lowerlim=None,
+    ):
         """See main class docstring."""
         if not isinstance(include_zero, bool):
             raise ValueError(f"`include_zero` not bool: {include_zero}")
@@ -105,40 +106,42 @@ class AxLimSetter:
         self._datalim_pad = datalim_pad
 
         self._quantile_lims = {}
-        for arg, lim in [(max_from_quantile, 'max'),
-                         (min_from_quantile, 'min')]:
+        for arg, lim in [(max_from_quantile, "max"), (min_from_quantile, "min")]:
             if arg is None:
                 self._quantile_lims[f"{lim}_from_quantile"] = False
             elif isinstance(arg, (tuple, list)) and len(arg) == 2:
                 self._quantile_lims[f"{lim}_from_quantile"] = True
                 quantile, frac = arg
                 if not (0 < quantile < 1):
-                    raise ValueError(f"quantile for `{lim}_from_quantile` "
-                                     'must be > 0 and < 1')
+                    raise ValueError(
+                        f"quantile for `{lim}_from_quantile` " "must be > 0 and < 1"
+                    )
                 if not (0 < frac < 1):
-                    raise ValueError(f"frac for `{lim}_from_quantile` "
-                                     'must be > 0 and < 1')
+                    raise ValueError(
+                        f"frac for `{lim}_from_quantile` " "must be > 0 and < 1"
+                    )
                 self._quantile_lims[f"{lim}_quantile"] = quantile
                 self._quantile_lims[f"{lim}_frac"] = frac
             else:
                 raise ValueError(f"invalid `{lim}_from_quantile` of {arg}")
 
-        if all_equal_data == 'raise':
+        if all_equal_data == "raise":
             self._all_equal_data = all_equal_data
-        elif (isinstance(all_equal_data, (list, tuple)) and
-              len(all_equal_data) == 2):
+        elif isinstance(all_equal_data, (list, tuple)) and len(all_equal_data) == 2:
             if all_equal_data[0] > 0:
-                raise ValueError('first element of `all_equal_data` > 0')
+                raise ValueError("first element of `all_equal_data` > 0")
             if all_equal_data[1] < 0:
-                raise ValueError('second element of `all_equal_data` < 0')
+                raise ValueError("second element of `all_equal_data` < 0")
             if all_equal_data[0] == all_equal_data[1]:
-                raise ValueError('`all_equal_data` cannot be all 0')
+                raise ValueError("`all_equal_data` cannot be all 0")
             self._all_equal_data = tuple(all_equal_data)
         else:
             raise ValueError(f"invalid `all_equal_data`: {all_equal_data}")
 
-        for lim, val in [('min_upperlim', min_upperlim),
-                         ('max_lowerlim', max_lowerlim)]:
+        for lim, val in [
+            ("min_upperlim", min_upperlim),
+            ("max_lowerlim", max_lowerlim),
+        ]:
             if val is None:
                 setattr(self, lim, None)
             else:
@@ -153,20 +156,20 @@ class AxLimSetter:
             datamax = max(0, datamax)
             datamin = min(0, datamin)
 
-        qlims = {'max': datamax, 'min': datamin}
-        for lim, other in [('max', datamin), ('min', datamax)]:
+        qlims = {"max": datamax, "min": datamin}
+        for lim, other in [("max", datamin), ("min", datamax)]:
             if self._quantile_lims[f"{lim}_from_quantile"]:
                 quantile = self._quantile_lims[f"{lim}_quantile"]
                 quantile_val = numpy.quantile(data, quantile)
                 frac = self._quantile_lims[f"{lim}_frac"]
                 qlims[lim] = other + (quantile_val - other) / frac
-        datamax = max(datamax, qlims['max'])
-        datamin = min(datamin, qlims['min'])
+        datamax = max(datamax, qlims["max"])
+        datamin = min(datamin, qlims["min"])
 
         assert datamax >= datamin
         if datamax == datamin:
-            if self._all_equal_data == 'raise':
-                raise ValueError('data min & max equal, see `all_equal_data`')
+            if self._all_equal_data == "raise":
+                raise ValueError("data min & max equal, see `all_equal_data`")
             else:
                 datamin += self._all_equal_data[0]
                 datamax += self._all_equal_data[1]
@@ -215,12 +218,12 @@ def breaksAndLabels(xi, x, n):
 
     """
     if len(xi) != len(x):
-        raise ValueError('`xi` and `x` differ in length.')
+        raise ValueError("`xi` and `x` differ in length.")
     if not all(isinstance(i, (int, numpy.integer)) for i in xi):
-        raise ValueError('xi not integer values')
+        raise ValueError("xi not integer values")
     xi = list(xi)
     if sorted(set(xi)) != xi:
-        raise ValueError('`xi` not unique and ordered')
+        raise ValueError("`xi` not unique and ordered")
     breaks = matplotlib.ticker.MaxNLocator(n).tick_values(xi[0], xi[-1])
     breaks = [int(i) for i in breaks if xi[0] <= i <= xi[-1]]
     labels = [x[xi.index(i)] for i in breaks]
@@ -247,14 +250,16 @@ def _set_spine_position(spine, position):
         axis.cla = cla
 
 
-def despine(fig=None,
-            ax=None,
-            top=True,
-            right=True,
-            left=False,
-            bottom=False,
-            offset=None,
-            trim=False):
+def despine(
+    fig=None,
+    ax=None,
+    top=True,
+    right=True,
+    left=False,
+    bottom=False,
+    offset=None,
+    trim=False,
+):
     """Remove the top and right spines from plot(s).
 
     Args:
@@ -292,7 +297,7 @@ def despine(fig=None,
                     val = offset.get(side, 0)
                 except AttributeError:
                     val = offset
-                _set_spine_position(ax_i.spines[side], ('outward', val))
+                _set_spine_position(ax_i.spines[side], ("outward", val))
 
         # Set the ticks appropriately
         if bottom:
@@ -308,29 +313,26 @@ def despine(fig=None,
             # clip off the parts of the spines that extend past major ticks
             xticks = ax_i.get_xticks()
             if xticks.size:
-                firsttick = numpy.compress(xticks >= min(ax_i.get_xlim()),
-                                           xticks)[0]
-                lasttick = numpy.compress(xticks <= max(ax_i.get_xlim()),
-                                          xticks)[-1]
-                ax_i.spines['bottom'].set_bounds(firsttick, lasttick)
-                ax_i.spines['top'].set_bounds(firsttick, lasttick)
+                firsttick = numpy.compress(xticks >= min(ax_i.get_xlim()), xticks)[0]
+                lasttick = numpy.compress(xticks <= max(ax_i.get_xlim()), xticks)[-1]
+                ax_i.spines["bottom"].set_bounds(firsttick, lasttick)
+                ax_i.spines["top"].set_bounds(firsttick, lasttick)
                 newticks = xticks.compress(xticks <= lasttick)
                 newticks = newticks.compress(newticks >= firsttick)
                 ax_i.set_xticks(newticks)
 
             yticks = ax_i.get_yticks()
             if yticks.size:
-                firsttick = numpy.compress(yticks >= min(ax_i.get_ylim()),
-                                           yticks)[0]
-                lasttick = numpy.compress(yticks <= max(ax_i.get_ylim()),
-                                          yticks)[-1]
-                ax_i.spines['left'].set_bounds(firsttick, lasttick)
-                ax_i.spines['right'].set_bounds(firsttick, lasttick)
+                firsttick = numpy.compress(yticks >= min(ax_i.get_ylim()), yticks)[0]
+                lasttick = numpy.compress(yticks <= max(ax_i.get_ylim()), yticks)[-1]
+                ax_i.spines["left"].set_bounds(firsttick, lasttick)
+                ax_i.spines["right"].set_bounds(firsttick, lasttick)
                 newticks = yticks.compress(yticks <= lasttick)
                 newticks = newticks.compress(newticks >= firsttick)
                 ax_i.set_yticks(newticks)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import doctest
+
     doctest.testmod()

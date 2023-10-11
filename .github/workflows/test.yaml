@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - update-tests-versions
   pull_request:
     branches:
       - master
@@ -26,11 +25,11 @@ jobs:
       - name: install package and dependencies
         run: pip install -e . && pip install -r test_requirements.txt
 
-#      - name: lint code with ruff
-#        run: ruff check .
+      - name: lint code with ruff
+        run: ruff check .
 
-#      - name: check code format with black
-#        run: black --check .
+      - name: check code format with black
+        run: black --check .
 
       - name: test code with `pytest`
         run: pytest

@@ -37,10 +37,10 @@ def data_units_from_linewidth(linewidth, ax, reference):
 
     """
     fig = ax.get_figure()
-    if reference == 'x':
+    if reference == "x":
         length = fig.bbox_inches.width * ax.get_position().width
         value_range = numpy.diff(ax.get_xlim())[0]
-    elif reference == 'y':
+    elif reference == "y":
         length = fig.bbox_inches.height * ax.get_position().height
         value_range = numpy.diff(ax.get_ylim())[0]
     else:
@@ -51,28 +51,30 @@ def data_units_from_linewidth(linewidth, ax, reference):
     return linewidth / (length / value_range)
 
 
-def draw_line(data,
-              *,
-              x_col,
-              height_col,
-              height_col2=None,
-              xtick_col=None,
-              show_col=None,
-              xlabel=None,
-              ylabel=None,
-              title=None,
-              color='black',
-              color2='gray',
-              show_color=dmslogo.colorschemes.CBPALETTE[1],
-              linewidth=1,
-              widthscale=1,
-              heightscale=1,
-              axisfontscale=1,
-              hide_axis=False,
-              ax=None,
-              ylim_setter=None,
-              fixed_ymin=None,
-              fixed_ymax=None):
+def draw_line(
+    data,
+    *,
+    x_col,
+    height_col,
+    height_col2=None,
+    xtick_col=None,
+    show_col=None,
+    xlabel=None,
+    ylabel=None,
+    title=None,
+    color="black",
+    color2="gray",
+    show_color=dmslogo.colorschemes.CBPALETTE[1],
+    linewidth=1,
+    widthscale=1,
+    heightscale=1,
+    axisfontscale=1,
+    hide_axis=False,
+    ax=None,
+    ylim_setter=None,
+    fixed_ymin=None,
+    fixed_ymax=None,
+):
     """Draw line plot.
 
     Args:
@@ -146,7 +148,7 @@ def draw_line(data,
     if show_col:
         cols.append(show_col)
         if not data[show_col].dtype == bool:
-            raise ValueError('`show_col` is not bool')
+            raise ValueError("`show_col` is not bool")
     for col in cols:
         if col not in data.columns:
             raise ValueError(f"`data` lacks column {col}")
@@ -154,14 +156,15 @@ def draw_line(data,
     data = data[cols].drop_duplicates().sort_values(x_col)
 
     if any(data[x_col] != data[x_col].astype(int)):
-        raise ValueError('`x_col` does not have integer values')
+        raise ValueError("`x_col` does not have integer values")
 
     xmin = data[x_col].min()
     xmax = data[x_col].max()
     xlen = xmax - xmin + 1
-    if (xlen != data[x_col].nunique()) or any(list(range(xmin, xmax + 1)) !=
-                                              data[x_col].unique()):
-        raise ValueError('`x_col` not sequential unbroken integers')
+    if (xlen != data[x_col].nunique()) or any(
+        list(range(xmin, xmax + 1)) != data[x_col].unique()
+    ):
+        raise ValueError("`x_col` not sequential unbroken integers")
 
     if len(data[x_col]) != len(data[x_col].unique()):
         raise ValueError(f"not unique mapping of `x_col` to other cols {cols}")
@@ -185,11 +188,11 @@ def draw_line(data,
         ydata_max = max(ydata_max, data[height_col2].max())
     if fixed_ymax is not None:
         if fixed_ymax < ydata_max:
-            raise ValueError('`fixed_ymax` less then max of data')
+            raise ValueError("`fixed_ymax` less then max of data")
         ymax = fixed_ymax
     if fixed_ymin is not None:
         if fixed_ymin > ydata_min:
-            raise ValueError('`fixed_ymin` greater then min of data')
+            raise ValueError("`fixed_ymin` greater then min of data")
         ymin = fixed_ymin
 
     # setup axis for plotting
@@ -197,75 +200,76 @@ def draw_line(data,
         fig, ax = plt.subplots()
         # width per site ranges from 0.02 for xlen <= 100 to
         # 0.07 for xlen > 700
-        xwidth = 0.02 - 0.013 * (min(700, max(100, xlen)) - 100
-                                 ) / (700 - 100)
+        xwidth = 0.02 - 0.013 * (min(700, max(100, xlen)) - 100) / (700 - 100)
         fig.set_size_inches(
-                (widthscale * xwidth * xlen + 0.5 * int(not hide_axis),
-                 heightscale * (2 + 0.5 * int(not hide_axis) +
-                                0.5 * int(bool(title))))
-                            )
+            (
+                widthscale * xwidth * xlen + 0.5 * int(not hide_axis),
+                heightscale * (2 + 0.5 * int(not hide_axis) + 0.5 * int(bool(title))),
+            )
+        )
     else:
         fig = ax.get_figure()
 
     if title:
         ax.set_title(title, fontsize=17 * axisfontscale)
 
-    ax.set_xlim(xmin - 0.5 - 0.02 * xlen,
-                xmax + 0.5 + 0.02 * xlen)
+    ax.set_xlim(xmin - 0.5 - 0.02 * xlen, xmax + 0.5 + 0.02 * xlen)
     ax.set_ylim(ymin, ymax)
 
     if not hide_axis:
         xbreaks, xlabels = dmslogo.utils.breaksAndLabels(
-                            data[x_col].tolist(),
-                            data[xtick_col].tolist(),
-                            max(4, xlen // 50))
+            data[x_col].tolist(), data[xtick_col].tolist(), max(4, xlen // 50)
+        )
         ax.set_xticks(xbreaks)
         ax.tick_params(length=5, width=1)
-        ax.set_xticklabels(xlabels, rotation=90, ha='center', va='top')
+        ax.set_xticklabels(xlabels, rotation=90, ha="center", va="top")
         ax.yaxis.set_major_locator(matplotlib.ticker.MaxNLocator(4))
-        ax.tick_params('both', labelsize=12 * axisfontscale)
+        ax.tick_params("both", labelsize=12 * axisfontscale)
         ax.set_xlabel(xlabel, fontsize=17 * axisfontscale)
         ax.set_ylabel(ylabel, fontsize=17 * axisfontscale)
-        dmslogo.utils.despine(
-                ax=ax,
-                trim=False,
-                top=True,
-                right=True)
+        dmslogo.utils.despine(ax=ax, trim=False, top=True, right=True)
     else:
-        ax.axis('off')
+        ax.axis("off")
 
     xdata = data[x_col].tolist()
     ydata = data[height_col].tolist()
     # plot with 0.5 before / after last points so steps full length
-    ax.step([xmin - 0.5] + xdata + [xmax + 0.5],
-            [ydata[0]] + ydata + [ydata[-1]],
-            color=color,
-            where='mid',
-            linewidth=linewidth)
+    ax.step(
+        [xmin - 0.5] + xdata + [xmax + 0.5],
+        [ydata[0]] + ydata + [ydata[-1]],
+        color=color,
+        where="mid",
+        linewidth=linewidth,
+    )
 
     if height_col2 is not None:
         ydata2 = data[height_col2].tolist()
-        ax.step([xmin - 0.5] + xdata + [xmax + 0.5],
-                [ydata2[0]] + ydata2 + [ydata2[-1]],
-                color=color2,
-                where='mid',
-                linewidth=linewidth)
+        ax.step(
+            [xmin - 0.5] + xdata + [xmax + 0.5],
+            [ydata2[0]] + ydata2 + [ydata2[-1]],
+            color=color2,
+            where="mid",
+            linewidth=linewidth,
+        )
 
     if show_col and show_color is not None:
-        lw_to_xdata = data_units_from_linewidth(linewidth, ax, 'x')
-        lw_to_ydata = data_units_from_linewidth(linewidth, ax, 'y')
+        lw_to_xdata = data_units_from_linewidth(linewidth, ax, "x")
+        lw_to_ydata = data_units_from_linewidth(linewidth, ax, "y")
         for x in data.query(f"{show_col}")[x_col].tolist():
-            ax.add_patch(plt.Rectangle(
-                            xy=(x - 0.5 - lw_to_xdata, ymin),
-                            width=2 + 1 * lw_to_xdata,
-                            height=(ydata_min - ymin) - lw_to_ydata,
-                            edgecolor='none',
-                            facecolor=show_color,
-                            ))
+            ax.add_patch(
+                plt.Rectangle(
+                    xy=(x - 0.5 - lw_to_xdata, ymin),
+                    width=2 + 1 * lw_to_xdata,
+                    height=(ydata_min - ymin) - lw_to_ydata,
+                    edgecolor="none",
+                    facecolor=show_color,
+                )
+            )
 
     return fig, ax
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import doctest
+
     doctest.testmod()
