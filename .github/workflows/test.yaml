@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - update-tests-versions
   pull_request:
     branches:
       - master
@@ -29,8 +28,8 @@ jobs:
 #      - name: lint code with ruff
 #        run: ruff check .
 
-#      - name: check code format with black
-#        run: black --check .
+      - name: check code format with black
+        run: black --check .
 
       - name: test code with `pytest`
         run: pytest
