@@ -10,9 +10,9 @@ try:
 except ImportError:
     raise ImportError("You must install `setuptools`")
 
-if not (sys.version_info[0] == 3 and sys.version_info[1] >= 6):
+if not (sys.version_info[0] == 3 and sys.version_info[1] >= 9):
     raise RuntimeError(
-                'dmslogo requires Python 3.6 or higher.\n'
+                'dmslogo requires Python 3.9 or higher.\n'
                 'You are using Python {0}.{1}'.format(
                     sys.version_info[0], sys.version_info[1])
                 )
@@ -51,7 +51,7 @@ setup(
     install_requires=[
         'numpy>=1.17',
         'pandas>=0.23',
-        'matplotlib>=3.0.0',
+        'matplotlib>=3.8',
         'palettable',
         'setuptools',
         ],
