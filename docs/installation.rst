@@ -1,7 +1,7 @@
 Installation
 --------------
 
-`dmslogo` requires Python 3.6 or newer.
+`dmslogo` requires Python 3.8 or newer.
 
 The easiest way to install `dmslogo` is from `PyPI <https://pypi.org/>`_ using `pip <https://pip.pypa.io>`_ with::
 
