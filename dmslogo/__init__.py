@@ -13,10 +13,10 @@ into the package namespace:
  - :py:mod:`dmslogo.facet.facet_plot`
 """
 
-__author__ = 'Jesse Bloom'
-__email__ = 'jbloom@fredhutch.org'
-__version__ = '0.7.0'
-__url__ = 'https://github.com/jbloomlab/dmslogo'
+__author__ = "Jesse Bloom"
+__email__ = "jbloom@fredhutch.org"
+__version__ = "0.7.0"
+__url__ = "https://github.com/jbloomlab/dmslogo"
 
 from dmslogo.facet import facet_plot  # noqa: F401
 from dmslogo.line import draw_line  # noqa: F401

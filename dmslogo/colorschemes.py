@@ -15,59 +15,77 @@ import numpy
 
 #: color-blind safe palette with gray, from
 #: http://bconnelly.net/2013/10/creating-colorblind-friendly-figures
-CBPALETTE = ['#999999', '#E69F00', '#56B4E9', '#009E73',
-             '#F0E442', '#0072B2', '#D55E00', '#CC79A7']
+CBPALETTE = [
+    "#999999",
+    "#E69F00",
+    "#56B4E9",
+    "#009E73",
+    "#F0E442",
+    "#0072B2",
+    "#D55E00",
+    "#CC79A7",
+]
 
 #:  color-blind safe palette with black, from
 #: http://bconnelly.net/2013/10/creating-colorblind-friendly-figures
-CBBPALETTE = ['#000000', '#E69F00', '#56B4E9', '#009E73',
-              '#F0E442', '#0072B2', '#D55E00', '#CC79A7']
+CBBPALETTE = [
+    "#000000",
+    "#E69F00",
+    "#56B4E9",
+    "#009E73",
+    "#F0E442",
+    "#0072B2",
+    "#D55E00",
+    "#CC79A7",
+]
 
 #: color amino acids by functional group
-AA_FUNCTIONAL_GROUP = {'G': '#f76ab4',
-                       'A': '#f76ab4',
-                       'S': '#ff7f00',
-                       'T': '#ff7f00',
-                       'C': '#ff7f00',
-                       'V': '#12ab0d',
-                       'L': '#12ab0d',
-                       'I': '#12ab0d',
-                       'M': '#12ab0d',
-                       'P': '#12ab0d',
-                       'F': '#84380b',
-                       'Y': '#84380b',
-                       'W': '#84380b',
-                       'D': '#e41a1c',
-                       'E': '#e41a1c',
-                       'H': '#3c58e5',
-                       'K': '#3c58e5',
-                       'R': '#3c58e5',
-                       'N': '#972aa8',
-                       'Q': '#972aa8'
-                       }
+AA_FUNCTIONAL_GROUP = {
+    "G": "#f76ab4",
+    "A": "#f76ab4",
+    "S": "#ff7f00",
+    "T": "#ff7f00",
+    "C": "#ff7f00",
+    "V": "#12ab0d",
+    "L": "#12ab0d",
+    "I": "#12ab0d",
+    "M": "#12ab0d",
+    "P": "#12ab0d",
+    "F": "#84380b",
+    "Y": "#84380b",
+    "W": "#84380b",
+    "D": "#e41a1c",
+    "E": "#e41a1c",
+    "H": "#3c58e5",
+    "K": "#3c58e5",
+    "R": "#3c58e5",
+    "N": "#972aa8",
+    "Q": "#972aa8",
+}
 
 #: color amino acids by charge
-AA_CHARGE = {'A': '#000000',
-             'R': '#FF0000',
-             'N': '#000000',
-             'D': '#0000FF',
-             'C': '#000000',
-             'Q': '#000000',
-             'E': '#0000FF',
-             'G': '#000000',
-             'H': '#FF0000',
-             'I': '#000000',
-             'L': '#000000',
-             'K': '#FF0000',
-             'M': '#000000',
-             'F': '#000000',
-             'P': '#000000',
-             'S': '#000000',
-             'T': '#000000',
-             'W': '#000000',
-             'Y': '#000000',
-             'V': '#000000'
-             }
+AA_CHARGE = {
+    "A": "#000000",
+    "R": "#FF0000",
+    "N": "#000000",
+    "D": "#0000FF",
+    "C": "#000000",
+    "Q": "#000000",
+    "E": "#0000FF",
+    "G": "#000000",
+    "H": "#FF0000",
+    "I": "#000000",
+    "L": "#000000",
+    "K": "#FF0000",
+    "M": "#000000",
+    "F": "#000000",
+    "P": "#000000",
+    "S": "#000000",
+    "T": "#000000",
+    "W": "#000000",
+    "Y": "#000000",
+    "V": "#000000",
+}
 
 
 class ValueToColorMap:
@@ -153,11 +171,12 @@ class ValueToColorMap:
 
     """
 
-    def __init__(self,
-                 minvalue,
-                 maxvalue,
-                 cmap='viridis',
-                 ):
+    def __init__(
+        self,
+        minvalue,
+        maxvalue,
+        cmap="viridis",
+    ):
         """See main class docstring."""
         if isinstance(cmap, matplotlib.colors.Colormap):
             self.cmap = cmap
@@ -169,13 +188,14 @@ class ValueToColorMap:
         self.minvalue = float(minvalue)
         self.maxvalue = float(maxvalue)
         if self.maxvalue <= self.minvalue:
-            raise ValueError('`maxvalue` must exceed `minvalue`')
+            raise ValueError("`maxvalue` must exceed `minvalue`")
 
-    def val_to_color(self,
-                     values,
-                     *,
-                     return_color_as='rgb_hex_code',
-                     ):
+    def val_to_color(
+        self,
+        values,
+        *,
+        return_color_as="rgb_hex_code",
+    ):
         """Map numerical values between `minvalue` and `maxvalue` to colors.
 
         Args:
@@ -192,25 +212,26 @@ class ValueToColorMap:
         """
         if isinstance(values, (int, float)):
             single_value = True
-            values = numpy.array([values], dtype='float')
+            values = numpy.array([values], dtype="float")
         else:
             single_value = False
-            values = numpy.array(values, dtype='float')
+            values = numpy.array(values, dtype="float")
 
         if any(values < self.minvalue) or any(values > self.maxvalue):
-            raise ValueError('`values` not between `minvalue` and `maxvalue`')
+            raise ValueError("`values` not between `minvalue` and `maxvalue`")
         values = (values - self.minvalue) / (self.maxvalue - self.minvalue)
         assert all(values >= 0) and all(values <= 1)
 
         colors = self.cmap(values, bytes=True)
         if colors.shape != (len(values), 4):
-            raise ValueError('unexpected shape for `colors`, '
-                             'is `values` multi-dimensional?')
+            raise ValueError(
+                "unexpected shape for `colors`, " "is `values` multi-dimensional?"
+            )
 
-        if return_color_as == 'rgb_triple':
-            colors = colors[:, : 3]
+        if return_color_as == "rgb_triple":
+            colors = colors[:, :3]
             assert colors.shape == (len(values), 3)
-        elif return_color_as == 'rgb_hex_code':
+        elif return_color_as == "rgb_hex_code":
             color_list = []
             for r, g, b, _a in colors:
                 assert all(0 <= x < 256 for x in [r, g, b])
@@ -224,15 +245,16 @@ class ValueToColorMap:
         else:
             return colors
 
-    def scale_bar(self,
-                  *,
-                  orientation='vertical',
-                  ax=None,
-                  label=None,
-                  axisfontscale=1,
-                  low_high_ticks_only=False,
-                  alpha=1,
-                  ):
+    def scale_bar(
+        self,
+        *,
+        orientation="vertical",
+        ax=None,
+        label=None,
+        axisfontscale=1,
+        low_high_ticks_only=False,
+        alpha=1,
+    ):
         """Draw a scale bar for the value-to-color map.
 
         Args:
@@ -256,13 +278,14 @@ class ValueToColorMap:
 
         """
         colors = self.val_to_color(
-                    numpy.linspace(self.minvalue, self.maxvalue, 256),
-                    return_color_as='rgb_triple')
-        if orientation == 'vertical':
+            numpy.linspace(self.minvalue, self.maxvalue, 256),
+            return_color_as="rgb_triple",
+        )
+        if orientation == "vertical":
             colors = numpy.expand_dims(colors, 1)
             extent = [0, 1, self.minvalue, self.maxvalue]
             figsize = (0.4, 3.5)
-        elif orientation == 'horizontal':
+        elif orientation == "horizontal":
             colors = numpy.expand_dims(colors, 0)
             extent = [self.minvalue, self.maxvalue, 0, 1]
             figsize = (3.5, 0.4)
@@ -272,54 +295,58 @@ class ValueToColorMap:
         if ax is None:
             _, ax = plt.subplots(figsize=figsize)
 
-        ax.imshow(colors,
-                  aspect='auto',
-                  extent=extent,
-                  origin='lower',
-                  alpha=alpha,
-                  )
+        ax.imshow(
+            colors,
+            aspect="auto",
+            extent=extent,
+            origin="lower",
+            alpha=alpha,
+        )
 
         if label:
-            if orientation == 'vertical':
+            if orientation == "vertical":
                 ax.set_ylabel(label, fontsize=17 * axisfontscale)
-            elif orientation == 'horizontal':
+            elif orientation == "horizontal":
                 ax.set_xlabel(label, fontsize=17 * axisfontscale)
 
         if low_high_ticks_only:
-            ax.tick_params('both',
-                           top=False,
-                           bottom=False,
-                           left=False,
-                           right=False,
-                           labelbottom=(orientation == 'horizontal'),
-                           labelleft=(orientation == 'vertical'),
-                           )
-            axtype = {'vertical': 'y', 'horizontal': 'x'}[orientation]
-            axis = getattr(ax, axtype + 'axis')
+            ax.tick_params(
+                "both",
+                top=False,
+                bottom=False,
+                left=False,
+                right=False,
+                labelbottom=(orientation == "horizontal"),
+                labelleft=(orientation == "vertical"),
+            )
+            axtype = {"vertical": "y", "horizontal": "x"}[orientation]
+            axis = getattr(ax, axtype + "axis")
             dtick = (self.maxvalue - self.minvalue) * 0.1
             axis.set_ticks([self.minvalue + dtick, self.maxvalue - dtick])
             axis.set_ticklabels(
-                    ['low', 'high'],
-                    rotation=orientation,
-                    verticalalignment={'vertical': 'center',
-                                       'horizontal': 'top'}[orientation],
-                    )
+                ["low", "high"],
+                rotation=orientation,
+                verticalalignment={"vertical": "center", "horizontal": "top"}[
+                    orientation
+                ],
+            )
             ax.tick_params(axis=axtype, labelsize=12 * axisfontscale)
         else:
-            ax.tick_params(axis='both', labelsize=12 * axisfontscale)
-            ax.tick_params(axis={'vertical': 'x',
-                                 'horizontal': 'y'}[orientation],
-                           left=False,
-                           right=False,
-                           bottom=False,
-                           top=False,
-                           labelbottom=False,
-                           labelleft=False,
-                           )
+            ax.tick_params(axis="both", labelsize=12 * axisfontscale)
+            ax.tick_params(
+                axis={"vertical": "x", "horizontal": "y"}[orientation],
+                left=False,
+                right=False,
+                bottom=False,
+                top=False,
+                labelbottom=False,
+                labelleft=False,
+            )
 
         return ax.get_figure(), ax
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import doctest
+
     doctest.testmod()
