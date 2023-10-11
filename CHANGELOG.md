@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com).
 ## 0.6.4
 
 ### Fixed
-- Updated minimum Python version to 3.8
+- Updated minimum Python version to 3.9
 
 - Update tests to use Python 3.11 and run on GitHub pages rather than Travis CI
 
