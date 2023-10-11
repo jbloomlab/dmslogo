@@ -1,7 +1,7 @@
 .*
 !.gitignore
-!.travis.yml
 !.flake8
+!.github
 *.pyc
 docs/dmslogo.*
 docs/_build

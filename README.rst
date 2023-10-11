@@ -4,8 +4,8 @@ dmslogo
 .. image:: https://img.shields.io/pypi/v/dmslogo.svg
     :target: https://pypi.python.org/pypi/dmslogo
 
-.. image:: https://travis-ci.org/jbloomlab/dmslogo.svg?branch=master
-    :target: https://travis-ci.org/jbloomlab/dmslogo.svg?branch=master
+.. image:: https://github.com/jbloomlab/dmslogo/actions/workflows/test.yaml/badge.svg
+        :target: https://github.com/jbloomlab/dmslogo/actions/workflows/test.yaml
 
 .. image:: https://mybinder.org/badge_logo.svg
     :target: https://mybinder.org/v2/gh/jbloomlab/dmslogo/master?filepath=notebooks
