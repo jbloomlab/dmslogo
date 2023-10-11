@@ -18,6 +18,7 @@ import matplotlib.font_manager
 import matplotlib.patheffects
 import matplotlib.pyplot as plt
 import matplotlib.ticker
+import matplotlib.transforms
 
 import numpy
 
@@ -72,7 +73,7 @@ class Scale(matplotlib.patheffects.RendererBase):
 
     def draw_path(self, renderer, gc, tpath, affine, rgbFace):
         """Draw the letters."""
-        affine = affine.identity().scale(self._sx, self._sy) + affine
+        affine = matplotlib.transforms.Affine2D().scale(self._sx, self._sy) + affine
         renderer.draw_path(gc, tpath, affine, rgbFace)
 
 

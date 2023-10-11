@@ -51,7 +51,7 @@ setup(
     install_requires=[
         'numpy>=1.17',
         'pandas>=0.23',
-        'matplotlib>=3.0.0',
+        'matplotlib>=3.8',
         'palettable',
         'setuptools',
         ],

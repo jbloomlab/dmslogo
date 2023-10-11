@@ -10,6 +10,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com).
 
 - Update tests to use Python 3.11 and run on GitHub pages rather than Travis CI
 
+- Require at least `matplotlib` version 3.8 and modify code to work with that version.
+
 ## 0.6.3
 
 ### Fixed
