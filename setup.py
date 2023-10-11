@@ -13,8 +13,7 @@ except ImportError:
 if not (sys.version_info[0] == 3 and sys.version_info[1] >= 9):
     raise RuntimeError(
                 'dmslogo requires Python 3.9 or higher.\n'
-                'You are using Python {0}.{1}'.format(
-                    sys.version_info[0], sys.version_info[1])
+                f'You are using Python {sys.version_info[0]}.{sys.version_info[1]}'
                 )
 
 # get metadata from package `__init__.py` file as here:
