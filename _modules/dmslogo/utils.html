@@ -1,18 +1,16 @@
-
 <!DOCTYPE html>
 
-<html>
+<html lang="en" data-content_root="../../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>dmslogo.utils &#8212; dmslogo 0.6.2 documentation</title>
-    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/language_data.js"></script>
+    <title>dmslogo.utils &#8212; dmslogo 0.7.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=44845c09" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css?v=7f9a90b1" />
+    <script src="../../_static/documentation_options.js?v=fe7df9b0"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -48,8 +46,10 @@
 <span class="kn">import</span> <span class="nn">numpy</span>
 
 
-<div class="viewcode-block" id="AxLimSetter"><a class="viewcode-back" href="../../dmslogo.utils.html#dmslogo.utils.AxLimSetter">[docs]</a><span class="k">class</span> <span class="nc">AxLimSetter</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Object to determine axis limits from data.</span>
+<div class="viewcode-block" id="AxLimSetter">
+<a class="viewcode-back" href="../../dmslogo.utils.html#dmslogo.utils.AxLimSetter">[docs]</a>
+<span class="k">class</span> <span class="nc">AxLimSetter</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Object to determine axis limits from data.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        datalim_pad (float &gt;= 0)</span>
@@ -120,17 +120,18 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                 <span class="o">*</span><span class="p">,</span>
-                 <span class="n">datalim_pad</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
-                 <span class="n">include_zero</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                 <span class="n">max_from_quantile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">min_from_quantile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">all_equal_data</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">),</span>
-                 <span class="n">min_upperlim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">max_lowerlim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;See main class docstring.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">datalim_pad</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+        <span class="n">include_zero</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">max_from_quantile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">min_from_quantile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">all_equal_data</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">),</span>
+        <span class="n">min_upperlim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">max_lowerlim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;See main class docstring.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">include_zero</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;`include_zero` not bool: </span><span class="si">{</span><span class="n">include_zero</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">include_zero</span> <span class="o">=</span> <span class="n">include_zero</span>
@@ -140,47 +141,51 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_datalim_pad</span> <span class="o">=</span> <span class="n">datalim_pad</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_quantile_lims</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">arg</span><span class="p">,</span> <span class="n">lim</span> <span class="ow">in</span> <span class="p">[(</span><span class="n">max_from_quantile</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">),</span>
-                         <span class="p">(</span><span class="n">min_from_quantile</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">)]:</span>
+        <span class="k">for</span> <span class="n">arg</span><span class="p">,</span> <span class="n">lim</span> <span class="ow">in</span> <span class="p">[(</span><span class="n">max_from_quantile</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">),</span> <span class="p">(</span><span class="n">min_from_quantile</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">)]:</span>
             <span class="k">if</span> <span class="n">arg</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_quantile_lims</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">lim</span><span class="si">}</span><span class="s2">_from_quantile&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">))</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_quantile_lims</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">lim</span><span class="si">}</span><span class="s2">_from_quantile&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="n">quantile</span><span class="p">,</span> <span class="n">frac</span> <span class="o">=</span> <span class="n">arg</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;</span> <span class="n">quantile</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">):</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;quantile for `</span><span class="si">{</span><span class="n">lim</span><span class="si">}</span><span class="s2">_from_quantile` &quot;</span>
-                                     <span class="s1">&#39;must be &gt; 0 and &lt; 1&#39;</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;quantile for `</span><span class="si">{</span><span class="n">lim</span><span class="si">}</span><span class="s2">_from_quantile` &quot;</span> <span class="s2">&quot;must be &gt; 0 and &lt; 1&quot;</span>
+                    <span class="p">)</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;</span> <span class="n">frac</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">):</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;frac for `</span><span class="si">{</span><span class="n">lim</span><span class="si">}</span><span class="s2">_from_quantile` &quot;</span>
-                                     <span class="s1">&#39;must be &gt; 0 and &lt; 1&#39;</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;frac for `</span><span class="si">{</span><span class="n">lim</span><span class="si">}</span><span class="s2">_from_quantile` &quot;</span> <span class="s2">&quot;must be &gt; 0 and &lt; 1&quot;</span>
+                    <span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_quantile_lims</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">lim</span><span class="si">}</span><span class="s2">_quantile&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">quantile</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_quantile_lims</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">lim</span><span class="si">}</span><span class="s2">_frac&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">frac</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;invalid `</span><span class="si">{</span><span class="n">lim</span><span class="si">}</span><span class="s2">_from_quantile` of </span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">all_equal_data</span> <span class="o">==</span> <span class="s1">&#39;raise&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">all_equal_data</span> <span class="o">==</span> <span class="s2">&quot;raise&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_all_equal_data</span> <span class="o">=</span> <span class="n">all_equal_data</span>
-        <span class="k">elif</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">all_equal_data</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">))</span> <span class="ow">and</span>
-              <span class="nb">len</span><span class="p">(</span><span class="n">all_equal_data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">all_equal_data</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">))</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_equal_data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">all_equal_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;first element of `all_equal_data` &gt; 0&#39;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;first element of `all_equal_data` &gt; 0&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">all_equal_data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;second element of `all_equal_data` &lt; 0&#39;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;second element of `all_equal_data` &lt; 0&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">all_equal_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">all_equal_data</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;`all_equal_data` cannot be all 0&#39;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`all_equal_data` cannot be all 0&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_all_equal_data</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">all_equal_data</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;invalid `all_equal_data`: </span><span class="si">{</span><span class="n">all_equal_data</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-        <span class="k">for</span> <span class="n">lim</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="p">[(</span><span class="s1">&#39;min_upperlim&#39;</span><span class="p">,</span> <span class="n">min_upperlim</span><span class="p">),</span>
-                         <span class="p">(</span><span class="s1">&#39;max_lowerlim&#39;</span><span class="p">,</span> <span class="n">max_lowerlim</span><span class="p">)]:</span>
+        <span class="k">for</span> <span class="n">lim</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="p">[</span>
+            <span class="p">(</span><span class="s2">&quot;min_upperlim&quot;</span><span class="p">,</span> <span class="n">min_upperlim</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;max_lowerlim&quot;</span><span class="p">,</span> <span class="n">max_lowerlim</span><span class="p">),</span>
+        <span class="p">]:</span>
             <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lim</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lim</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
 
-<div class="viewcode-block" id="AxLimSetter.get_lims"><a class="viewcode-back" href="../../dmslogo.utils.html#dmslogo.utils.AxLimSetter.get_lims">[docs]</a>    <span class="k">def</span> <span class="nf">get_lims</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get 2-tuple `(ax_min, ax_max)` given list or array of data.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="AxLimSetter.get_lims">
+<a class="viewcode-back" href="../../dmslogo.utils.html#dmslogo.utils.AxLimSetter.get_lims">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_lims</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get 2-tuple `(ax_min, ax_max)` given list or array of data.&quot;&quot;&quot;</span>
         <span class="n">datamin</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
         <span class="n">datamax</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
@@ -188,20 +193,20 @@
             <span class="n">datamax</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">datamax</span><span class="p">)</span>
             <span class="n">datamin</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">datamin</span><span class="p">)</span>
 
-        <span class="n">qlims</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="n">datamax</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="n">datamin</span><span class="p">}</span>
-        <span class="k">for</span> <span class="n">lim</span><span class="p">,</span> <span class="n">other</span> <span class="ow">in</span> <span class="p">[(</span><span class="s1">&#39;max&#39;</span><span class="p">,</span> <span class="n">datamin</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;min&#39;</span><span class="p">,</span> <span class="n">datamax</span><span class="p">)]:</span>
+        <span class="n">qlims</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;max&quot;</span><span class="p">:</span> <span class="n">datamax</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="n">datamin</span><span class="p">}</span>
+        <span class="k">for</span> <span class="n">lim</span><span class="p">,</span> <span class="n">other</span> <span class="ow">in</span> <span class="p">[(</span><span class="s2">&quot;max&quot;</span><span class="p">,</span> <span class="n">datamin</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;min&quot;</span><span class="p">,</span> <span class="n">datamax</span><span class="p">)]:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quantile_lims</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">lim</span><span class="si">}</span><span class="s2">_from_quantile&quot;</span><span class="p">]:</span>
                 <span class="n">quantile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quantile_lims</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">lim</span><span class="si">}</span><span class="s2">_quantile&quot;</span><span class="p">]</span>
                 <span class="n">quantile_val</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">quantile</span><span class="p">)</span>
                 <span class="n">frac</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quantile_lims</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">lim</span><span class="si">}</span><span class="s2">_frac&quot;</span><span class="p">]</span>
                 <span class="n">qlims</span><span class="p">[</span><span class="n">lim</span><span class="p">]</span> <span class="o">=</span> <span class="n">other</span> <span class="o">+</span> <span class="p">(</span><span class="n">quantile_val</span> <span class="o">-</span> <span class="n">other</span><span class="p">)</span> <span class="o">/</span> <span class="n">frac</span>
-        <span class="n">datamax</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">datamax</span><span class="p">,</span> <span class="n">qlims</span><span class="p">[</span><span class="s1">&#39;max&#39;</span><span class="p">])</span>
-        <span class="n">datamin</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">datamin</span><span class="p">,</span> <span class="n">qlims</span><span class="p">[</span><span class="s1">&#39;min&#39;</span><span class="p">])</span>
+        <span class="n">datamax</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">datamax</span><span class="p">,</span> <span class="n">qlims</span><span class="p">[</span><span class="s2">&quot;max&quot;</span><span class="p">])</span>
+        <span class="n">datamin</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">datamin</span><span class="p">,</span> <span class="n">qlims</span><span class="p">[</span><span class="s2">&quot;min&quot;</span><span class="p">])</span>
 
         <span class="k">assert</span> <span class="n">datamax</span> <span class="o">&gt;=</span> <span class="n">datamin</span>
         <span class="k">if</span> <span class="n">datamax</span> <span class="o">==</span> <span class="n">datamin</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_all_equal_data</span> <span class="o">==</span> <span class="s1">&#39;raise&#39;</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;data min &amp; max equal, see `all_equal_data`&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_all_equal_data</span> <span class="o">==</span> <span class="s2">&quot;raise&quot;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;data min &amp; max equal, see `all_equal_data`&quot;</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">datamin</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_all_equal_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="n">datamax</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_all_equal_data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
@@ -216,11 +221,15 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_lowerlim</span><span class="p">:</span>
             <span class="n">datamax</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">datamax</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_lowerlim</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="p">(</span><span class="n">datamin</span><span class="p">,</span> <span class="n">datamax</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="p">(</span><span class="n">datamin</span><span class="p">,</span> <span class="n">datamax</span><span class="p">)</span></div>
+</div>
 
 
-<div class="viewcode-block" id="breaksAndLabels"><a class="viewcode-back" href="../../dmslogo.utils.html#dmslogo.utils.breaksAndLabels">[docs]</a><span class="k">def</span> <span class="nf">breaksAndLabels</span><span class="p">(</span><span class="n">xi</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Get breaks and labels for an axis.</span>
+
+<div class="viewcode-block" id="breaksAndLabels">
+<a class="viewcode-back" href="../../dmslogo.utils.html#dmslogo.utils.breaksAndLabels">[docs]</a>
+<span class="k">def</span> <span class="nf">breaksAndLabels</span><span class="p">(</span><span class="n">xi</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get breaks and labels for an axis.</span>
 
 <span class="sd">    Useful when you would like to re-label a numeric x-axis</span>
 <span class="sd">    with string labels.</span>
@@ -250,20 +259,21 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">xi</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;`xi` and `x` differ in length.&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`xi` and `x` differ in length.&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">integer</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">xi</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;xi not integer values&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;xi not integer values&quot;</span><span class="p">)</span>
     <span class="n">xi</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">xi</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">xi</span><span class="p">))</span> <span class="o">!=</span> <span class="n">xi</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;`xi` not unique and ordered&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`xi` not unique and ordered&quot;</span><span class="p">)</span>
     <span class="n">breaks</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">ticker</span><span class="o">.</span><span class="n">MaxNLocator</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">.</span><span class="n">tick_values</span><span class="p">(</span><span class="n">xi</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">xi</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
     <span class="n">breaks</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">breaks</span> <span class="k">if</span> <span class="n">xi</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">xi</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
     <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="n">xi</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">breaks</span><span class="p">]</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">breaks</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span></div>
 
 
+
 <span class="k">def</span> <span class="nf">_set_spine_position</span><span class="p">(</span><span class="n">spine</span><span class="p">,</span> <span class="n">position</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Set the spine&#39;s position without resetting an associated axis.</span>
 <span class="sd">    As of matplotlib v. 1.0.0, if a spine has an associated axis, then</span>
 <span class="sd">    spine.set_position() calls axis.cla(), which resets locators, formatters,</span>
@@ -282,15 +292,19 @@
         <span class="n">axis</span><span class="o">.</span><span class="n">cla</span> <span class="o">=</span> <span class="n">cla</span>
 
 
-<div class="viewcode-block" id="despine"><a class="viewcode-back" href="../../dmslogo.utils.html#dmslogo.utils.despine">[docs]</a><span class="k">def</span> <span class="nf">despine</span><span class="p">(</span><span class="n">fig</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">top</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="n">right</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="n">left</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-            <span class="n">bottom</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-            <span class="n">offset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">trim</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Remove the top and right spines from plot(s).</span>
+<div class="viewcode-block" id="despine">
+<a class="viewcode-back" href="../../dmslogo.utils.html#dmslogo.utils.despine">[docs]</a>
+<span class="k">def</span> <span class="nf">despine</span><span class="p">(</span>
+    <span class="n">fig</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">top</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">right</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">left</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">bottom</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">offset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">trim</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove the top and right spines from plot(s).</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        `fig` (matplotlib figure)</span>
@@ -327,7 +341,7 @@
                     <span class="n">val</span> <span class="o">=</span> <span class="n">offset</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">side</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
                 <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
                     <span class="n">val</span> <span class="o">=</span> <span class="n">offset</span>
-                <span class="n">_set_spine_position</span><span class="p">(</span><span class="n">ax_i</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="n">side</span><span class="p">],</span> <span class="p">(</span><span class="s1">&#39;outward&#39;</span><span class="p">,</span> <span class="n">val</span><span class="p">))</span>
+                <span class="n">_set_spine_position</span><span class="p">(</span><span class="n">ax_i</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="n">side</span><span class="p">],</span> <span class="p">(</span><span class="s2">&quot;outward&quot;</span><span class="p">,</span> <span class="n">val</span><span class="p">))</span>
 
         <span class="c1"># Set the ticks appropriately</span>
         <span class="k">if</span> <span class="n">bottom</span><span class="p">:</span>
@@ -343,31 +357,29 @@
             <span class="c1"># clip off the parts of the spines that extend past major ticks</span>
             <span class="n">xticks</span> <span class="o">=</span> <span class="n">ax_i</span><span class="o">.</span><span class="n">get_xticks</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">xticks</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
-                <span class="n">firsttick</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="n">xticks</span> <span class="o">&gt;=</span> <span class="nb">min</span><span class="p">(</span><span class="n">ax_i</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">()),</span>
-                                           <span class="n">xticks</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-                <span class="n">lasttick</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="n">xticks</span> <span class="o">&lt;=</span> <span class="nb">max</span><span class="p">(</span><span class="n">ax_i</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">()),</span>
-                                          <span class="n">xticks</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-                <span class="n">ax_i</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;bottom&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_bounds</span><span class="p">(</span><span class="n">firsttick</span><span class="p">,</span> <span class="n">lasttick</span><span class="p">)</span>
-                <span class="n">ax_i</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;top&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_bounds</span><span class="p">(</span><span class="n">firsttick</span><span class="p">,</span> <span class="n">lasttick</span><span class="p">)</span>
+                <span class="n">firsttick</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="n">xticks</span> <span class="o">&gt;=</span> <span class="nb">min</span><span class="p">(</span><span class="n">ax_i</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">()),</span> <span class="n">xticks</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">lasttick</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="n">xticks</span> <span class="o">&lt;=</span> <span class="nb">max</span><span class="p">(</span><span class="n">ax_i</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">()),</span> <span class="n">xticks</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">ax_i</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s2">&quot;bottom&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_bounds</span><span class="p">(</span><span class="n">firsttick</span><span class="p">,</span> <span class="n">lasttick</span><span class="p">)</span>
+                <span class="n">ax_i</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s2">&quot;top&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_bounds</span><span class="p">(</span><span class="n">firsttick</span><span class="p">,</span> <span class="n">lasttick</span><span class="p">)</span>
                 <span class="n">newticks</span> <span class="o">=</span> <span class="n">xticks</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="n">xticks</span> <span class="o">&lt;=</span> <span class="n">lasttick</span><span class="p">)</span>
                 <span class="n">newticks</span> <span class="o">=</span> <span class="n">newticks</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="n">newticks</span> <span class="o">&gt;=</span> <span class="n">firsttick</span><span class="p">)</span>
                 <span class="n">ax_i</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">newticks</span><span class="p">)</span>
 
             <span class="n">yticks</span> <span class="o">=</span> <span class="n">ax_i</span><span class="o">.</span><span class="n">get_yticks</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">yticks</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
-                <span class="n">firsttick</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="n">yticks</span> <span class="o">&gt;=</span> <span class="nb">min</span><span class="p">(</span><span class="n">ax_i</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()),</span>
-                                           <span class="n">yticks</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-                <span class="n">lasttick</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="n">yticks</span> <span class="o">&lt;=</span> <span class="nb">max</span><span class="p">(</span><span class="n">ax_i</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()),</span>
-                                          <span class="n">yticks</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-                <span class="n">ax_i</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;left&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_bounds</span><span class="p">(</span><span class="n">firsttick</span><span class="p">,</span> <span class="n">lasttick</span><span class="p">)</span>
-                <span class="n">ax_i</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;right&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_bounds</span><span class="p">(</span><span class="n">firsttick</span><span class="p">,</span> <span class="n">lasttick</span><span class="p">)</span>
+                <span class="n">firsttick</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="n">yticks</span> <span class="o">&gt;=</span> <span class="nb">min</span><span class="p">(</span><span class="n">ax_i</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()),</span> <span class="n">yticks</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">lasttick</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="n">yticks</span> <span class="o">&lt;=</span> <span class="nb">max</span><span class="p">(</span><span class="n">ax_i</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()),</span> <span class="n">yticks</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">ax_i</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s2">&quot;left&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_bounds</span><span class="p">(</span><span class="n">firsttick</span><span class="p">,</span> <span class="n">lasttick</span><span class="p">)</span>
+                <span class="n">ax_i</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s2">&quot;right&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_bounds</span><span class="p">(</span><span class="n">firsttick</span><span class="p">,</span> <span class="n">lasttick</span><span class="p">)</span>
                 <span class="n">newticks</span> <span class="o">=</span> <span class="n">yticks</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="n">yticks</span> <span class="o">&lt;=</span> <span class="n">lasttick</span><span class="p">)</span>
                 <span class="n">newticks</span> <span class="o">=</span> <span class="n">newticks</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="n">newticks</span> <span class="o">&gt;=</span> <span class="n">firsttick</span><span class="p">)</span>
                 <span class="n">ax_i</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">newticks</span><span class="p">)</span></div>
 
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">doctest</span>
+
     <span class="n">doctest</span><span class="o">.</span><span class="n">testmod</span><span class="p">()</span>
 </pre></div>
 
@@ -402,18 +414,6 @@
 
 
 
-    
-
-<p>
-<a class="badge" href="https://travis-ci.org/jbloomlab/dmslogo">
-    <img
-        alt="https://secure.travis-ci.org/jbloomlab/dmslogo.svg?branch=master"
-        src="https://secure.travis-ci.org/jbloomlab/dmslogo.svg?branch=master"
-    />
-</a>
-</p>
-
-
 <h3>Navigation</h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
@@ -436,12 +436,12 @@
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -455,11 +455,11 @@
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2019--2021, Bloom lab.
+      &copy;2019--2023, Bloom lab.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.2.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
       
     </div>
 

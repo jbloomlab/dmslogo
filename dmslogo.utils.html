@@ -1,18 +1,17 @@
-
 <!DOCTYPE html>
 
-<html>
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>utils &#8212; dmslogo 0.6.2 documentation</title>
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>utils &#8212; dmslogo 0.7.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=44845c09" />
+    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css?v=7f9a90b1" />
+    <script src="_static/documentation_options.js?v=fe7df9b0"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -34,12 +33,13 @@
 
           <div class="body" role="main">
             
-  <span class="target" id="module-dmslogo.utils"></span><div class="section" id="utils">
-<h1>utils<a class="headerlink" href="#utils" title="Permalink to this headline">¶</a></h1>
+  <section id="utils">
+<span id="module-dmslogo.utils"></span><h1>utils<a class="headerlink" href="#utils" title="Link to this heading">¶</a></h1>
 <p>Utility functions for plotting.</p>
+</section>
 <dl class="py class">
-<dt id="dmslogo.utils.AxLimSetter">
-<em class="property">class </em><code class="sig-prename descclassname">dmslogo.utils.</code><code class="sig-name descname">AxLimSetter</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">datalim_pad</span><span class="o">=</span><span class="default_value">0.05</span></em>, <em class="sig-param"><span class="n">include_zero</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">max_from_quantile</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">min_from_quantile</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">all_equal_data</span><span class="o">=</span><span class="default_value">- 0.001, 0.001</span></em>, <em class="sig-param"><span class="n">min_upperlim</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">max_lowerlim</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/utils.html#AxLimSetter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.utils.AxLimSetter" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dmslogo.utils.AxLimSetter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dmslogo.utils.</span></span><span class="sig-name descname"><span class="pre">AxLimSetter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datalim_pad</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_zero</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_from_quantile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_from_quantile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_equal_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(-0.001,</span> <span class="pre">0.001)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_upperlim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_lowerlim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/utils.html#AxLimSetter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dmslogo.utils.AxLimSetter" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Object to determine axis limits from data.</p>
 <dl class="simple">
@@ -110,16 +110,16 @@ that substantially exceeds the “noise” of the all-similar values:</p>
 </pre></div>
 </div>
 <dl class="py method">
-<dt id="dmslogo.utils.AxLimSetter.get_lims">
-<code class="sig-name descname">get_lims</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/utils.html#AxLimSetter.get_lims"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.utils.AxLimSetter.get_lims" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dmslogo.utils.AxLimSetter.get_lims">
+<span class="sig-name descname"><span class="pre">get_lims</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/utils.html#AxLimSetter.get_lims"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dmslogo.utils.AxLimSetter.get_lims" title="Link to this definition">¶</a></dt>
 <dd><p>Get 2-tuple <cite>(ax_min, ax_max)</cite> given list or array of data.</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py function">
-<dt id="dmslogo.utils.breaksAndLabels">
-<code class="sig-prename descclassname">dmslogo.utils.</code><code class="sig-name descname">breaksAndLabels</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xi</span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">n</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/utils.html#breaksAndLabels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.utils.breaksAndLabels" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dmslogo.utils.breaksAndLabels">
+<span class="sig-prename descclassname"><span class="pre">dmslogo.utils.</span></span><span class="sig-name descname"><span class="pre">breaksAndLabels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/utils.html#breaksAndLabels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dmslogo.utils.breaksAndLabels" title="Link to this definition">¶</a></dt>
 <dd><p>Get breaks and labels for an axis.</p>
 <p>Useful when you would like to re-label a numeric x-axis
 with string labels.</p>
@@ -151,8 +151,8 @@ the label for each break.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="dmslogo.utils.despine">
-<code class="sig-prename descclassname">dmslogo.utils.</code><code class="sig-name descname">despine</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fig</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ax</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">top</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">right</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">left</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">bottom</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">offset</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">trim</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/utils.html#despine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dmslogo.utils.despine" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="dmslogo.utils.despine">
+<span class="sig-prename descclassname"><span class="pre">dmslogo.utils.</span></span><span class="sig-name descname"><span class="pre">despine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bottom</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dmslogo/utils.html#despine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dmslogo.utils.despine" title="Link to this definition">¶</a></dt>
 <dd><p>Remove the top and right spines from plot(s).</p>
 <dl class="simple">
 <dt>Args:</dt><dd><dl class="simple">
@@ -175,7 +175,6 @@ on each non-despined axis.</p>
 </dl>
 </dd></dl>
 
-</div>
 
 
           </div>
@@ -209,18 +208,6 @@ on each non-despined axis.</p>
 
 
 
-    
-
-<p>
-<a class="badge" href="https://travis-ci.org/jbloomlab/dmslogo">
-    <img
-        alt="https://secure.travis-ci.org/jbloomlab/dmslogo.svg?branch=master"
-        src="https://secure.travis-ci.org/jbloomlab/dmslogo.svg?branch=master"
-    />
-</a>
-</p>
-
-
 <h3>Navigation</h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
@@ -245,12 +232,12 @@ on each non-despined axis.</p>
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -264,11 +251,11 @@ on each non-despined axis.</p>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2019--2021, Bloom lab.
+      &copy;2019--2023, Bloom lab.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.2.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
       
       |
       <a href="_sources/dmslogo.utils.rst.txt"

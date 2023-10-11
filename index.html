@@ -1,18 +1,17 @@
-
 <!DOCTYPE html>
 
-<html>
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Documentation for dmslogo &#8212; dmslogo 0.6.2 documentation</title>
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Documentation for dmslogo &#8212; dmslogo 0.7.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=44845c09" />
+    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css?v=7f9a90b1" />
+    <script src="_static/documentation_options.js?v=fe7df9b0"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -33,23 +32,27 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="documentation-for-dmslogo">
-<h1>Documentation for <code class="docutils literal notranslate"><span class="pre">dmslogo</span></code><a class="headerlink" href="#documentation-for-dmslogo" title="Permalink to this headline">¶</a></h1>
+  <section id="documentation-for-dmslogo">
+<h1>Documentation for <code class="docutils literal notranslate"><span class="pre">dmslogo</span></code><a class="headerlink" href="#documentation-for-dmslogo" title="Link to this heading">¶</a></h1>
 <p><cite>dmslogo</cite> is a Python package written by the <a class="reference external" href="https://research.fhcrc.org/bloom/en.html">Bloom lab</a> for making sequence logo plots of deep mutational scanning data.</p>
 <p>It allows you to make figures like this with just a single plotting command:</p>
-<div class="figure align-left" id="id1">
+<figure class="align-left" id="id1">
 <img alt="facet plot" src="_images/facet_plot_example.png" />
-<p class="caption"><span class="caption-text">Plot showing antibody selection across the entirety of HIV Env, and zooming in on mutations at strongly selected sites.
-Created using the <a class="reference internal" href="dmslogo.facet.html#dmslogo.facet.facet_plot" title="dmslogo.facet.facet_plot"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dmslogo.facet.facet_plot</span></code></a> command as shown in the <a class="reference internal" href="examples.html#examples"><span class="std std-ref">Examples</span></a>.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-text">Plot showing antibody selection across the entirety of HIV Env, and zooming in on mutations at strongly selected sites.
+Created using the <a class="reference internal" href="dmslogo.facet.html#dmslogo.facet.facet_plot" title="dmslogo.facet.facet_plot"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dmslogo.facet.facet_plot</span></code></a> command as shown in the <a class="reference internal" href="examples.html#examples"><span class="std std-ref">Examples</span></a>.</span><a class="headerlink" href="#id1" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>It also allows you to heavily customize your logo plots, such as by coloring specific letters at specific sites or <a class="reference external" href="http://comicsanscriminal.com/">using Comic Sans font</a>:</p>
-<div class="figure align-left" id="id2">
+<figure class="align-left" id="id2">
 <a class="reference internal image-reference" href="_images/dmslogo_comic_sans.png"><img alt="comic sans plot" src="_images/dmslogo_comic_sans.png" style="width: 35%;" /></a>
-<p class="caption"><span class="caption-text">Logo plot with custom letter coloring and Comic Sans font.
-Created using the <a class="reference internal" href="dmslogo.logo.html#dmslogo.logo.draw_logo" title="dmslogo.logo.draw_logo"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dmslogo.logo.draw_logo</span></code></a> command as shown in the <a class="reference internal" href="examples.html#examples"><span class="std std-ref">Examples</span></a>.</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
-</div>
-<div class="section" id="contents">
-<h2>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h2>
+<figcaption>
+<p><span class="caption-text">Logo plot with custom letter coloring and Comic Sans font.
+Created using the <a class="reference internal" href="dmslogo.logo.html#dmslogo.logo.draw_logo" title="dmslogo.logo.draw_logo"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dmslogo.logo.draw_logo</span></code></a> command as shown in the <a class="reference internal" href="examples.html#examples"><span class="std std-ref">Examples</span></a>.</span><a class="headerlink" href="#id2" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<section id="contents">
+<h2>Contents<a class="headerlink" href="#contents" title="Link to this heading">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
@@ -59,8 +62,8 @@ Created using the <a class="reference internal" href="dmslogo.logo.html#dmslogo.
 <li class="toctree-l1"><a class="reference internal" href="acknowledgments.html">Acknowledgements</a></li>
 </ul>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
           </div>
@@ -94,18 +97,6 @@ Created using the <a class="reference internal" href="dmslogo.logo.html#dmslogo.
 
 
 
-    
-
-<p>
-<a class="badge" href="https://travis-ci.org/jbloomlab/dmslogo">
-    <img
-        alt="https://secure.travis-ci.org/jbloomlab/dmslogo.svg?branch=master"
-        src="https://secure.travis-ci.org/jbloomlab/dmslogo.svg?branch=master"
-    />
-</a>
-</p>
-
-
 <h3>Navigation</h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
@@ -127,12 +118,12 @@ Created using the <a class="reference internal" href="dmslogo.logo.html#dmslogo.
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -146,11 +137,11 @@ Created using the <a class="reference internal" href="dmslogo.logo.html#dmslogo.
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2019--2021, Bloom lab.
+      &copy;2019--2023, Bloom lab.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.2.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
       
       |
       <a href="_sources/index.rst.txt"
