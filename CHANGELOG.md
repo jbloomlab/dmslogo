@@ -3,6 +3,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com).
 
+## 0.7.1
+
+### Fixed
+- Removed deprecated `pkg_resources`, which was root of [this issue](https://github.com/dms-vep/dms-vep-pipeline-3/issues/212#event-22715605282)
+
+
 ## 0.7.0
 
 ### Fixed

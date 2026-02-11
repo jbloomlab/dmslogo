@@ -6,12 +6,10 @@ colorschemes
 Color schemes.
 """
 
-
 import matplotlib.colors
 import matplotlib.pyplot as plt
 
 import numpy
-
 
 #: color-blind safe palette with gray, from
 #: http://bconnelly.net/2013/10/creating-colorblind-friendly-figures

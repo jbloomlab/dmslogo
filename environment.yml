@@ -7,7 +7,7 @@ channels:
 
 # conda dependencies
 dependencies:
-  - python==3.7
+  - python==3.13
   - pip
   # install the current package with `pip install .`
   - pip:

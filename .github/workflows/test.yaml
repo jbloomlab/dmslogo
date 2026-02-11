@@ -20,7 +20,7 @@ jobs:
       - name: install python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: "3.13"
 
       - name: install package and dependencies
         run: pip install -e . && pip install -r test_requirements.txt

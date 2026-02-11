@@ -6,7 +6,6 @@ line
 Draw line plots of site-level properties.
 """
 
-
 import matplotlib.pyplot as plt
 import matplotlib.ticker
 

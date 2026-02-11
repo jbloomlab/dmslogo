@@ -6,7 +6,6 @@ facet
 Facet multiple plots on the same figure.
 """
 
-
 import collections
 import operator
 
