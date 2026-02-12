@@ -367,8 +367,8 @@ def draw_logo(
         ylabel = letter_height_col
 
     # check letters are all upper case
-    letters = str(data[letter_col].unique())
-    if letters.upper() != letters:
+    letters = data[letter_col].unique()
+    if not all(str(letter) == str(letter).upper() for letter in letters):
         raise ValueError("letters in `letter_col` must be uppercase")
 
     # checks on input data
