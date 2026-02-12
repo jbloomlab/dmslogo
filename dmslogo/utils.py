@@ -6,7 +6,6 @@ utils
 Utility functions for plotting.
 """
 
-
 import matplotlib.pyplot as plt
 import matplotlib.ticker
 
@@ -66,21 +65,21 @@ class AxLimSetter:
 
     >>> data = [0.5, 0.6, 0.4, 0.4, 0.3, 0.5]
     >>> setter_default = AxLimSetter()
-    >>> setter_default.get_lims(data)
+    >>> tuple(float(v) for v in setter_default.get_lims(data))
     (-0.03, 0.63)
 
     Now use the `max_from_quantile` option to set an upper limit
     that substantially exceeds the "noise" of the all-similar values:
 
     >>> setter_max_quantile = AxLimSetter(max_from_quantile=(0.5, 0.05))
-    >>> setter_max_quantile.get_lims(data)
+    >>> tuple(float(v) for v in setter_max_quantile.get_lims(data))
     (-0.45, 9.45)
 
     Demonstrate `min_upperlim`:
 
     >>> setter_min_upperlim = AxLimSetter(max_from_quantile=(0.5, 0.05),
     ...                                   min_upperlim=10)
-    >>> setter_min_upperlim.get_lims(data)
+    >>> tuple(float(v) for v in setter_min_upperlim.get_lims(data))
     (-0.45, 10.0)
 
     """

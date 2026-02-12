@@ -9,8 +9,8 @@ Some of this code is borrowed and modified from
 `pyseqlogo <https://github.com/saketkc/pyseqlogo>`_.
 """
 
-
 import glob
+import importlib.resources
 import os
 import warnings
 
@@ -24,17 +24,17 @@ import numpy
 
 import pandas as pd
 
-import pkg_resources
-
 import dmslogo.colorschemes
 import dmslogo.utils
-
 
 # default font
 _DEFAULT_FONT = "DejaVuSansMonoBold_SeqLogo"
 
 # add fonts to font manager
-_FONT_PATH = pkg_resources.resource_filename("dmslogo", "ttf_fonts/")
+with importlib.resources.as_file(
+    importlib.resources.files("dmslogo").joinpath("ttf_fonts")
+) as font_path:
+    _FONT_PATH = str(font_path)
 if not os.path.isdir(_FONT_PATH):
     raise RuntimeError(f"Cannot find font directory {_FONT_PATH}")
 
@@ -367,8 +367,8 @@ def draw_logo(
         ylabel = letter_height_col
 
     # check letters are all upper case
-    letters = str(data[letter_col].unique())
-    if letters.upper() != letters:
+    letters = data[letter_col].unique()
+    if not all(str(letter) == str(letter).upper() for letter in letters):
         raise ValueError("letters in `letter_col` must be uppercase")
 
     # checks on input data
