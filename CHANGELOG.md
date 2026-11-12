@@ -3,6 +3,15 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com).
 
+## Unreleased
+
+### Fixed
+- `draw_logo` now works when you pass your own axes together with `heatmap_overlays`. The
+  assignments that bind those axes were unreachable, sitting after a `raise`, so the call
+  failed with `AttributeError: 'list' object has no attribute 'get_figure'` whenever the
+  number of axes was right ([#25](https://github.com/jbloomlab/dmslogo/issues/25)).
+
+
 ## 0.7.1
 
 ### Fixed

@@ -357,6 +357,34 @@ def draw_logo(
         If using `heatmap_overlays`, then `ax` will be an array of all axes
         (overlays and logo axes).
 
+    Example:
+
+        Draw onto axes you have made yourself, which is what you need when the
+        logo is one panel of a larger figure. With `heatmap_overlays`, pass one
+        axis per overlay followed by the axis for the logo:
+
+        >>> import matplotlib.pyplot as plt
+        >>> import pandas as pd
+        >>>
+        >>> data = pd.DataFrame({'site': [1, 1, 2, 2],
+        ...                      'mutant': ['A', 'C', 'A', 'C'],
+        ...                      'height': [1.0, 2.0, 0.5, 1.5],
+        ...                      'overlay': ['#ff0000', '#ff0000',
+        ...                                  '#00ff00', '#00ff00'],
+        ...                      })
+        >>>
+        >>> _, (overlay_ax, logo_ax) = plt.subplots(nrows=2)
+        >>> fig, axes = draw_logo(data=data,
+        ...                       x_col='site',
+        ...                       letter_col='mutant',
+        ...                       letter_height_col='height',
+        ...                       heatmap_overlays=['overlay'],
+        ...                       ax=[overlay_ax, logo_ax],
+        ...                       )
+        >>> axes[-1] is logo_ax
+        True
+        >>> plt.close(fig)
+
     """
     # set default values of arguments that can be None
     if xtick_col is None:
@@ -513,8 +541,8 @@ def draw_logo(
         if noverlays:
             if len(ax) != noverlays + 1:
                 raise ValueError(f"`ax` not axes for {noverlays} overlays")
-                axes = ax
-                ax = axes[0]
+            axes = list(ax)
+            ax = axes[-1]
         else:
             if not isinstance(ax, plt.Axes):
                 raise TypeError(f"`ax` is not an Axis: {ax}")
